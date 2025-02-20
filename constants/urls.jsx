@@ -1,7 +1,7 @@
 
 
 export default env = {
-    CLIENT_URL : 'http://192.168.11.1:5000/',
+    CLIENT_URL : 'https://hostal-outpass-backend.onrender.com/',
 
     studentRegister : 'student/register',
     studentRegisterVerify : 'student/register/verify',
