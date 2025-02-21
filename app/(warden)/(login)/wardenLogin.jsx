@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import annaUniversity from "@/assets/annaUniversity.jpeg";
+import annaUniversity from "@/assets/annaUniversity.png";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import url from "@/constants/urls";
 import { useToast } from "react-native-toast-notifications";

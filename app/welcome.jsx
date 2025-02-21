@@ -1,8 +1,8 @@
 import { Image, StatusBar, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-let logo = require("../assets/logo.png");
-import themes from "../constants/themes"
+let logo = require("@/assets/images/icon.png");
+import themes from "@/constants/themes"
 import { useNavigation } from "expo-router";
 const Welcome = () => {
   const navigate = useNavigation()

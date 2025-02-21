@@ -6,7 +6,6 @@ import axios from "axios";
 import Spinner from "react-native-loading-spinner-overlay";
 import themes from "@/constants/themes";
 import { hp } from "@/helpers/dimensions";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 
 const PrevPass = () => {
@@ -45,6 +44,7 @@ const PrevPass = () => {
         visible={spinnerVisible}
         textContent={"Loading..."}
         textStyle={{ color: "#FFF" }}
+        cancelable={true}
       />
       <View style={styles.header}>
         <Text style={{ color: themes.acceptColor, fontSize: hp(2) }}>Accept </Text>

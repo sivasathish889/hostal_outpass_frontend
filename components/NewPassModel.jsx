@@ -9,14 +9,13 @@ import {
   View,
 } from "react-native";
 import React, { useState } from "react";
-import XIcon from "@/assets/XIcon.png";
-import calendarIcon from "@/assets/Calendar.png";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import { useToast } from "react-native-toast-notifications";
 import urls from "@/constants/urls";
 import axios from "axios";
 import { useNavigation } from "expo-router";
 import themes from "@/constants/themes";
+import { Entypo } from "@expo/vector-icons";
 
 
 const NewPassModel = (props) => {
@@ -122,7 +121,7 @@ const NewPassModel = (props) => {
               onPress={() => setPassModelVisible(!passModelVisible)}
               style={styles.closeBtn}
             >
-              <Image source={XIcon} />
+              <Entypo name="cross" size={24} color="black" />
             </TouchableOpacity>
 
             <Text style={styles.modelHeading}>New Out Pass</Text>
@@ -210,7 +209,7 @@ const NewPassModel = (props) => {
                 style={styles.calendarIconStyle}
                 onPress={() => setOutDatePickerVisible(!isInDatePickerVisible)}
               >
-                <Image source={calendarIcon} />
+                <Entypo name="calendar" size={24} color="black" />
               </TouchableOpacity>
             </View>
 
@@ -240,7 +239,7 @@ const NewPassModel = (props) => {
                 style={styles.calendarIconStyle}
                 onPress={() => setInDatePickerVisible(!isInDatePickerVisible)}
               >
-                <Image source={calendarIcon} />
+                <Entypo name="calendar" size={24} color="black" />
               </TouchableOpacity>
             </View>
 

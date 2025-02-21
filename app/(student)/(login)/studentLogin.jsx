@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import annaUniversity from "@/assets/annaUniversity.jpeg";
+import annaUniversity from "@/assets/annaUniversity.png";
 import { hp, } from "@/helpers/dimensions"
 import { useNavigation } from "expo-router";
 import { MaterialCommunityIcons } from "@expo/vector-icons";

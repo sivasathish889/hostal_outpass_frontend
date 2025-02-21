@@ -7,7 +7,7 @@ import {
   View,
 } from "react-native";
 import React, { useState } from "react";
-import annaUniversity from "@/assets/annaUniversity.jpeg";
+import annaUniversity from "@/assets/annaUniversity.png";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useToast } from "react-native-toast-notifications";
 import url from "@/constants/urls";

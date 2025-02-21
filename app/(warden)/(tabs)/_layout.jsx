@@ -31,7 +31,8 @@ const TabRoute = () => {
             height: 75,
           },
           tabBarPosition: "bottom",
-          headerShown:false
+          headerShown:false,
+          tabBarHideOnKeyboard:true
         }}
       >
         <Tabs.Screen

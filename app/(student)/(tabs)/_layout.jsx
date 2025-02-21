@@ -11,7 +11,7 @@ import { StatusBar } from "expo-status-bar";
 import { Tabs } from "expo-router"
 import { useState } from 'react';
 
-import notifiIcon from "@/assets/Notification.png";
+import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import homeIcon from "@/assets/TabBar/HomeIcon.png";
 import Previous from "@/assets/TabBar/Previous.png";
 import Settings from "@/assets/TabBar/Settings.png";
@@ -28,10 +28,10 @@ const Layout = () => {
       <View style={styles.header}>
         <Text style={styles.headerText}>Welcome </Text>
         <TouchableOpacity>
-          <Image source={notifiIcon} style={styles.ImageStyle} />
+          <FontAwesome5 name="bell" size={24} color="white" />
         </TouchableOpacity>
       </View>
-      
+
       <Tabs
         screenOptions={{
           tabBarStyle: {
@@ -40,7 +40,8 @@ const Layout = () => {
             height: hp(8),
           },
           tabBarPosition: "bottom",
-          headerShown:false
+          headerShown: false,
+          tabBarHideOnKeyboard:true
         }}>
         <Tabs.Screen
           name="home"

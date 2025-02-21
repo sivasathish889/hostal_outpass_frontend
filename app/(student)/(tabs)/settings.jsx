@@ -6,10 +6,9 @@ import urls from "@/constants/urls";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Spinner from 'react-native-loading-spinner-overlay';
 import { hp } from "@/helpers/dimensions";
-import { Redirect, useNavigation, useRouter } from "expo-router";
+import { useRouter } from "expo-router";
 
 const Settings = () => {
-  const navigation = useNavigation();
   const router = useRouter()
   const [spinnerVisible, setSpinnerVisible] = useState(false)
   const [fetchingData, setFetchingData] = useState([

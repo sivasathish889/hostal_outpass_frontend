@@ -3,28 +3,24 @@ import {
   Text,
   View,
   FlatList,
-  Image,
   TouchableOpacity,
-  Modal,
-  StatusBar,
-  TextInput,
   Alert,
   RefreshControl,
 } from "react-native";
 
 import React, { useEffect, useState } from "react";
-import plusIcon from "@/assets/Plus.png";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import env from "@/constants/urls";
-import NewPassModel from "@/components/NewPassModel";
 import { useToast } from "react-native-toast-notifications";
-import XIcon from "@/assets/XIcon.png";
-import calendarIcon from "@/assets/Calendar.png";
-import DateTimePicker from "react-native-modal-datetime-picker";
-import axios from "axios";
 import Spinner from "react-native-loading-spinner-overlay"
 import { useNavigation } from "expo-router";
+import axios from "axios";
+
 import themes from "@/constants/themes";
+import Entypo from '@expo/vector-icons/Entypo';
+import env from "@/constants/urls";
+
+import NewPassModel from "@/components/NewPassModel";
+import EditPassModals from "@/components/EditPassModals";
 
 
 const HomeScreen = () => {
@@ -34,8 +30,6 @@ const HomeScreen = () => {
   const [userId, setUserId] = useState(null);
   const [fetchPassData, setFetchPassData] = useState({});
 
-  const [isInDatePickerVisible, setInDatePickerVisible] = useState(false);
-  const [isOutDatePickerVisible, setOutDatePickerVisible] = useState(false);
   const [roomNo, setRoomNo] = useState(null);
   const [destination, setDestination] = useState(null);
   const [purpose, setPurpose] = useState(null);
@@ -244,8 +238,7 @@ const HomeScreen = () => {
         style={styles.plusIconStyle}
         onPress={() => setPassModelVisible(!passModelVisible)}
       >
-        <Image source={plusIcon} />
-        {/* <Entypo /> */}
+        <Entypo name="plus" size={24} color="black" />
       </TouchableOpacity>
 
       {/* New Pass Model */}
@@ -257,125 +250,21 @@ const HomeScreen = () => {
         dataRefresh={dataRefresh}
       />
       {/* Edit Pass Model */}
-      <View style={styles.modelContainer}>
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={editModelVisible}
-        >
-          <View style={styles.modelContainer}>
-            <StatusBar backgroundColor={"rgba(0,0,0,0.5)"} />
-            <View style={styles.ModelContent}>
-              <TouchableOpacity
-                onPress={() => setEditModelVisible(!editModelVisible)}
-                style={styles.closeBtn}
-              >
-                <Image source={XIcon} />
-              </TouchableOpacity>
-
-              <Text style={styles.modelHeading}>Edit OutPass</Text>
-
-              <View style={styles.inputGroup}>
-                <Text style={styles.inputLabel}>Room No :</Text>
-                <TextInput
-                  style={styles.input}
-                  placeholder={roomNo}
-                  placeholderTextColor={"#AFAFAF"}
-                  onChangeText={(text) => {
-                    setRoomNo(text);
-                  }}
-                  inputMode=""
-                />
-              </View>
-
-              <View style={styles.inputGroup}>
-                <Text style={styles.inputLabel}>Destination :</Text>
-                <TextInput
-                  style={styles.input}
-                  placeholder={destination}
-                  placeholderTextColor={"#AFAFAF"}
-                  onChangeText={(text) => {
-                    setDestination(text);
-                  }}
-                  inputMode="text"
-                />
-              </View>
-
-              <View style={styles.inputGroup}>
-                <Text style={styles.inputLabel}>Purpose :</Text>
-                <TextInput
-                  style={styles.input}
-                  placeholder={purpose}
-                  placeholderTextColor={"#AFAFAF"}
-                  onChangeText={(text) => {
-                    setPurpose(text);
-                  }}
-                  inputMode="text"
-                />
-              </View>
-
-              <View style={styles.inputGroup}>
-                <Text style={styles.inputLabel}>Out Date & Time:</Text>
-                <TextInput
-                  style={styles.input}
-                  placeholderTextColor={"#AFAFAF"}
-                  placeholder={outDateTime}
-                  editable={false}
-                  inputMode="text"
-                />
-
-                <DateTimePicker
-                  onCancel={() => setOutDatePickerVisible(false)}
-                  onConfirm={(e) => {
-                    handleOutDateTimePicker(e);
-                  }}
-                  isVisible={isOutDatePickerVisible}
-                />
-                <TouchableOpacity
-                  style={styles.calendarIconStyle}
-                  onPress={() =>
-                    setOutDatePickerVisible(!isInDatePickerVisible)
-                  }
-                >
-                  <Image source={calendarIcon} />
-                </TouchableOpacity>
-              </View>
-
-              <View style={styles.inputGroup}>
-                <Text style={styles.inputLabel}>In Date & Time :</Text>
-                <TextInput
-                  style={styles.input}
-                  placeholder={inDateTime}
-                  placeholderTextColor={"#AFAFAF"}
-                />
-
-                <DateTimePicker
-                  onCancel={() => setInDatePickerVisible(false)}
-                  onConfirm={(e) => {
-                    handleInDateTimePicker(e);
-                  }}
-                  isVisible={isInDatePickerVisible}
-                />
-                <TouchableOpacity
-                  style={styles.calendarIconStyle}
-                  onPress={() => setInDatePickerVisible(!isInDatePickerVisible)}
-                >
-                  <Image source={calendarIcon} />
-                </TouchableOpacity>
-              </View>
-
-              <View style={{ alignItems: "center" }}>
-                <TouchableOpacity
-                  style={styles.buttonOutline}
-                  onPress={handelPassUpdate}
-                >
-                  <Text style={styles.btn}>Update</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
-        </Modal>
-      </View>
+        <EditPassModals
+        editModelVisible = {editModelVisible}
+        setEditModelVisible={setEditModelVisible}
+        roomNo={roomNo}
+        setRoomNo = {setRoomNo}
+        destination={destination}
+        setDestination = {setDestination}
+        purpose={purpose}
+        setPurpose={setPurpose}
+        outDateTime={outDateTime}
+        handleOutDateTimePicker={handleOutDateTimePicker}
+        inDateTime={inDateTime}
+        handleInDateTimePicker={handleInDateTimePicker}
+        handelPassUpdate ={handelPassUpdate}
+        />
     </View>
   );
 };
@@ -468,55 +357,5 @@ const styles = StyleSheet.create({
     padding: 12,
     borderRadius: 25,
   },
-  modelContainer: {
-    backgroundColor: "rgba(0,0,0,0.5)",
-  },
-  ModelContent: {
-    padding: 20,
-    margin: "10%",
-    marginVertical: "50%",
-    backgroundColor: "#D9D9D9",
-    borderRadius: 10,
-  },
-  modelHeading: {
-    textAlign: "center",
-    fontSize: 20,
-    color: themes.ma,
-    textDecorationLine: "underline",
-    marginBottom: 20,
-  },
-  input: {
-    backgroundColor: "white",
-    paddingStart: 10,
-    borderRadius: 5,
-    borderWidth: 1,
-    borderColor: "rgb(115,115,115)",
-  },
-  inputLabel: {
-    fontSize: 18,
-  },
-  inputGroup: {
-    marginTop: 10,
-  },
-  buttonOutline: {
-    backgroundColor: themes.mainColor,
-    borderRadius: 5,
-    padding: 10,
-    borderBlockColor: "black",
-    marginVertical: 20,
-    paddingHorizontal: 40,
-  },
-  btn: {
-    color: "white",
-    fontSize: 15,
-    textAlign: "center",
-  },
-  calendarIconStyle: {
-    position: "absolute",
-    right: 10,
-    top: 30,
-  },
-  closeBtn: {
-    alignSelf: "flex-end",
-  },
+
 });
