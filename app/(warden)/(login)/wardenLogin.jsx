@@ -98,6 +98,8 @@ const WardenLogin = () => {
               }}
               value={userName}
               key={"warden"}
+              aria-label="warden-userName"
+              accessibilityLabel="warden-userName"
             />
             {userNameError != null ? (
               <Text style={{ color: "red" }}>{userNameError}</Text>
@@ -117,6 +119,8 @@ const WardenLogin = () => {
                 }}
                 value={password}
                 inputMode="text"
+                aria-label="warden-password"
+              accessibilityLabel="warden-password"
               />
               {passwordError != null ? (
                 <Text style={{ color: "red" }}>{passwordError}</Text>

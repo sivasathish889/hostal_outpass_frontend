@@ -9,14 +9,14 @@ import {
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import annaUniversity from "@/assets/annaUniversity.jpeg";
-import { hp, wp } from "@/helpers/dimensions"
+import { hp, } from "@/helpers/dimensions"
 import { useNavigation } from "expo-router";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import urls from "@/constants/urls";
 import { useToast } from "react-native-toast-notifications";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
-import themes from "../../../constants/themes";
+import themes from "@/constants/themes";
 import Spinner from "react-native-loading-spinner-overlay";
 
 
@@ -100,6 +100,8 @@ const studentLogin = () => {
               keyboardType="number-pad"
               value={registerNumber}
               inputMode="numeric"
+              accessibilityLabel="registerNumber"
+              aria-label="registerNumber"
             />
             {registerNumberError != null ? (
               <Text style={{ color: "red" }}>{registerNumberError}</Text>
@@ -119,6 +121,8 @@ const studentLogin = () => {
                 }}
                 value={password}
                 inputMode="text"
+                accessibilityLabel="password"
+                aria-label="password"
               />
               {passwordError != null ? (
                 <Text style={{ color: "red" }}>{passwordError}</Text>

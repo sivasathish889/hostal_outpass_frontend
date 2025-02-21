@@ -138,6 +138,8 @@ const StudentRegister = () => {
               }}
               value={name}
               inputMode="text"
+              accessibilityLabel="name"
+              aria-label="name"
             />
             {nameError != null ? (
               <Text style={styles.errorText}>{nameError}</Text>
@@ -159,6 +161,8 @@ const StudentRegister = () => {
               }}
               value={registerNumber}
               inputMode="numeric"
+              accessibilityLabel="registerNumber"
+              aria-label="registerNumber"
             />
             {registerNumberError != null ? (
               <Text style={styles.errorText}>{registerNumberError}</Text>
@@ -180,6 +184,8 @@ const StudentRegister = () => {
                 }}
                 value={department}
                 inputMode="text"
+                accessibilityLabel="department"
+                aria-label="department"
               />
               {departmentError != null ? (
                 <Text style={styles.errorText}>{departmentError}</Text>
@@ -199,6 +205,7 @@ const StudentRegister = () => {
                   { label: "IV ", value: "4" },
                 ]}
                 placeholder="Select Year"
+                mode="modal"
                 maxHeight={100}
                 labelField="label"
                 valueField="value"
@@ -216,6 +223,8 @@ const StudentRegister = () => {
                   fontSize: hp(1.6)
                 }}
                 itemContainerStyle={{ borderRadius: 10 }}
+                accessibilityLabel="year"
+                aria-label="year"
               />
               {yearError != null ? (
                 <Text style={styles.errorText}>{yearError}</Text>
@@ -235,6 +244,8 @@ const StudentRegister = () => {
               onChangeText={(text) => { setPhoneNumber(text); setPhoneNumberError(null) }}
               value={phoneNumber}
               inputMode="numeric"
+              accessibilityLabel="phoneNumber"
+              aria-label="phoneNumber"
             />
             {phoneNumberError != null ? (
               <Text style={styles.errorText}>{phoneNumberError}</Text>
@@ -253,6 +264,8 @@ const StudentRegister = () => {
               onChangeText={(text) => { setParentNumber(text); setParentNumberError(null) }}
               value={parentNumber}
               inputMode="numeric"
+              accessibilityLabel="parentNumber"
+              aria-label="parentNumber"
             />
             {parentNumberError != null ? (
               <Text style={styles.errorText}>{parentNumberError}</Text>
@@ -270,6 +283,8 @@ const StudentRegister = () => {
               value={eMail}
               keyboardType="email-address"
               inputMode="email"
+              accessibilityLabel="email"
+              aria-label="email"
             />
             {eMailError != null ? (
               <Text style={styles.errorText}>{eMailError}</Text>
@@ -287,6 +302,8 @@ const StudentRegister = () => {
               onChangeText={(text) => { setDistrict(text); setDistrictError(null) }}
               value={district}
               inputMode="text"
+              accessibilityLabel="district"
+              aria-label="district"
             />
             {districtError != null ? (
               <Text style={styles.errorText}>{districtError}</Text>
@@ -305,6 +322,8 @@ const StudentRegister = () => {
                 secureTextEntry
                 value={password}
                 inputMode="text"
+                accessibilityLabel="password"
+                aria-label="password"
               />
               {passwordError != null ? (
                 <Text style={styles.errorText}>{passwordError}</Text>
@@ -323,6 +342,8 @@ const StudentRegister = () => {
                 value={confirmPassword}
                 secureTextEntry
                 inputMode="text"
+                aria-label="confirm-password"
+                accessibilityLabel="confirm-password"
               />
               {confirmPasswordError != null ? (
                 <Text style={styles.errorText}>{confirmPasswordError}</Text>

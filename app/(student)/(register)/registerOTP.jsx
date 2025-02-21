@@ -13,7 +13,7 @@ import url from "@/constants/urls";
 import { useToast } from "react-native-toast-notifications";
 import axios from "axios";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import themes from "../../../constants/themes";
+import themes from "@/constants/themes";
 import { hp } from "@/helpers/dimensions"
 import Spinner from "react-native-loading-spinner-overlay";
 

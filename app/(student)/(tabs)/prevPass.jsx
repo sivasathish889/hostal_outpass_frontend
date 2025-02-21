@@ -2,11 +2,11 @@ import { FlatList, StyleSheet, Text, View, RefreshControl } from "react-native";
 import React, { useEffect, useState } from "react";
 import env from "@/constants/urls";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { ScrollView } from "react-native-virtualized-view";
 import axios from "axios";
 import Spinner from "react-native-loading-spinner-overlay";
 import themes from "@/constants/themes";
 import { hp } from "@/helpers/dimensions";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 
 const PrevPass = () => {
@@ -38,15 +38,8 @@ const PrevPass = () => {
   };
 
   return (
-    <ScrollView
-      refreshControl={
-        <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => setRefreshing(true)}
-          style={{ flex: 1 }}
-        />
-      }
-      style={{ flex: 1 }}
+    <View
+
     >
       <Spinner
         visible={spinnerVisible}
@@ -68,13 +61,12 @@ const PrevPass = () => {
               style={[
                 styles.container,
                 {
-                  backgroundColor: `${
-                    item.status == 2
-                      ? themes.acceptColor
-                      : item.status == 3
+                  backgroundColor: `${item.status == 2
+                    ? themes.acceptColor
+                    : item.status == 3
                       ? themes.rejectColor
                       : ""
-                  }`,
+                    }`,
                 },
               ]}
             >
@@ -100,8 +92,8 @@ const PrevPass = () => {
                   ? "Today"
                   : new Date(item.createdAt).getDate() + 1 ==
                     String(now.getDate())
-                  ? "YesterDay"
-                  : new Date(item.createdAt)
+                    ? "YesterDay"
+                    : new Date(item.createdAt)
                       .toLocaleString(undefined, "Asia/Kolkata")
                       .split(",")[0]}
               </Text>
@@ -109,8 +101,15 @@ const PrevPass = () => {
           );
         }}
         keyExtractor={(item) => item._id}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={() => setRefreshing(true)}
+            style={{ flex: 1 }}
+          />
+        }
       />
-    </ScrollView>
+    </View>
   );
 };
 
