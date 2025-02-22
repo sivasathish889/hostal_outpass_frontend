@@ -4,6 +4,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 let logo = require("@/assets/images/icon.png");
 import themes from "@/constants/themes"
 import { useNavigation } from "expo-router";
+import { hp } from "@/helpers/dimensions";
 const Welcome = () => {
   const navigate = useNavigation()
   return (
@@ -59,4 +60,8 @@ const styles = StyleSheet.create({
     padding: 10,
     paddingHorizontal: 50,
   },
+  Image :{
+    width : hp(20),
+    height : hp(20)
+  }
 });

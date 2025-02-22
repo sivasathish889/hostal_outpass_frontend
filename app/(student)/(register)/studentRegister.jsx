@@ -395,17 +395,18 @@ const styles = StyleSheet.create({
     backgroundColor: "rgb(171,171,171)",
     borderRadius: 20,
     width: "85%",
+    paddingHorizontal: "10"
   },
   mainHead: {
     textAlign: "center",
-    fontSize: hp(4),
+    fontSize: hp(3),
     color: themes.mainColor,
     fontWeight: "700",
   },
   subHead: {
     textAlign: "center",
-    fontSize: hp(2),
-    marginBottom: "5%",
+    fontSize: hp(1.5),
+    marginBottom: "3%",
     textDecorationLine: "underline",
   },
   inputRows: {
@@ -413,7 +414,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   inputGroups: {
-    marginBottom: 15,
+    marginBottom: 10,
     paddingHorizontal: 10,
   },
   inputGrid: {

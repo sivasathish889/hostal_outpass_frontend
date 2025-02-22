@@ -13,7 +13,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#0B7583"
       },
       "package": "com.shiva889.nativeApp"
     },
@@ -23,14 +23,6 @@
     },
     "plugins": [
       "expo-router",
-      [
-        "expo-splash-screen",
-        {
-          "imageWidth": 200,
-          "resizeMode": "contain",
-          "backgroundColor": "#ffffff"
-        }
-      ],
       [
         "expo-build-properties",
         {
@@ -50,6 +42,11 @@
       "eas": {
         "projectId": "da9686ec-a621-4810-8dfc-97792ef970e5"
       }
-    }
+    },
+    "splash": {
+            "image": "./assets/splashscreen_logo.png",
+            "resizeMode": "contain",
+            "backgroundColor": "#ffffff"
+        }
   }
 }

@@ -11,7 +11,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import annaUniversity from "@/assets/annaUniversity.png";
 import { hp, } from "@/helpers/dimensions"
 import { useNavigation } from "expo-router";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import urls from "@/constants/urls";
 import { useToast } from "react-native-toast-notifications";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -82,6 +82,7 @@ const studentLogin = () => {
           visible={spinnerVisible}
           textContent={"Loading..."}
           textStyle={{ color: "#FFF" }}
+          cancelable={true}
         />
         <View style={styles.form}>
           <Text style={styles.heading}>Student</Text>

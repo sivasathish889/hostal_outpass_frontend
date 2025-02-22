@@ -11,10 +11,10 @@ import annaUniversity from "@/assets/annaUniversity.png";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useToast } from "react-native-toast-notifications";
 import url from "@/constants/urls";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import axios from "axios";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { hp, wp } from "@/helpers/dimensions"
+import { hp } from "@/helpers/dimensions"
 import themes from "@/constants/themes";
 import Spinner from "react-native-loading-spinner-overlay";
 
