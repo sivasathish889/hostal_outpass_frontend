@@ -57,8 +57,10 @@ const studentLogin = () => {
             offset: 30,
             animationType: "slide-in",
           });
-          AsyncStorage.setItem("user", data.data.user);
-          navigation.navigate("(student)/(tabs)");
+          AsyncStorage.setItem("student", data.data.user);
+          setRegisterNumber(null);
+          setPassword(null);
+          navigation.navigate("(tabs)");
           setSpinnerVisible(false)
 
         } else {
@@ -140,7 +142,7 @@ const studentLogin = () => {
             </View>
             <Text
               style={styles.forgetPass}
-              onPress={() => navigation.navigate("(student)/(login)/forgetPassword")}
+              onPress={() => navigation.navigate("(login)/forgetPassword")}
             >
               Forget/Change Password
             </Text>
@@ -148,7 +150,7 @@ const studentLogin = () => {
           <Text style={{ marginTop: 10, fontSize: hp(1.3) }}>
             If you dont have account..
             <Text
-              onPress={() => navigation.navigate("(student)/(register)/studentRegister")}
+              onPress={() => navigation.navigate("(register)/studentRegister")}
               style={{
                 color: themes.mainColor,
                 textDecorationLine: "underline",

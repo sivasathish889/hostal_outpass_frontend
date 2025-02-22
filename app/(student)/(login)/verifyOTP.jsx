@@ -43,7 +43,7 @@ const VerifyOTP = ({ route }) => {
             offset: 30,
             animationType: "slide-in",
           });
-          navigation.navigate("(student)/(login)/changePassword", {
+          navigation.navigate("(login)/changePassword", {
             registerNumber: registerNumber
           });
           setSpinnerVisible(false)

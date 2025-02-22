@@ -2,109 +2,52 @@ import { Stack } from "expo-router";
 import themes from "@/constants/themes"
 import { ToastProvider } from "react-native-toast-notifications";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { useEffect, useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
 export default function RootLayout() {
+  const [isAuth, setisAuth] = useState(null)
+
+  useEffect(() => {
+    const getToken = async () => {
+      await AsyncStorage.getAllKeys().then((data) => setisAuth(data))
+    }
+    getToken()
+  }, [])
+  console.log((isAuth.includes('student')));
+
   return (
     <ToastProvider>
       <SafeAreaProvider>
-
         <Stack>
-          {/* <Stack.Screen
-        name="index"
-        options={{
-          headerShown: false,
-          title: "Initial",
-          headerStyle: { backgroundColor: themes.lightTheme.mainColor },
-          headerTintColor: "white"
-        }} /> */}
+          {isAuth.includes('student') ?
+            <Stack.Screen
+              name="(student)"
+              options={{
+                title: "student",
+                headerStyle: { backgroundColor: themes.mainColor },
+                headerTintColor: "white",
+                headerShown: false
+              }}
+            /> : <Stack.Screen
+              name="welcome"
+              options={{
+                title: "welcome",
+                headerStyle: { backgroundColor: themes.mainColor },
+                headerTintColor: "white",
+                headerShown: false
+              }}
+            />
+          }
 
           <Stack.Screen
-            name="welcome"
+            name="(warden)"
             options={{
               headerShown: false,
-              title: "Initial",
-              headerTintColor: "white"
-            }}
-          />
-          <Stack.Screen
-            name="(student)/(register)/studentRegister"
-            options={{
-              title: "Register",
+              title: "warden ",
               headerStyle: { backgroundColor: themes.mainColor },
-              headerTintColor: "white",
-            }}
-          />
-          <Stack.Screen
-            name="(student)/(register)/registerOTP"
-            options={{
-              title: "Verify OTP",
-              headerStyle: { backgroundColor: themes.mainColor },
-              headerTintColor: "white",
-            }}
-          />
-          <Stack.Screen
-            name="(student)/(login)/studentLogin"
-            options={{
-              title: "Login",
-              headerStyle: { backgroundColor: themes.mainColor },
-              headerTintColor: "white",
-            }}
-          />
-
-          <Stack.Screen
-            name="(student)/(login)/forgetPassword"
-            options={{
-              title: "Forget Password",
-              headerStyle: { backgroundColor: themes.mainColor },
-              headerTintColor: "white",
-            }}
-          />
-
-          <Stack.Screen
-            name="(student)/(login)/verifyOTP"
-            options={{
-              title: "Verify otp",
-              headerStyle: { backgroundColor: themes.mainColor },
-              headerTintColor: "white",
-            }}
-          />
-
-          <Stack.Screen
-            name="(student)/(login)/changePassword"
-            options={{
-              title: "Change Password",
-              headerStyle: { backgroundColor: themes.mainColor },
-              headerTintColor: "white",
-            }}
-          />
-
-          <Stack.Screen
-            name="(student)/(tabs)"
-            options={{
-              headerShown: false,
-              title: "studentHome",
-              headerStyle: { backgroundColor: themes.mainColor },
-
-            }}
-          />
-
-          <Stack.Screen
-            name="(warden)/(login)/wardenLogin"
-            options={{
-              title: "Warden Login",
-              headerStyle: { backgroundColor: themes.mainColor },
-              headerTintColor: "white",
-            }}
-          />
-
-          <Stack.Screen
-            name="(warden)/(tabs)"
-            options={{
-              headerShown: false,
-              title: "warden home",
-              headerStyle: { backgroundColor: themes.mainColor },
-
+              headerShown: false
             }}
           />
 

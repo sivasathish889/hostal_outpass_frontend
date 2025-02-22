@@ -64,7 +64,7 @@ const ChangePassword = () => {
             offset: 30,
             animationType: "slide-in",
           });
-          router.dismissTo("(student)/(login)/studentLogin", {
+          router.dismissTo("(login)/studentLogin", {
             otp: data.data.Token,
             registerNumber: registerNumber,
           });

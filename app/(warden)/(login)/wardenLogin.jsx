@@ -59,7 +59,7 @@ const WardenLogin = () => {
             animationType: "slide-in",
           });
           AsyncStorage.setItem("warden", data.data.user);
-          navigation.navigate("(warden)/(tabs)");
+          navigation.navigate("(tabs)");
           setSpinnerVisible(false)
         } else {
           toast.show(data.data.message, {

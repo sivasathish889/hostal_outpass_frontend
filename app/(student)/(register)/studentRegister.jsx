@@ -95,7 +95,7 @@ const StudentRegister = () => {
             offset: 30,
             animationType: "slide-in",
           });
-          navigation.navigate("(student)/(register)/registerOTP", {
+          navigation.navigate("(register)/registerOTP", {
             token: data.data.Token,
           });
           setSpinnerVisible(false)

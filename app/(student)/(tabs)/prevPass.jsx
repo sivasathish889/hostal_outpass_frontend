@@ -21,7 +21,7 @@ const PrevPass = () => {
 
   const fetchData = async () => {
     try {
-      await AsyncStorage.getItem("user").then(async (userId) => {
+      await AsyncStorage.getItem("student").then(async (userId) => {
         await axios
           .get(`${env.CLIENT_URL}${env.studentAllPasses}/${userId}`)
           .then((data) => {

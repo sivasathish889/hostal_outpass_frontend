@@ -22,7 +22,7 @@ const Settings = () => {
   ]);
 
   const fetchDate = async () => {
-    let id = await AsyncStorage.getItem("user");
+    let id = await AsyncStorage.getItem("student");
     if (id != null) {
       await axios
         .get(`${urls.CLIENT_URL}${urls.studentData}${id}`)
@@ -31,7 +31,7 @@ const Settings = () => {
           setSpinnerVisible(false)
         });
     } else {
-      router.dismissTo("(student)/(login)/studentLogin");
+      router.dismissTo("(login)/studentLogin");
     }
   };
 
@@ -42,8 +42,8 @@ const Settings = () => {
 
   const handleLogout = async () => {
     try {
-      await AsyncStorage.removeItem("user").then(() =>
-        router.dismissTo("(student)/(login)/studentLogin")
+      await AsyncStorage.removeItem("student").then(() =>
+        router.dismissTo("(login)/studentLogin")
       );
     } catch (error) {
       console.log(error);

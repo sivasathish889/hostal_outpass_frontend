@@ -44,7 +44,7 @@ const registerOTP = () => {
                             offset: 30,
                             animationType: "slide-in",
                         });
-                        router.dismissTo("(student)/(login)/studentLogin")
+                        router.dismissTo("(login)/studentLogin")
                         setSpinnerVisible(false)
 
                     }

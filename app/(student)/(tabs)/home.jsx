@@ -74,7 +74,7 @@ const HomeScreen = () => {
   }, [dataRefresh, refreshing]);
 
   const fetchData = async () => {
-    await AsyncStorage.getItem("user").then((userId) => {
+    await AsyncStorage.getItem("student").then((userId) => {
       setUserId(userId);
       axios
         .get(`${env.CLIENT_URL}${env.studentPendingPasses}/${userId}`)
@@ -111,7 +111,7 @@ const HomeScreen = () => {
             offset: 30,
             animationType: "slide-in",
           });
-          navigation.navigate("(student)/(tabs)");
+          navigation.navigate("(tabs)");
           setEditModelVisible(false);
           setDataRefresh(!dataRefresh);
           setSpinnerVisible(false)
@@ -143,7 +143,7 @@ const HomeScreen = () => {
             offset: 30,
             animationType: "slide-in",
           });
-          navigation.navigate("(student)/(tabs)");
+          navigation.navigate("(tabs)");
           setEditModelVisible(false);
           setDataRefresh(!dataRefresh);
           setSpinnerVisible(false)

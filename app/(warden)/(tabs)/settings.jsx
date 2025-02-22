@@ -28,7 +28,7 @@ const SettingScreen = () => {
           setSpinnerVisible(false)
         });
     } else {
-      router.dismissTo("(warden)/(login)/wardenLogin");
+      router.dismissTo("(login)/wardenLogin");
     }
   };
 
@@ -41,7 +41,7 @@ const SettingScreen = () => {
   const handleLogout = async () => {
     try {
       await AsyncStorage.removeItem("warden").then(() =>
-        router.dismissTo("(warden)/(login)/wardenLogin")
+        router.dismissTo("(login)/wardenLogin")
       );
     } catch (error) {
       console.log(error);

@@ -18,10 +18,10 @@ const Welcome = () => {
         </Text>
       </View>
       <View style={{ rowGap: 30, marginTop: 60 }}>
-        <TouchableOpacity style={styles.buttonOutline} onPress={() => navigate.push('(student)/(login)/studentLogin')}>
+        <TouchableOpacity style={styles.buttonOutline} onPress={() => navigate.push('(student)')}>
           <Text style={styles.buttonsText}>Student</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.buttonOutline} onPress={() => navigate.navigate('(warden)/(login)/wardenLogin')}>
+        <TouchableOpacity style={styles.buttonOutline} onPress={() => navigate.navigate('(warden)')}>
           <Text style={styles.buttonsText}>Warden</Text>
         </TouchableOpacity>
       </View>

@@ -39,7 +39,7 @@ const forgetPassword = () => {
                         offset: 30,
                         animationType: "slide-in",
                     });
-                    navigation.navigate("(student)/(login)/verifyOTP", {
+                    navigation.navigate("(login)/verifyOTP", {
                         otp: data.data.Token,
                         registerNumber: registerNumber
                     });
