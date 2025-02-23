@@ -31,7 +31,7 @@ const Settings = () => {
           setSpinnerVisible(false)
         });
     } else {
-      router.dismissTo("(login)/studentLogin");
+      router.dismissTo("welcome");
     }
   };
 
@@ -43,7 +43,7 @@ const Settings = () => {
   const handleLogout = async () => {
     try {
       await AsyncStorage.removeItem("student").then(() =>
-        router.dismissTo("(login)/studentLogin")
+        router.dismissTo("welcome")
       );
     } catch (error) {
       console.log(error);

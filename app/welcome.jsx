@@ -3,10 +3,10 @@ import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 let logo = require("@/assets/images/icon.png");
 import themes from "@/constants/themes"
-import { useNavigation } from "expo-router";
+import {  useRouter } from "expo-router";
 import { hp } from "@/helpers/dimensions";
 const Welcome = () => {
-  const navigate = useNavigation()
+  const router = useRouter()
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar backgroundColor={themes.mainColor} />
@@ -18,10 +18,10 @@ const Welcome = () => {
         </Text>
       </View>
       <View style={{ rowGap: 30, marginTop: 60 }}>
-        <TouchableOpacity style={styles.buttonOutline} onPress={() => navigate.push('(student)')}>
+        <TouchableOpacity style={styles.buttonOutline} onPress={() => router.navigate('(student)/(login)/studentLogin')}>
           <Text style={styles.buttonsText}>Student</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.buttonOutline} onPress={() => navigate.navigate('(warden)')}>
+        <TouchableOpacity style={styles.buttonOutline} onPress={() => router.navigate('(warden)/(login)/wardenLogin')}>
           <Text style={styles.buttonsText}>Warden</Text>
         </TouchableOpacity>
       </View>
