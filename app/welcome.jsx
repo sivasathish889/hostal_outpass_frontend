@@ -3,7 +3,7 @@ import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 let logo = require("@/assets/images/icon.png");
 import themes from "@/constants/themes"
-import {  useRouter } from "expo-router";
+import { useRouter } from "expo-router";
 import { hp } from "@/helpers/dimensions";
 const Welcome = () => {
   const router = useRouter()
@@ -23,6 +23,9 @@ const Welcome = () => {
         </TouchableOpacity>
         <TouchableOpacity style={styles.buttonOutline} onPress={() => router.navigate('(warden)/(login)/wardenLogin')}>
           <Text style={styles.buttonsText}>Warden</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.buttonOutline} onPress={() => router.navigate('(security)/(login)/securityLogin')}>
+          <Text style={styles.buttonsText}>Security</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -60,8 +63,8 @@ const styles = StyleSheet.create({
     padding: 10,
     paddingHorizontal: 50,
   },
-  Image :{
-    width : hp(20),
-    height : hp(20)
+  Image: {
+    width: hp(20),
+    height: hp(20)
   }
 });

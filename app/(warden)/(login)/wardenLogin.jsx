@@ -15,7 +15,7 @@ import { useToast } from "react-native-toast-notifications";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import themes from "@/constants/themes";
-import { useNavigation } from "expo-router";
+import {  useNavigation, useRouter } from "expo-router";
 import { hp } from "@/helpers/dimensions";
 import Spinner from "react-native-loading-spinner-overlay";
 
@@ -38,7 +38,7 @@ const WardenLogin = () => {
 
   const handleSubmit = async () => {
     if (userName === null || userName.length == 0) {
-      return setUserNameError("Please Enter Register Number");
+      return setUserNameError("Please Enter Username");
     } else if (password === null || password.length == 0) {
       return setPasswordError("Please Enter Password");
     }
@@ -50,7 +50,7 @@ const WardenLogin = () => {
     await axios
       .post(`${url.CLIENT_URL}${url.wardenLogin}`, payload)
       .then((data) => {
-        if (data.data.success) {
+        if (data.data.success) {          
           toast.show(data.data.message, {
             type: "success",
             placement: "bottom",
@@ -58,8 +58,9 @@ const WardenLogin = () => {
             offset: 30,
             animationType: "slide-in",
           });
-          AsyncStorage.setItem("warden", data.data.user);
-          navigation.navigate("(tabs)");
+          navigation.navigate("verifyOtp", {
+            otp: data.data.Token, 
+          });
           setSpinnerVisible(false)
         } else {
           toast.show(data.data.message, {
@@ -120,7 +121,7 @@ const WardenLogin = () => {
                 value={password}
                 inputMode="text"
                 aria-label="warden-password"
-              accessibilityLabel="warden-password"
+                accessibilityLabel="warden-password"
               />
               {passwordError != null ? (
                 <Text style={{ color: "red" }}>{passwordError}</Text>
@@ -137,7 +138,7 @@ const WardenLogin = () => {
             </View>
             <Text
               style={styles.forgetPass}
-              onPress={() => navigation.navigate("/StudentLoginForget")}
+              onPress={() => navigation.navigate("forgetPassword")}
             >
               Forget/Change Password
             </Text>

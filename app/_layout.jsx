@@ -11,18 +11,18 @@ export default function RootLayout() {
       <SafeAreaProvider>
         <Stack>
           <Stack.Screen
-            name="(student)"
+            name="welcome"
             options={{
-              title: "student",
+              title: "welcome",
               headerStyle: { backgroundColor: themes.mainColor },
               headerTintColor: "white",
               headerShown: false
             }}
           />
           <Stack.Screen
-            name="welcome"
+            name="(student)"
             options={{
-              title: "welcome",
+              title: "student",
               headerStyle: { backgroundColor: themes.mainColor },
               headerTintColor: "white",
               headerShown: false
@@ -35,6 +35,16 @@ export default function RootLayout() {
             options={{
               headerShown: false,
               title: "warden ",
+              headerStyle: { backgroundColor: themes.mainColor },
+              headerShown: false
+            }}
+          />
+
+          <Stack.Screen
+            name="(security)"
+            options={{
+              headerShown: false,
+              title: "security ",
               headerStyle: { backgroundColor: themes.mainColor },
               headerShown: false
             }}

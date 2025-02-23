@@ -9,26 +9,27 @@ import {
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import annaUniversity from "@/assets/annaUniversity.png";
-import { hp, } from "@/helpers/dimensions"
-import { useNavigation, useRouter } from "expo-router";
-import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-import urls from "@/constants/urls";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import url from "@/constants/urls";
 import { useToast } from "react-native-toast-notifications";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import themes from "@/constants/themes";
+import { useNavigation } from "expo-router";
+import { hp } from "@/helpers/dimensions";
 import Spinner from "react-native-loading-spinner-overlay";
 
-
-const studentLogin = () => {
-  let navigation = useRouter();
+const securityLogin = () => {
+  let navigation = useNavigation();
   let toast = useToast();
-  const [spinnerVisible, setSpinnerVisible] = useState(false)
+
   const [showPassword, setShowPassword] = useState(false);
-  const [registerNumber, setRegisterNumber] = useState(null);
+  const [spinnerVisible, setSpinnerVisible] = useState(false);
+
+  const [userName, setUserName] = useState(null);
   const [password, setPassword] = useState(null);
 
-  const [registerNumberError, setRegisterNumberError] = useState(null);
+  const [userNameError, setUserNameError] = useState(null);
   const [passwordError, setPasswordError] = useState(null);
 
   const toggleShowPassword = () => {
@@ -36,18 +37,19 @@ const studentLogin = () => {
   };
 
   const handleSubmit = async () => {
-    if (registerNumber === null || registerNumber.length == 0) {
-      return setRegisterNumberError("Please Enter Register Number");
+    if (userName === null || userName.length == 0) {
+      return setUserNameError("Please Enter Username");
     } else if (password === null || password.length == 0) {
       return setPasswordError("Please Enter Password");
     }
     let payload = {
-      registerNumber,
+      userName,
       password,
     };
+
     setSpinnerVisible(true)
     await axios
-      .post(`${urls.CLIENT_URL}${urls.studentLogin}`, payload)
+      .post(`${url.CLIENT_URL}${url.securityLogin}`, payload)
       .then((data) => {
         if (data.data.success) {
           toast.show(data.data.message, {
@@ -57,12 +59,11 @@ const studentLogin = () => {
             offset: 30,
             animationType: "slide-in",
           });
-          AsyncStorage.setItem("student", data.data.user);
-          setRegisterNumber(null);
-          setPassword(null);
-          navigation.dismissTo("../(tabs)");
+          AsyncStorage.setItem("security", data.data.user);
+          navigation.navigate("verifyOtp", {
+            otp: data.data.Token,
+          });
           setSpinnerVisible(false)
-
         } else {
           toast.show(data.data.message, {
             type: "danger",
@@ -72,7 +73,6 @@ const studentLogin = () => {
             animationType: "slide-in",
           });
           setSpinnerVisible(false)
-
         }
       })
       .catch((error) => console.log(error));
@@ -87,27 +87,26 @@ const studentLogin = () => {
           cancelable={true}
         />
         <View style={styles.form}>
-          <Text style={styles.heading}>Student</Text>
+          <Text style={styles.heading}>Security</Text>
           <Text style={styles.subHead}>Login</Text>
 
           <View style={styles.inputgroup}>
-            <Text style={styles.lable}>Register Number :</Text>
+            <Text style={styles.lable}>User Name :</Text>
             <TextInput
-              placeholder="Enter Your Regsiter Number"
+              placeholder="Enter Your User Name"
               style={styles.input}
               placeholderTextColor={themes.placeholderTextColor}
               onChangeText={(text) => {
-                setRegisterNumber(text);
-                setRegisterNumberError(null);
+                setUserName(text);
+                setUserNameError(null);
               }}
-              keyboardType="number-pad"
-              value={registerNumber}
-              inputMode="numeric"
-              accessibilityLabel="registerNumber"
-              aria-label="registerNumber"
+              value={userName}
+              key={"warden"}
+              aria-label="warden-userName"
+              accessibilityLabel="warden-userName"
             />
-            {registerNumberError != null ? (
-              <Text style={{ color: "red" }}>{registerNumberError}</Text>
+            {userNameError != null ? (
+              <Text style={{ color: "red" }}>{userNameError}</Text>
             ) : (
               ""
             )}
@@ -124,8 +123,8 @@ const studentLogin = () => {
                 }}
                 value={password}
                 inputMode="text"
-                accessibilityLabel="password"
-                aria-label="password"
+                aria-label="warden-password"
+                accessibilityLabel="warden-password"
               />
               {passwordError != null ? (
                 <Text style={{ color: "red" }}>{passwordError}</Text>
@@ -142,24 +141,12 @@ const studentLogin = () => {
             </View>
             <Text
               style={styles.forgetPass}
-              onPress={() => navigation.navigate("(login)/forgetPassword")}
+              onPress={() => navigation.navigate("forgetPassword")}
             >
               Forget/Change Password
             </Text>
           </View>
-          <Text style={{ marginTop: 10, fontSize: hp(1.3) }}>
-            If you dont have account..
-            <Text
-              onPress={() => navigation.navigate("(register)/studentRegister")}
-              style={{
-                color: themes.mainColor,
-                textDecorationLine: "underline",
-                fontSize: hp(1.5),
-              }}
-            >
-              Please Register
-            </Text>
-          </Text>
+
           <View style={{ alignItems: "center" }}>
             <TouchableOpacity
               style={styles.buttonOutline}
@@ -174,7 +161,7 @@ const studentLogin = () => {
   )
 }
 
-export default studentLogin
+export default securityLogin
 
 const styles = StyleSheet.create({
   container: {
@@ -196,20 +183,20 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: hp(4),
     color: themes.mainColor,
-    marginTop: hp(2),
+    marginTop: 15,
     fontWeight: "700",
   },
   subHead: {
     textAlign: "center",
-    fontSize: hp(3),
+    fontSize: hp(2),
   },
   buttonOutline: {
     backgroundColor: themes.mainColor,
     borderRadius: 5,
-    padding: hp(1),
-    paddingHorizontal: hp(5),
+    padding: 10,
+    paddingHorizontal: 40,
     borderBlockColor: "black",
-    marginVertical: hp(2),
+    marginVertical: 20,
   },
   btn: {
     color: "white",
@@ -217,10 +204,10 @@ const styles = StyleSheet.create({
   },
   inputgroup: {
     marginTop: 25,
-    rowGap: 10,
   },
   lable: {
     fontWeight: "400",
+    marginBottom: "2%"
   },
   input: {
     backgroundColor: "#D9D9D9",
@@ -228,15 +215,16 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderWidth: 1,
     borderColor: "rgb(115,115,115)",
+    marginBottom: "3%"
   },
   forgetPass: {
     textAlign: "right",
-    marginVertical: hp(1),
+    marginVertical: 10,
     textDecorationLine: "underline",
   },
   icon: {
     position: "absolute",
-    bottom: "22%",
+    bottom: "27%",
     right: "4%",
   },
 });

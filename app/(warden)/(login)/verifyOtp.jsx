@@ -12,10 +12,11 @@ import annaUniversity from "@/assets/annaUniversity.png";
 import { useToast } from "react-native-toast-notifications";
 import env from "@/constants/urls";
 import axios from "axios";
-import { useLocalSearchParams, useNavigation, } from "expo-router";
+import { useLocalSearchParams, useRouter, } from "expo-router";
 import themes from "@/constants/themes";
 import { hp } from "@/helpers/dimensions";
 import Spinner from "react-native-loading-spinner-overlay";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const VerifyOTP = () => {
   let [otp, setOtp] = useState(null);
@@ -23,17 +24,17 @@ const VerifyOTP = () => {
 
   let toast = useToast()
   let backendOtp = useLocalSearchParams().otp;
-  let registerNumber = useLocalSearchParams().registerNumber;
 
-  let navigation = useNavigation();
+  let router = useRouter();
 
   let payload = {
     backendOtp,
     otp
   }
+
   const handleSubmit = async () => {
     setSpinnerVisible(true)
-    await axios.post(`${env.CLIENT_URL}${env.studentLoginVerify}`, payload)
+    await axios.post(`${env.CLIENT_URL}${env.wardenLoginVerify}`, payload)
       .then((data) => {
         if (data.data.success) {
           toast.show(data.data.message, {
@@ -43,9 +44,9 @@ const VerifyOTP = () => {
             offset: 30,
             animationType: "slide-in",
           });
-          navigation.navigate("(login)/changePassword", {
-            registerNumber: registerNumber
-          });
+          
+          AsyncStorage.setItem("warden", data.data.user);
+          router.dismissTo("../(tabs)");
           setSpinnerVisible(false)
 
         } else {
@@ -70,10 +71,11 @@ const VerifyOTP = () => {
           visible={spinnerVisible}
           textContent={"Loading..."}
           textStyle={{ color: "#FFF" }}
+          cancelable={true}
         />
         <View style={styles.form}>
-          <Text style={styles.heading}>Student</Text>
-          <Text style={styles.subHead}>Forget Password</Text>
+          <Text style={styles.heading}>Warden</Text>
+          <Text style={styles.subHead}>Verify OTP</Text>
 
           <View style={styles.inputgroup}>
             <Text style={styles.lable}>OTP</Text>

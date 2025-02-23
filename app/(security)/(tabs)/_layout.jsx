@@ -24,6 +24,7 @@ const TabRoute = () => {
           <IonIcons name="notifications-outline" size={27} color="white"/>
         </TouchableOpacity>
       </View>
+
       <Tabs
         screenOptions={{
           tabBarStyle: {
@@ -101,7 +102,7 @@ const TabRoute = () => {
           }}
           listeners={{ tabPress: () => setAction("Home") }}
         />
-        <Tabs.Screen
+        {/* <Tabs.Screen
           name="acceptPasses"
           options={{
             headerShown: false,
@@ -165,9 +166,9 @@ const TabRoute = () => {
             },
           }}
           listeners={{ tabPress: () => setAction("accept") }}
-        />
+        /> */}
 
-        <Tabs.Screen
+        {/* <Tabs.Screen
           name="rejectPasses"
           options={{
             headerShown: false,
@@ -231,7 +232,7 @@ const TabRoute = () => {
             },
           }}
           listeners={{ tabPress: () => setAction("reject") }}
-        />
+        /> */}
 
         <Tabs.Screen
           name="settings"
