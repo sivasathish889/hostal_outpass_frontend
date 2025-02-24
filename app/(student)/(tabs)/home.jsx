@@ -75,12 +75,12 @@ const HomeScreen = () => {
 
   const fetchData = async () => {
     await AsyncStorage.getItem("student").then((userId) => {
-      setUserId(userId);
+        setUserId(userId);
       axios
         .get(`${env.CLIENT_URL}${env.studentPendingPasses}/${userId}`)
         .then((data) => {
           setFetchPassData(data.data);
-          setRefreshing(false);
+      setRefreshing(false);
           setSpinnerVisible(false)
 
         });
@@ -105,60 +105,60 @@ const HomeScreen = () => {
       .then((data) => {
         if (data.data.success) {
           toast.show(data.data.message, {
-            type: "success",
-            placement: "bottom",
-            duration: 4000,
-            offset: 30,
-            animationType: "slide-in",
-          });
-          navigation.navigate("(tabs)");
-          setEditModelVisible(false);
+          type: "success",
+          placement: "bottom",
+          duration: 4000,
+          offset: 30,
+          animationType: "slide-in",
+        });
+        navigation.navigate("(tabs)");
+        setEditModelVisible(false);
           setDataRefresh(!dataRefresh);
           setSpinnerVisible(false)
 
-        } else {
+      } else {
           toast.show(data.data.message, {
-            type: "danger",
-            placement: "bottom",
-            duration: 4000,
-            offset: 30,
-            animationType: "slide-in",
-          });
-          setSpinnerVisible(false)
+          type: "danger",
+          placement: "bottom",
+          duration: 4000,
+          offset: 30,
+          animationType: "slide-in",
+        });
+      setSpinnerVisible(false)
 
-        }
+    }
       })
       .catch((error) => console.log(error));
   };
   const handlePassDelete = async (deletePassId) => {
     setSpinnerVisible(true)
-    await axios
-      .delete(`${env.CLIENT_URL}${env.studentDeletePass}/${deletePassId}`)
-      .then((data) => {
-        if (data.data.success) {
-          toast.show(data.data.message, {
-            type: "success",
-            placement: "bottom",
-            duration: 4000,
-            offset: 30,
-            animationType: "slide-in",
-          });
-          navigation.navigate("(tabs)");
-          setEditModelVisible(false);
-          setDataRefresh(!dataRefresh);
-          setSpinnerVisible(false)
-
-        } else {
-          toast.show(data.data.message, {
-            type: "danger",
-            placement: "bottom",
-            duration: 4000,
-            offset: 30,
-            animationType: "slide-in",
-          });
-        }
-      })
-      .catch((error) => console.log(error));
+    try {
+      const { data } = await axios.delete(`${env.CLIENT_URL}${env.studentDeletePass}/${deletePassId}`)
+      if (data.success) {
+        toast.show(data.message, {
+          type: "success",
+          placement: "bottom",
+          duration: 4000,
+          offset: 30,
+          animationType: "slide-in",
+        });
+        navigation.navigate("(tabs)");
+        setEditModelVisible(false);
+      } else {
+        toast.show(data.message, {
+          type: "danger",
+          placement: "bottom",
+          duration: 4000,
+          offset: 30,
+          animationType: "slide-in",
+        });
+      }
+    } catch (error) {
+      console.log(error.message);
+    } finally {
+      setDataRefresh(!dataRefresh);
+      setSpinnerVisible(false)
+    }
   };
 
   return (
@@ -250,21 +250,21 @@ const HomeScreen = () => {
         dataRefresh={dataRefresh}
       />
       {/* Edit Pass Model */}
-        <EditPassModals
-        editModelVisible = {editModelVisible}
+      <EditPassModals
+        editModelVisible={editModelVisible}
         setEditModelVisible={setEditModelVisible}
         roomNo={roomNo}
-        setRoomNo = {setRoomNo}
+        setRoomNo={setRoomNo}
         destination={destination}
-        setDestination = {setDestination}
+        setDestination={setDestination}
         purpose={purpose}
         setPurpose={setPurpose}
         outDateTime={outDateTime}
         handleOutDateTimePicker={handleOutDateTimePicker}
         inDateTime={inDateTime}
         handleInDateTimePicker={handleInDateTimePicker}
-        handelPassUpdate ={handelPassUpdate}
-        />
+        handelPassUpdate={handelPassUpdate}
+      />
     </View>
   );
 };

@@ -8,7 +8,6 @@ import {
   Alert,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-
 import env from "@/constants/urls";
 import { useToast } from "react-native-toast-notifications";
 import axios from "axios";

@@ -54,30 +54,33 @@ const ChangePassword = () => {
       return setConfirmNewPasswordError("Please Enter Confirm Password");
     }
     setSpinnerVisible(true)
-    await axios.post(`${url.CLIENT_URL}${url.wardenChangePassword}`, payload)
-      .then((data) => {
-        if (data.data.success) {
-          toast.show(data.data.message, {
-            type: "success",
-            placement: "bottom",
-            duration: 4000,
-            offset: 30,
-            animationType: "slide-in",
-          });
-          router.dismissTo("wardenLogin");
-          setSpinnerVisible(false)
-        } else {
-          toast.show(data.data.message, {
-            type: "danger",
-            placement: "bottom",
-            duration: 4000,
-            offset: 30,
-            animationType: "slide-in",
-          });
-          setSpinnerVisible(false)
-        }
-      })
-      .catch((error) => console.log(error));
+    try {
+      const { data } = await axios.post(`${url.CLIENT_URL}${url.wardenChangePassword}`, payload)
+      if (data.success) {
+        toast.show(data.message, {
+          type: "success",
+          placement: "bottom",
+          duration: 4000,
+          offset: 30,
+          animationType: "slide-in",
+        });
+        setNewPassword(null);
+        setNewPassword(null);
+        router.dismissTo("wardenLogin");
+      } else {
+        toast.show(data.message, {
+          type: "danger",
+          placement: "bottom",
+          duration: 4000,
+          offset: 30,
+          animationType: "slide-in",
+        });
+      }
+    } catch (error) {
+      console.log(error.message);
+    } finally {
+      setSpinnerVisible(false)
+    }
   };
   return (
     <ImageBackground source={annaUniversity} style={styles.backgroundImage}>

@@ -15,7 +15,7 @@ import { useToast } from "react-native-toast-notifications";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import themes from "@/constants/themes";
-import {  useNavigation, useRouter } from "expo-router";
+import { useNavigation, useRouter } from "expo-router";
 import { hp } from "@/helpers/dimensions";
 import Spinner from "react-native-loading-spinner-overlay";
 
@@ -47,33 +47,35 @@ const WardenLogin = () => {
       password,
     };
     setSpinnerVisible(true)
-    await axios
-      .post(`${url.CLIENT_URL}${url.wardenLogin}`, payload)
-      .then((data) => {
-        if (data.data.success) {          
-          toast.show(data.data.message, {
-            type: "success",
-            placement: "bottom",
-            duration: 4000,
-            offset: 30,
-            animationType: "slide-in",
-          });
-          navigation.navigate("verifyOtp", {
-            otp: data.data.Token, 
-          });
-          setSpinnerVisible(false)
-        } else {
-          toast.show(data.data.message, {
-            type: "danger",
-            placement: "bottom",
-            duration: 4000,
-            offset: 30,
-            animationType: "slide-in",
-          });
-          setSpinnerVisible(false)
-        }
-      })
-      .catch((error) => console.log(error));
+    try {
+      const { data } = await axios.post(`${url.CLIENT_URL}${url.wardenLogin}`, payload)
+      if (data.success) {
+        toast.show(data.message, {
+          type: "success",
+          placement: "bottom",
+          duration: 4000,
+          offset: 30,
+          animationType: "slide-in",
+        });
+        setUserName(null);
+        setPassword(null);
+        navigation.navigate("verifyOtp", {
+          otp: data.Token,
+        });
+      } else {
+        toast.show(data.message, {
+          type: "danger",
+          placement: "bottom",
+          duration: 4000,
+          offset: 30,
+          animationType: "slide-in",
+        });
+      }
+    } catch (error) {
+      console.log(error.message);
+    } finally {
+      setSpinnerVisible(false)
+    }
   };
   return (
     <ImageBackground source={annaUniversity} style={styles.backgroundImage}>

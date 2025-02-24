@@ -66,6 +66,7 @@ const NewPassModel = (props) => {
       outDateTime,
       userId,
     };
+    
     await axios
       .post(`${urls.CLIENT_URL}${urls.studentNewRequest}`, payload)
       .then((data) => {
@@ -77,7 +78,7 @@ const NewPassModel = (props) => {
             offset: 30,
             animationType: "slide-in",
           });
-          navigation.navigate("(student)/(tabs)");
+          navigation.navigate("(tabs)");
           setDestination(null);
           setinDateTime(null);
           setoutDateTime(null);

@@ -23,7 +23,7 @@ const SettingScreen = () => {
     if (id != null) {
       await axios
         .get(`${urls.CLIENT_URL}${urls.securityData}/${id}`)
-        .then((data) => {       
+        .then((data) => {
           setFetchingData(data?.data?.data);
           setSpinnerVisible(false)
         });

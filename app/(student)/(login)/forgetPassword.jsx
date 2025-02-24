@@ -23,40 +23,38 @@ const forgetPassword = () => {
     const [registerNumber, setRegisterNumber] = useState(null)
     const [spinnerVisible, setSpinnerVisible] = useState(false)
 
-    let payload = {
-        registerNumber
-    }
-
     const handleSubmit = async () => {
         setSpinnerVisible(true)
-        await axios.post(`${url.CLIENT_URL}${url.studentLoginForgetPassword}`, payload)
-            .then((data) => {
-                if (data.data.success) {
-                    toast.show(data.data.message, {
-                        type: "success",
-                        placement: "bottom",
-                        duration: 4000,
-                        offset: 30,
-                        animationType: "slide-in",
-                    });
-                    navigation.navigate("(login)/verifyOTP", {
-                        otp: data.data.Token,
-                        registerNumber: registerNumber
-                    });
-                    setSpinnerVisible(false)
-                } else {
-                    toast.show(data.data.message, {
-                        type: "danger",
-                        placement: "bottom",
-                        duration: 4000,
-                        offset: 30,
-                        animationType: "slide-in",
-                    });
-          setSpinnerVisible(false)
+        try {
+            const { data } = await axios.post(`${url.CLIENT_URL}${url.studentLoginForgetPassword}`, { registerNumber })
+            if (data.success) {
+                toast.show(data.message, {
+                    type: "success",
+                    placement: "bottom",
+                    duration: 4000,
+                    offset: 30,
+                    animationType: "slide-in",
+                });
+                setRegisterNumber(null)
+                navigation.navigate("(login)/verifyOTP", {
+                    otp: data.Token,
+                    registerNumber: registerNumber
+                });
+            } else {
+                toast.show(data.message, {
+                    type: "danger",
+                    placement: "bottom",
+                    duration: 4000,
+                    offset: 30,
+                    animationType: "slide-in",
+                });
 
-                }
-            })
-            .catch((error) => console.log(error));
+            }
+        } catch (error) {
+            console.log(error.message);
+        } finally {
+            setSpinnerVisible(false)
+        }
     };
     return (
         <ImageBackground source={annaUniversity} style={styles.backgroundImage}>

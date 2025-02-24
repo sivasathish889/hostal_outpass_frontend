@@ -14,7 +14,7 @@ const EditPassModals = (props) => {
 
     const [isInDatePickerVisible, setInDatePickerVisible] = useState(false);
     const [isOutDatePickerVisible, setOutDatePickerVisible] = useState(false);
-    const { editModelVisible, setEditModelVisible, roomNo, setRoomNo, destination, setDestination, purpose, setPurpose, outDateTime, handleOutDateTimePicker, inDateTime, handleInDateTimePicker,handelPassUpdate } = props
+    const { editModelVisible, setEditModelVisible, roomNo, setRoomNo, destination, setDestination, purpose, setPurpose, outDateTime, handleOutDateTimePicker, inDateTime, handleInDateTimePicker, handelPassUpdate } = props
     return (
         <View style={styles.modelContainer}>
             <Modal
@@ -44,7 +44,7 @@ const EditPassModals = (props) => {
                                     setRoomNo(text);
                                 }}
                                 inputMode="text"
-                                
+
                             />
                         </View>
 

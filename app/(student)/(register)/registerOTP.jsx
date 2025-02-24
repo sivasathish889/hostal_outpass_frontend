@@ -31,38 +31,32 @@ const registerOTP = () => {
             otp,
             Token
         }
-
         try {
             setSpinnerVisible(true)
-            await axios.post(`${url.CLIENT_URL}${url.studentRegisterVerify}`, payload)
-                .then((data) => {
-                    if (data.data.success) {
-                        toast.show(data.data.message, {
-                            type: "success",
-                            placement: "bottom",
-                            duration: 4000,
-                            offset: 30,
-                            animationType: "slide-in",
-                        });
-                        router.dismissTo("(login)/studentLogin")
-                        setSpinnerVisible(false)
-
-                    }
-                    else {
-                        toast.show(data.data.message, {
-                            type: "danger",
-                            placement: "bottom",
-                            duration: 4000,
-                            offset: 30,
-                            animationType: "slide-in",
-                        });
-          setSpinnerVisible(false)
-
-                    }
-                })
-                .catch((err) => console.log(err))
+            const { data } = await axios.post(`${url.CLIENT_URL}${url.studentRegisterVerify}`, payload)
+            if (data.success) {
+                toast.show(data.message, {
+                    type: "success",
+                    placement: "bottom",
+                    duration: 4000,
+                    offset: 30,
+                    animationType: "slide-in",
+                });
+                router.dismissTo("(login)/studentLogin")
+            }
+            else {
+                toast.show(data.message, {
+                    type: "danger",
+                    placement: "bottom",
+                    duration: 4000,
+                    offset: 30,
+                    animationType: "slide-in",
+                });
+            }
         } catch (error) {
             console.log(error)
+        } finally {
+            setSpinnerVisible(false)
         }
     };
 

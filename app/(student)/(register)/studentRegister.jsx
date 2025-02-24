@@ -85,33 +85,44 @@ const StudentRegister = () => {
       confirmPassword,
     };
     setSpinnerVisible(true)
-    axios.post(`${url.CLIENT_URL}${url.studentRegister}`, payload)
-      .then((data) => {
-        if (data.data.success) {
-          toast.show(data.data.message, {
-            type: "success",
-            placement: "bottom",
-            duration: 4000,
-            offset: 30,
-            animationType: "slide-in",
-          });
-          navigation.navigate("(register)/registerOTP", {
-            token: data.data.Token,
-          });
-          setSpinnerVisible(false)
-        } else {
-          toast.show(data.data.message, {
-            type: "danger",
-            placement: "bottom",
-            duration: 4000,
-            offset: 30,
-            animationType: "slide-in",
-          });
-          setSpinnerVisible(false)
+    try {
+      const { data } = axios.post(`${url.CLIENT_URL}${url.studentRegister}`, payload)
+      if (data.success) {
+        toast.show(data.message, {
+          type: "success",
+          placement: "bottom",
+          duration: 4000,
+          offset: 30,
+          animationType: "slide-in",
+        });
+        setRegisterNumber(null);
+        setConfirmPassword(null);
+        setDepartment(null);
+        setDistrict(null);
+        setEMail(null);
+        setName(null);
+        setYear(null);
+        setPhoneNumber(null);
+        setParentNumber(null);
+        setPassword(null);
+        navigation.navigate("(register)/registerOTP", {
+          token: data.Token,
+        });
+      } else {
+        toast.show(data.message, {
+          type: "danger",
+          placement: "bottom",
+          duration: 4000,
+          offset: 30,
+          animationType: "slide-in",
+        });
 
-        }
-      })
-      .catch((err) => console.log(err.message));
+      }
+    } catch (error) {
+      console.log(error.message)
+    } finally {
+      setSpinnerVisible(false)
+    }
   };
 
   return (

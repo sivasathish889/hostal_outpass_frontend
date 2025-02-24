@@ -10,7 +10,7 @@ import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import annaUniversity from "@/assets/annaUniversity.png";
 import { hp, } from "@/helpers/dimensions"
-import { useNavigation, useRouter } from "expo-router";
+import { useRouter } from "expo-router";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import urls from "@/constants/urls";
 import { useToast } from "react-native-toast-notifications";
@@ -31,9 +31,7 @@ const studentLogin = () => {
   const [registerNumberError, setRegisterNumberError] = useState(null);
   const [passwordError, setPasswordError] = useState(null);
 
-  const toggleShowPassword = () => {
-    setShowPassword(!showPassword);
-  };
+  const toggleShowPassword = () => setShowPassword(!showPassword);
 
   const handleSubmit = async () => {
     if (registerNumber === null || registerNumber.length == 0) {
@@ -46,36 +44,35 @@ const studentLogin = () => {
       password,
     };
     setSpinnerVisible(true)
-    await axios
-      .post(`${urls.CLIENT_URL}${urls.studentLogin}`, payload)
-      .then((data) => {
-        if (data.data.success) {
-          toast.show(data.data.message, {
-            type: "success",
-            placement: "bottom",
-            duration: 4000,
-            offset: 30,
-            animationType: "slide-in",
-          });
-          AsyncStorage.setItem("student", data.data.user);
-          setRegisterNumber(null);
-          setPassword(null);
-          navigation.dismissTo("../(tabs)");
-          setSpinnerVisible(false)
+    try {
+      const { data } = await axios.post(`${urls.CLIENT_URL}${urls.studentLogin}`, payload)
+      if (data.success) {
+        toast.show(data.message, {
+          type: "success",
+          placement: "bottom",
+          duration: 4000,
+          offset: 30,
+          animationType: "slide-in",
+        });
+        AsyncStorage.setItem("student", data.user);
+        setRegisterNumber(null);
+        setPassword(null);
+        navigation.dismissTo("../(tabs)");
+      } else {
+        toast.show(data.message, {
+          type: "danger",
+          placement: "bottom",
+          duration: 4000,
+          offset: 30,
+          animationType: "slide-in",
+        });
 
-        } else {
-          toast.show(data.data.message, {
-            type: "danger",
-            placement: "bottom",
-            duration: 4000,
-            offset: 30,
-            animationType: "slide-in",
-          });
-          setSpinnerVisible(false)
-
-        }
-      })
-      .catch((error) => console.log(error));
+      }
+    } catch (error) {
+      console.log(error.message)
+    } finally {
+      setSpinnerVisible(false)
+    }
   };
   return (
     <ImageBackground source={annaUniversity} style={styles.backgroundImage}>

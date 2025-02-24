@@ -34,34 +34,34 @@ const VerifyOTP = () => {
 
   const handleSubmit = async () => {
     setSpinnerVisible(true)
-    await axios.post(`${env.CLIENT_URL}${env.wardenLoginVerify}`, payload)
-      .then((data) => {
-        if (data.data.success) {
-          toast.show(data.data.message, {
-            type: "success",
-            placement: "bottom",
-            duration: 4000,
-            offset: 30,
-            animationType: "slide-in",
-          });
-          
-          AsyncStorage.setItem("warden", data.data.user);
-          router.dismissTo("../(tabs)");
-          setSpinnerVisible(false)
+    try {
+      const { data } = await axios.post(`${env.CLIENT_URL}${env.wardenLoginVerify}`, payload)
+      if (data.success) {
+        toast.show(data.message, {
+          type: "success",
+          placement: "bottom",
+          duration: 4000,
+          offset: 30,
+          animationType: "slide-in",
+        });
 
-        } else {
-          toast.show(data.data.message, {
-            type: "danger",
-            placement: "bottom",
-            duration: 4000,
-            offset: 30,
-            animationType: "slide-in",
-          });
-          setSpinnerVisible(false)
+        AsyncStorage.setItem("warden", data.user);
+        router.dismissTo("../(tabs)");
 
-        }
-      })
-      .catch((error) => console.log(error));
+      } else {
+        toast.show(data.message, {
+          type: "danger",
+          placement: "bottom",
+          duration: 4000,
+          offset: 30,
+          animationType: "slide-in",
+        });
+      }
+    } catch (error) {
+      console.log(error.message);
+    } finally {
+      setSpinnerVisible(false)
+    }
   };
 
   return (

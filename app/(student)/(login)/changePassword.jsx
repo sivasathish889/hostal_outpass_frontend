@@ -54,33 +54,34 @@ const ChangePassword = () => {
       return setConfirmNewPasswordError("Please Enter Confirm Password");
     }
     setSpinnerVisible(true)
-    await axios.post(`${url.CLIENT_URL}${url.studentChangePassword}`, payload)
-      .then((data) => {
-        if (data.data.success) {
-          toast.show(data.data.message, {
-            type: "success",
-            placement: "bottom",
-            duration: 4000,
-            offset: 30,
-            animationType: "slide-in",
-          });
-          router.dismissTo("(login)/studentLogin", {
-            otp: data.data.Token,
-            registerNumber: registerNumber,
-          });
-          setSpinnerVisible(false)
-        } else {
-          toast.show(data.data.message, {
-            type: "danger",
-            placement: "bottom",
-            duration: 4000,
-            offset: 30,
-            animationType: "slide-in",
-          });
-          setSpinnerVisible(false)
-        }
-      })
-      .catch((error) => console.log(error));
+    try {
+      const { data } = await axios.post(`${url.CLIENT_URL}${url.studentChangePassword}`, payload)
+      if (data.success) {
+        toast.show(data.message, {
+          type: "success",
+          placement: "bottom",
+          duration: 4000,
+          offset: 30,
+          animationType: "slide-in",
+        });
+        router.dismissTo("(login)/studentLogin", {
+          otp: data.Token,
+          registerNumber: registerNumber,
+        });
+      } else {
+        toast.show(data.message, {
+          type: "danger",
+          placement: "bottom",
+          duration: 4000,
+          offset: 30,
+          animationType: "slide-in",
+        });
+      }
+    } catch (error) {
+      console.log(error.message)
+    } finally {
+      setSpinnerVisible(false)
+    }
   };
   return (
     <ImageBackground source={annaUniversity} style={styles.backgroundImage}>

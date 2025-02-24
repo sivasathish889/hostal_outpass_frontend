@@ -22,17 +22,20 @@ const Settings = () => {
   ]);
 
   const fetchDate = async () => {
-    let id = await AsyncStorage.getItem("student");
-    if (id != null) {
-      await axios
-        .get(`${urls.CLIENT_URL}${urls.studentData}${id}`)
-        .then((data) => {
-          setFetchingData(data?.data?.data);
-          setSpinnerVisible(false)
-        });
-    } else {
-      router.dismissTo("welcome");
+    try {
+      let id = await AsyncStorage.getItem("student");
+      if (id != null) {
+        const { data } = await axios.get(`${urls.CLIENT_URL}${urls.studentData}${id}`)
+        setFetchingData(data?.data);
+      } else {
+        router.dismissTo("welcome");
+      }
+    } catch (error) {
+      console.log(error.message)
+    } finally {
+      setSpinnerVisible(false)
     }
+
   };
 
   useEffect(() => {

@@ -31,7 +31,6 @@ const AcceptPass = () => {
         })
     } catch (error) {
       console.log(error);
-      
     }
   };
   return (

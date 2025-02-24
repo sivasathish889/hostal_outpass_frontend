@@ -24,7 +24,6 @@ const VerifyOTP = () => {
   let toast = useToast()
   let backendOtp = useLocalSearchParams().otp;
   let registerNumber = useLocalSearchParams().registerNumber;
-
   let navigation = useNavigation();
 
   let payload = {
@@ -33,34 +32,35 @@ const VerifyOTP = () => {
   }
   const handleSubmit = async () => {
     setSpinnerVisible(true)
-    await axios.post(`${env.CLIENT_URL}${env.studentLoginVerify}`, payload)
-      .then((data) => {
-        if (data.data.success) {
-          toast.show(data.data.message, {
-            type: "success",
-            placement: "bottom",
-            duration: 4000,
-            offset: 30,
-            animationType: "slide-in",
-          });
-          navigation.navigate("(login)/changePassword", {
-            registerNumber: registerNumber
-          });
-          setSpinnerVisible(false)
+    try {
+      const { data } = await axios.post(`${env.CLIENT_URL}${env.studentLoginVerify}`, payload)
+      if (data.success) {
+        toast.show(data.message, {
+          type: "success",
+          placement: "bottom",
+          duration: 4000,
+          offset: 30,
+          animationType: "slide-in",
+        });
+        setOtp(null)
+        navigation.navigate("(login)/changePassword", {
+          registerNumber: registerNumber
+        });
+      } else {
+        toast.show(data.message, {
+          type: "danger",
+          placement: "bottom",
+          duration: 4000,
+          offset: 30,
+          animationType: "slide-in",
+        });
 
-        } else {
-          toast.show(data.data.message, {
-            type: "danger",
-            placement: "bottom",
-            duration: 4000,
-            offset: 30,
-            animationType: "slide-in",
-          });
-          setSpinnerVisible(false)
-
-        }
-      })
-      .catch((error) => console.log(error));
+      }
+    } catch (error) {
+      console.log(error.message)
+    } finally {
+      setSpinnerVisible(false)
+    }
   };
 
   return (

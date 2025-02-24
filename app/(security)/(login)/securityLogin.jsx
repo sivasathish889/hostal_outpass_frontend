@@ -12,7 +12,6 @@ import annaUniversity from "@/assets/annaUniversity.png";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import url from "@/constants/urls";
 import { useToast } from "react-native-toast-notifications";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import themes from "@/constants/themes";
 import { useNavigation } from "expo-router";
@@ -32,9 +31,8 @@ const securityLogin = () => {
   const [userNameError, setUserNameError] = useState(null);
   const [passwordError, setPasswordError] = useState(null);
 
-  const toggleShowPassword = () => {
-    setShowPassword(!showPassword);
-  };
+  const toggleShowPassword = () => setShowPassword(!showPassword);
+
 
   const handleSubmit = async () => {
     if (userName === null || userName.length == 0) {
@@ -42,40 +40,39 @@ const securityLogin = () => {
     } else if (password === null || password.length == 0) {
       return setPasswordError("Please Enter Password");
     }
-    let payload = {
-      userName,
-      password,
-    };
 
     setSpinnerVisible(true)
-    await axios
-      .post(`${url.CLIENT_URL}${url.securityLogin}`, payload)
-      .then((data) => {
-        if (data.data.success) {
-          toast.show(data.data.message, {
-            type: "success",
-            placement: "bottom",
-            duration: 4000,
-            offset: 30,
-            animationType: "slide-in",
-          });
-          AsyncStorage.setItem("security", data.data.user);
-          navigation.navigate("verifyOtp", {
-            otp: data.data.Token,
-          });
-          setSpinnerVisible(false)
-        } else {
-          toast.show(data.data.message, {
-            type: "danger",
-            placement: "bottom",
-            duration: 4000,
-            offset: 30,
-            animationType: "slide-in",
-          });
-          setSpinnerVisible(false)
-        }
-      })
-      .catch((error) => console.log(error));
+    try {
+      const { data } = await axios.post(`${url.CLIENT_URL}${url.securityLogin}`, { userName, password, })
+      if (data.success) {
+        toast.show(data.message, {
+          type: "success",
+          placement: "bottom",
+          duration: 4000,
+          offset: 30,
+          animationType: "slide-in",
+        });
+        setUserName(null);
+        setPassword(null)
+        navigation.navigate("verifyOtp", {
+          otp: data.Token,
+          user : data.user
+        });
+      } else {
+        toast.show(data.message, {
+          type: "danger",
+          placement: "bottom",
+          duration: 4000,
+          offset: 30,
+          animationType: "slide-in",
+        });
+      }
+    } catch (error) {
+      console.log(error.message)
+    } finally {
+      setSpinnerVisible(false)
+    }
+
   };
   return (
     <ImageBackground source={annaUniversity} style={styles.backgroundImage}>
