@@ -6,7 +6,7 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import annaUniversity from "@/assets/annaUniversity.png";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -31,6 +31,8 @@ const WardenLogin = () => {
 
   const [userNameError, setUserNameError] = useState(null);
   const [passwordError, setPasswordError] = useState(null);
+
+  const nextInputRef = useRef()
 
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
@@ -95,6 +97,7 @@ const WardenLogin = () => {
               placeholder="Enter Your User Name"
               style={styles.input}
               placeholderTextColor={themes.placeholderTextColor}
+              onSubmitEditing={()=>nextInputRef.current.focus()}
               onChangeText={(text) => {
                 setUserName(text);
                 setUserNameError(null);
@@ -116,6 +119,7 @@ const WardenLogin = () => {
                 style={styles.input}
                 placeholderTextColor={themes.placeholderTextColor}
                 secureTextEntry={!showPassword}
+                ref={nextInputRef}
                 onChangeText={(text) => {
                   setPassword(text);
                   setPasswordError(null);

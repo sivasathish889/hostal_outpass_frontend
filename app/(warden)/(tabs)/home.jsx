@@ -15,21 +15,24 @@ import AntDesign from "@expo/vector-icons/AntDesign";
 import { hp } from "@/helpers/dimensions";
 import Spinner from "react-native-loading-spinner-overlay";
 import themes from "@/constants/themes";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
 const Home = () => {
   let toast = useToast();
   let now = new Date();
-
+  const [userId, setUserId] = useState(null)
   const [fetchPassData, setFetchPassData] = useState({});
   const [dataRefresh, setDataRefresh] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [spinnerVisible, setSpinnerVisible] = useState(false);
 
   useEffect(() => {
+    AsyncStorage.getItem("warden").then((data)=>setUserId(data))
     setSpinnerVisible(true);
     fetchData();
   }, [dataRefresh, refreshing]);
+
 
   const fetchData = async () => {
     axios.get(`${env.CLIENT_URL}${env.wardenPendingPass}`).then((data) => {
@@ -56,7 +59,7 @@ const Home = () => {
   const actionHandle = (action, id) => {
     if (action === "Accept") {
       axios
-        .put(`${env.CLIENT_URL}${env.wardenPassAccept}/${id}`)
+        .put(`${env.CLIENT_URL}${env.wardenPassAccept}`, {id, userId})
         .then((data) => {
           if (data.data.success) {
             toast.show(data.data.message, {
@@ -80,7 +83,7 @@ const Home = () => {
         .catch((error) => console.log(error));
     } else if (action === "Reject") {
       axios
-        .put(`${env.CLIENT_URL}${env.wardenPassReject}/${id}`)
+        .put(`${env.CLIENT_URL}${env.wardenPassReject}`, {id, userId})
         .then((data) => {
           if (data.data.success) {
             toast.show(data.data.message, {
@@ -164,8 +167,8 @@ const Home = () => {
                     ? "Today"
                     : new Date(item.createdAt).getDate() + 1 ==
                       String(now.getDate())
-                    ? "YesterDay"
-                    : new Date(item.createdAt)
+                      ? "YesterDay"
+                      : new Date(item.createdAt)
                         .toLocaleString(undefined, "Asia/Kolkata")
                         .split(",")[0]}
                 </Text>

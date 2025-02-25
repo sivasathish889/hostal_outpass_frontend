@@ -48,6 +48,7 @@ const RejectPasses = () => {
       {fetchPassData.length > 0 ? (
         <FlatList
           data={fetchPassData}
+          style={{ marginBottom: hp(4) }}
           renderItem={({ item }) => {
             return (
               <View style={styles.container}>
@@ -108,10 +109,10 @@ const RejectPasses = () => {
           }
         />
       ) : (
-          <View style={styles.emptyPassContainer}>
-            <AntDesign name="exception1" size={40} color="black" />
-            <Text style={styles.emptyPass}>No Passes</Text>
-          </View>
+        <View style={styles.emptyPassContainer}>
+          <AntDesign name="exception1" size={40} color="black" />
+          <Text style={styles.emptyPass}>No Passes</Text>
+        </View>
       )}
     </View>
   );

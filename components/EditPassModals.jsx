@@ -5,16 +5,19 @@ import {
     TouchableOpacity,
     TextInput,
     Modal
-} from "react-native"; import React, { useState } from 'react'
+} from "react-native"; import React, { useRef, useState } from 'react'
 import { Entypo } from '@expo/vector-icons';
 import { StatusBar } from 'expo-status-bar';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 
 const EditPassModals = (props) => {
 
+    const { editModelVisible, setEditModelVisible, roomNo, setRoomNo, destination, setDestination, purpose, setPurpose, outDateTime, handleOutDateTimePicker, inDateTime, handleInDateTimePicker, handelPassUpdate } = props
     const [isInDatePickerVisible, setInDatePickerVisible] = useState(false);
     const [isOutDatePickerVisible, setOutDatePickerVisible] = useState(false);
-    const { editModelVisible, setEditModelVisible, roomNo, setRoomNo, destination, setDestination, purpose, setPurpose, outDateTime, handleOutDateTimePicker, inDateTime, handleInDateTimePicker, handelPassUpdate } = props
+
+    const destinationRef = useRef();
+    const purposeRef = useRef();
     return (
         <View style={styles.modelContainer}>
             <Modal
@@ -39,6 +42,7 @@ const EditPassModals = (props) => {
                             <TextInput
                                 style={styles.input}
                                 placeholder={roomNo}
+                                onSubmitEditing={()=>destinationRef.current.focus()}
                                 placeholderTextColor={"#AFAFAF"}
                                 onChangeText={(text) => {
                                     setRoomNo(text);
@@ -53,6 +57,8 @@ const EditPassModals = (props) => {
                             <TextInput
                                 style={styles.input}
                                 placeholder={destination}
+                                ref={destinationRef}
+                                onSubmitEditing={()=>purposeRef.current.focus()}
                                 placeholderTextColor={"#AFAFAF"}
                                 onChangeText={(text) => {
                                     setDestination(text);
@@ -67,6 +73,7 @@ const EditPassModals = (props) => {
                                 style={styles.input}
                                 placeholder={purpose}
                                 placeholderTextColor={"#AFAFAF"}
+                                ref={purposeRef}
                                 onChangeText={(text) => {
                                     setPurpose(text);
                                 }}

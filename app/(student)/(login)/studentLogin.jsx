@@ -5,8 +5,10 @@ import {
   View,
   TextInput,
   TouchableOpacity,
+  Platform,
+  KeyboardAvoidingView,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import annaUniversity from "@/assets/annaUniversity.png";
 import { hp, } from "@/helpers/dimensions"
@@ -19,7 +21,6 @@ import axios from "axios";
 import themes from "@/constants/themes";
 import Spinner from "react-native-loading-spinner-overlay";
 
-
 const studentLogin = () => {
   let navigation = useRouter();
   let toast = useToast();
@@ -30,6 +31,9 @@ const studentLogin = () => {
 
   const [registerNumberError, setRegisterNumberError] = useState(null);
   const [passwordError, setPasswordError] = useState(null);
+
+  const nextInputRef = useRef();
+  const btnRef = useRef();
 
   const toggleShowPassword = () => setShowPassword(!showPassword);
 
@@ -75,99 +79,103 @@ const studentLogin = () => {
     }
   };
   return (
-    <ImageBackground source={annaUniversity} style={styles.backgroundImage}>
-      <SafeAreaView style={styles.container}>
-        <Spinner
-          visible={spinnerVisible}
-          textContent={"Loading..."}
-          textStyle={{ color: "#FFF" }}
-          cancelable={true}
-        />
-        <View style={styles.form}>
-          <Text style={styles.heading}>Student</Text>
-          <Text style={styles.subHead}>Login</Text>
+    <KeyboardAvoidingView  behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={{ flex: 1 }}>
+      <ImageBackground source={annaUniversity} style={styles.backgroundImage}>
+        <SafeAreaView style={styles.container}>
+          <Spinner
+            visible={spinnerVisible}
+            textContent={"Loading..."}
+            textStyle={{ color: "#FFF" }}
+            cancelable={true}
+          />
+          <View style={styles.form}>
+            <Text style={styles.heading}>Student</Text>
+            <Text style={styles.subHead}>Login</Text>
 
-          <View style={styles.inputgroup}>
-            <Text style={styles.lable}>Register Number :</Text>
-            <TextInput
-              placeholder="Enter Your Regsiter Number"
-              style={styles.input}
-              placeholderTextColor={themes.placeholderTextColor}
-              onChangeText={(text) => {
-                setRegisterNumber(text);
-                setRegisterNumberError(null);
-              }}
-              keyboardType="number-pad"
-              value={registerNumber}
-              inputMode="numeric"
-              accessibilityLabel="registerNumber"
-              aria-label="registerNumber"
-            />
-            {registerNumberError != null ? (
-              <Text style={{ color: "red" }}>{registerNumberError}</Text>
-            ) : (
-              ""
-            )}
-            <View>
-              <Text style={styles.lable}>Password :</Text>
+            <View style={styles.inputgroup}>
+              <Text style={styles.lable}>Register Number :</Text>
               <TextInput
-                placeholder="Enter Your Password"
+                placeholder="Enter Your Regsiter Number"
                 style={styles.input}
                 placeholderTextColor={themes.placeholderTextColor}
-                secureTextEntry={!showPassword}
+                onSubmitEditing={() => nextInputRef.current.focus()}
                 onChangeText={(text) => {
-                  setPassword(text);
-                  setPasswordError(null);
+                  setRegisterNumber(text);
+                  setRegisterNumberError(null);
                 }}
-                value={password}
-                inputMode="text"
-                accessibilityLabel="password"
-                aria-label="password"
+                keyboardType="number-pad"
+                value={registerNumber}
+                inputMode="numeric"
+                accessibilityLabel="registerNumber"
+                aria-label="registerNumber"
               />
-              {passwordError != null ? (
-                <Text style={{ color: "red" }}>{passwordError}</Text>
+              {registerNumberError != null ? (
+                <Text style={{ color: "red" }}>{registerNumberError}</Text>
               ) : (
                 ""
               )}
-              <MaterialCommunityIcons
-                name={showPassword ? "eye" : "eye-off"}
-                size={18}
-                color="black"
-                style={styles.icon}
-                onPress={toggleShowPassword}
-              />
+              <View>
+                <Text style={styles.lable}>Password :</Text>
+                <TextInput
+                  placeholder="Enter Your Password"
+                  style={styles.input}
+                  placeholderTextColor={themes.placeholderTextColor}
+                  secureTextEntry={!showPassword}
+                  ref={nextInputRef}
+                  onChangeText={(text) => {
+                    setPassword(text);
+                    setPasswordError(null);
+                  }}
+                  value={password}
+                  inputMode="text"
+                  accessibilityLabel="password"
+                  aria-label="password"
+                />
+                {passwordError != null ? (
+                  <Text style={{ color: "red" }}>{passwordError}</Text>
+                ) : (
+                  ""
+                )}
+                <MaterialCommunityIcons
+                  name={showPassword ? "eye" : "eye-off"}
+                  size={18}
+                  color="black"
+                  style={styles.icon}
+                  onPress={toggleShowPassword}
+                />
+              </View>
+              <Text
+                style={styles.forgetPass}
+                onPress={() => navigation.navigate("(login)/forgetPassword")}
+              >
+                Forget/Change Password
+              </Text>
             </View>
-            <Text
-              style={styles.forgetPass}
-              onPress={() => navigation.navigate("(login)/forgetPassword")}
-            >
-              Forget/Change Password
+            <Text style={{ marginTop: 10, fontSize: hp(1.3) }}>
+              If you dont have account..
+              <Text
+                onPress={() => navigation.navigate("(register)/studentRegister")}
+                style={{
+                  color: themes.mainColor,
+                  textDecorationLine: "underline",
+                  fontSize: hp(1.5),
+                }}
+              >
+                Please Register
+              </Text>
             </Text>
+            <View style={{ alignItems: "center" }}>
+              <TouchableOpacity
+                style={styles.buttonOutline}
+                onPress={handleSubmit}
+              >
+                <Text style={styles.btn}>Login</Text>
+              </TouchableOpacity>
+            </View>
           </View>
-          <Text style={{ marginTop: 10, fontSize: hp(1.3) }}>
-            If you dont have account..
-            <Text
-              onPress={() => navigation.navigate("(register)/studentRegister")}
-              style={{
-                color: themes.mainColor,
-                textDecorationLine: "underline",
-                fontSize: hp(1.5),
-              }}
-            >
-              Please Register
-            </Text>
-          </Text>
-          <View style={{ alignItems: "center" }}>
-            <TouchableOpacity
-              style={styles.buttonOutline}
-              onPress={handleSubmit}
-            >
-              <Text style={styles.btn}>Login</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </SafeAreaView>
-    </ImageBackground>
+        </SafeAreaView>
+      </ImageBackground>
+    </KeyboardAvoidingView>
   )
 }
 

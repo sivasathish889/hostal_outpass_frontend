@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import annaUniversity from "@/assets/annaUniversity.png";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useToast } from "react-native-toast-notifications";
@@ -31,6 +31,8 @@ const ChangePassword = () => {
   const [newPasswordError, setNewPasswordError] = useState(null);
   const [confirmNewPasswordError, setConfirmNewPasswordError] = useState(null);
   const [spinnerVisible, setSpinnerVisible] = useState(false)
+
+  const nextInputRef = useRef()
 
   let registerNumber = useLocalSearchParams().registerNumber;
 
@@ -102,6 +104,7 @@ const ChangePassword = () => {
               style={styles.input}
               placeholderTextColor={themes.placeholderTextColor}
               secureTextEntry={!newPasswordVisible}
+              onSubmitEditing={()=>nextInputRef.current.focus()}
               onChangeText={(text) => {
                 setNewPassword(text);
                 setNewPasswordError(null);
@@ -126,6 +129,7 @@ const ChangePassword = () => {
               style={styles.input}
               placeholderTextColor={themes.placeholderTextColor}
               secureTextEntry={!confrimPasswordVisible}
+              ref={nextInputRef}
               onChangeText={(text) => {
                 setConfirmNewPassword(text);
                 setConfirmNewPasswordError(null);

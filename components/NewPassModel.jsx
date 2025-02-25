@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import { useToast } from "react-native-toast-notifications";
 import urls from "@/constants/urls";
@@ -41,6 +41,9 @@ const NewPassModel = (props) => {
   const [inDateError, setInDateError] = useState(null);
   const [outDateError, setOutDateError] = useState(null);
 
+  const destinationRef = useRef();
+  const purposeRef = useRef();
+
   let navigation = useNavigation();
   let toast = useToast();
 
@@ -66,7 +69,7 @@ const NewPassModel = (props) => {
       outDateTime,
       userId,
     };
-    
+
     await axios
       .post(`${urls.CLIENT_URL}${urls.studentNewRequest}`, payload)
       .then((data) => {
@@ -133,6 +136,7 @@ const NewPassModel = (props) => {
                 style={styles.input}
                 placeholder="Enter Your Room No"
                 placeholderTextColor={"#AFAFAF"}
+                onSubmitEditing={()=>destinationRef.current.focus()}
                 onChangeText={(text) => {
                   setRoomNo(text);
                   setRoomError(null);
@@ -152,6 +156,8 @@ const NewPassModel = (props) => {
                 style={styles.input}
                 placeholder="Enter Destination"
                 placeholderTextColor={"#AFAFAF"}
+                ref={destinationRef}
+                onSubmitEditing={()=>purposeRef.current.focus()}
                 onChangeText={(text) => {
                   setDestination(text);
                   setDestinationError(null);
@@ -170,6 +176,7 @@ const NewPassModel = (props) => {
               <TextInput
                 style={styles.input}
                 placeholder="Enter Purpose"
+                ref={purposeRef}
                 placeholderTextColor={"#AFAFAF"}
                 onChangeText={(text) => {
                   setPurpose(text);

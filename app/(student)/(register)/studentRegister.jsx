@@ -6,7 +6,7 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import annaUniversity from "@/assets/annaUniversity.png";
 import url from "@/constants/urls";
@@ -44,6 +44,15 @@ const StudentRegister = () => {
   let [districtError, setDistrictError] = useState(null);
   let [passwordError, setPasswordError] = useState(null);
   let [confirmPasswordError, setConfirmPasswordError] = useState(null);
+
+  const registerRef = useRef()
+  const departmentRef = useRef()
+  const phoneNumberRef = useRef()
+  const parentNumberRef = useRef()
+  const emailRef = useRef()
+  const districtRef = useRef()
+  const passwordRef = useRef()
+  const confirmPasswordRef = useRef()
 
   const toast = useToast();
   let navigation = useNavigation();
@@ -143,6 +152,7 @@ const StudentRegister = () => {
               placeholder="Enter Your Name"
               style={styles.input}
               placeholderTextColor={themes.placeholderTextColor}
+              onSubmitEditing={()=>registerRef.current.focus()}
               onChangeText={(text) => {
                 setName(text);
                 setNameError(null);
@@ -166,6 +176,8 @@ const StudentRegister = () => {
               style={styles.input}
               placeholderTextColor={themes.placeholderTextColor}
               keyboardType="number-pad"
+              ref={registerRef}
+              onSubmitEditing={()=>departmentRef.current.focus()}
               onChangeText={(text) => {
                 setRegisterNumber(text);
                 setRegisterNumberError(null);
@@ -194,6 +206,8 @@ const StudentRegister = () => {
                   setDepartmentError(null);
                 }}
                 value={department}
+                ref={departmentRef}
+                onSubmitEditing={()=>phoneNumberRef.current.focus()}
                 inputMode="text"
                 accessibilityLabel="department"
                 aria-label="department"
@@ -254,6 +268,8 @@ const StudentRegister = () => {
               keyboardType="number-pad"
               onChangeText={(text) => { setPhoneNumber(text); setPhoneNumberError(null) }}
               value={phoneNumber}
+              ref={phoneNumberRef}
+              onSubmitEditing={()=>parentNumberRef.current.focus()}
               inputMode="numeric"
               accessibilityLabel="phoneNumber"
               aria-label="phoneNumber"
@@ -274,6 +290,8 @@ const StudentRegister = () => {
               placeholderTextColor={themes.placeholderTextColor}
               onChangeText={(text) => { setParentNumber(text); setParentNumberError(null) }}
               value={parentNumber}
+              ref={parentNumberRef}
+              onSubmitEditing={()=>emailRef.current.focus()}
               inputMode="numeric"
               accessibilityLabel="parentNumber"
               aria-label="parentNumber"
@@ -292,6 +310,8 @@ const StudentRegister = () => {
               placeholderTextColor={themes.placeholderTextColor}
               onChangeText={(text) => { setEMail(text); setEMailError(null) }}
               value={eMail}
+              ref={emailRef}
+              onSubmitEditing={()=>districtRef.current.focus()}
               keyboardType="email-address"
               inputMode="email"
               accessibilityLabel="email"
@@ -313,6 +333,8 @@ const StudentRegister = () => {
               onChangeText={(text) => { setDistrict(text); setDistrictError(null) }}
               value={district}
               inputMode="text"
+              ref={districtRef}
+              onSubmitEditing={()=>passwordRef.current.focus()}
               accessibilityLabel="district"
               aria-label="district"
             />
@@ -331,7 +353,8 @@ const StudentRegister = () => {
                 placeholderTextColor={themes.placeholderTextColor}
                 onChangeText={(text) => { setPassword(text); setPasswordError(null) }}
                 secureTextEntry
-                value={password}
+                value={password}ref={passwordRef}
+                onSubmitEditing={()=>confirmPasswordRef.current.focus()}
                 inputMode="text"
                 accessibilityLabel="password"
                 aria-label="password"

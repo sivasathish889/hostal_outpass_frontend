@@ -43,6 +43,7 @@ const AcceptPass = () => {
       {fetchPassData.length > 0 ? (
         <FlatList
           data={fetchPassData}
+          style={{ marginBottom: hp(4) }}
           renderItem={({ item }) => {
             return (
               <View style={styles.container}>

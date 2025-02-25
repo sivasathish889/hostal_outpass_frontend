@@ -2,7 +2,7 @@
 
 export default env = {
     // CLIENT_URL : 'https://hostal-outpass-backend.onrender.com/',
-    CLIENT_URL: "http://192.168.9.1:5000/",
+    CLIENT_URL: "http://192.168.151.1:5000/",
 
     studentRegister: 'student/register',
     studentRegisterVerify: 'student/register/verify',
@@ -37,6 +37,8 @@ export default env = {
     securityForgetPassword: "security/forgetPassword",
     securityForgetOtpVerify: "security/forgetPassword/Verify",
     securityChangePassword: "security/changePassword",
-    securityData: "security"
-
+    securityData: "security",
+    securityUpdateOutTime : "security/updateOutTime",
+    securityUpdateInTime : "security/updateInTime",
+    securityAcceptPass : "security/finishedPasses"
 }

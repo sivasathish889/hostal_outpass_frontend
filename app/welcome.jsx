@@ -21,7 +21,7 @@ const Welcome = () => {
         <TouchableOpacity style={styles.buttonOutline} onPress={() => router.navigate('(student)/(login)/studentLogin')}>
           <Text style={styles.buttonsText}>Student</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.buttonOutline} onPress={() => router.navigate('(warden)/(login)/wardenLogin')}>
+        <TouchableOpacity style={styles.buttonOutline} onPress={() => router.navigate('(warden)/(tabs)/home')}>
           <Text style={styles.buttonsText}>Warden</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.buttonOutline} onPress={() => router.navigate('(security)/(login)/securityLogin')}>

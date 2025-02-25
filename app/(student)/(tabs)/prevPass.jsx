@@ -1,4 +1,4 @@
-import { FlatList, StyleSheet, Text, View, RefreshControl } from "react-native";
+import { FlatList, StyleSheet, Text, View, RefreshControl, TextInput } from "react-native";
 import React, { useEffect, useState } from "react";
 import env from "@/constants/urls";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -6,6 +6,7 @@ import axios from "axios";
 import Spinner from "react-native-loading-spinner-overlay";
 import themes from "@/constants/themes";
 import { hp } from "@/helpers/dimensions";
+import { Dropdown } from "react-native-element-dropdown";
 
 
 const PrevPass = () => {
@@ -13,6 +14,9 @@ const PrevPass = () => {
   const [fetchPassData, setFetchPassData] = useState({});
   const [refreshing, setRefreshing] = useState(false);
   const [spinnerVisible, setSpinnerVisible] = useState(false);
+  const [isFocus, setIsFocus] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("")
+  const [passDropDownData, setDropDownData] = useState("")
 
   useEffect(() => {
     setSpinnerVisible(true);
@@ -26,19 +30,22 @@ const PrevPass = () => {
           .get(`${env.CLIENT_URL}${env.studentAllPasses}/${userId}`)
           .then((data) => {
             setFetchPassData(data.data.data);
-            setSpinnerVisible(false);
-            setRefreshing(false);
+            setDropDownData("")
+            setSearchQuery("")
           })
           .catch((error) => console.log(error));
       });
     } catch (error) {
       console.log(error);
+    } finally {
+      setRefreshing(false);
+      setSpinnerVisible(false);
+
     }
   };
 
   return (
     <View
-
     >
       <Spinner
         visible={spinnerVisible}
@@ -53,8 +60,38 @@ const PrevPass = () => {
           Rejecting Passes
         </Text>
       </View>
+      <View style={styles.filterInputs}>
+        <TextInput style={styles.input} placeholder="Search" onChangeText={(text) => setSearchQuery(text)} value={searchQuery} />
+        <Dropdown
+          style={[styles.dropdown]}
+          data={[
+            { label: "Accept ", value: "Accept" },
+            { label: "Reject ", value: "Reject" },
+          ]}
+          maxHeight={100}
+          labelField="label"
+          valueField="value"
+          placeholder="Select Status"
+          value={passDropDownData}
+          onFocus={() => setIsFocus(true)}
+          onBlur={() => setIsFocus(false)}
+          onChange={(item) => {
+            setDropDownData(item.value);
+            setIsFocus(false);
+          }}
+          placeholderStyle={{
+            color: themes.placeholderTextColor,
+            paddingStart: 10,
+            fontSize: hp(1.6)
+          }}
+          itemContainerStyle={{ borderRadius: 10 }}
+          accessibilityLabel="pass Status"
+          aria-label="pass Status"
+        />
+      </View>
       <FlatList
         data={fetchPassData}
+        style={{ marginBottom: hp(9) }}
         renderItem={({ item }) => {
           return (
             <View
@@ -183,4 +220,30 @@ const styles = StyleSheet.create({
     fontSize: hp(5),
     opacity: 0.5,
   },
+  input: {
+    backgroundColor: "#D9D9D9",
+    paddingStart: 10,
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: "rgb(115,115,115)",
+    flex: 1
+  },
+  dropdown: {
+    backgroundColor: "#D9D9D9",
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: "rgb(115,115,115)",
+    color: "black",
+    fontSize: hp(1.6),
+    height: 42,
+    borderRadius: 10,
+    paddingStart: 10,
+    flex: 1
+  },
+  filterInputs: {
+    flexDirection: "row",
+    gap: "10",
+    marginHorizontal: 7,
+    marginBottom: 5
+  }
 });
