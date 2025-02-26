@@ -36,8 +36,8 @@ const Layout = () => {
         screenOptions={{
           tabBarStyle: {
             backgroundColor: themes.mainColor,
-            borderRadius: 30,
-            height: hp(8),
+            borderRadius: 40,
+            height: hp(7)
           },
           tabBarPosition: "bottom",
           headerShown: false,

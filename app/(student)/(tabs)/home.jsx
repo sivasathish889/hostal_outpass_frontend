@@ -167,6 +167,7 @@ const HomeScreen = () => {
         visible={spinnerVisible}
         textContent={"Loading..."}
         textStyle={{ color: "#FFF" }}
+        cancelable={true}
       />
       <FlatList
         data={fetchPassData.pass}

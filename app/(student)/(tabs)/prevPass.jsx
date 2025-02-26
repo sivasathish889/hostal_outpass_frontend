@@ -11,10 +11,11 @@ import { Dropdown } from "react-native-element-dropdown";
 
 const PrevPass = () => {
   let now = new Date();
-  const [fetchPassData, setFetchPassData] = useState({});
+  const [data, setData] = useState({});
   const [refreshing, setRefreshing] = useState(false);
   const [spinnerVisible, setSpinnerVisible] = useState(false);
   const [isFocus, setIsFocus] = useState(false);
+
   const [searchQuery, setSearchQuery] = useState("")
   const [passDropDownData, setDropDownData] = useState("")
 
@@ -28,8 +29,8 @@ const PrevPass = () => {
       await AsyncStorage.getItem("student").then(async (userId) => {
         await axios
           .get(`${env.CLIENT_URL}${env.studentAllPasses}/${userId}`)
-          .then((data) => {
-            setFetchPassData(data.data.data);
+          .then(async(data) => {
+            setData(data.data.data);
             setDropDownData("")
             setSearchQuery("")
           })
@@ -40,9 +41,9 @@ const PrevPass = () => {
     } finally {
       setRefreshing(false);
       setSpinnerVisible(false);
-
     }
   };
+
 
   return (
     <View
@@ -60,7 +61,7 @@ const PrevPass = () => {
           Rejecting Passes
         </Text>
       </View>
-      <View style={styles.filterInputs}>
+      {/* <View style={styles.filterInputs}>
         <TextInput style={styles.input} placeholder="Search" onChangeText={(text) => setSearchQuery(text)} value={searchQuery} />
         <Dropdown
           style={[styles.dropdown]}
@@ -88,10 +89,9 @@ const PrevPass = () => {
           accessibilityLabel="pass Status"
           aria-label="pass Status"
         />
-      </View>
+      </View> */}
       <FlatList
-        data={fetchPassData}
-        style={{ marginBottom: hp(9) }}
+        data={data}
         renderItem={({ item }) => {
           return (
             <View

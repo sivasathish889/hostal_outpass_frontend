@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import { useToast } from "react-native-toast-notifications";
 import urls from "@/constants/urls";
@@ -16,6 +16,9 @@ import axios from "axios";
 import { useNavigation } from "expo-router";
 import themes from "@/constants/themes";
 import { Entypo } from "@expo/vector-icons";
+import { collageLocationRadius } from "@/helpers/calculateUserRadius";
+import { fetchLocation } from "@/helpers/fetchLocation";
+import Spinner from "react-native-loading-spinner-overlay"
 
 
 const NewPassModel = (props) => {
@@ -28,6 +31,7 @@ const NewPassModel = (props) => {
   } = props;
   const [isInDatePickerVisible, setInDatePickerVisible] = useState(false);
   const [isOutDatePickerVisible, setOutDatePickerVisible] = useState(false);
+  const [spinnerVisible, setSpinnerVisible] = useState(false);
 
   const [roomNo, setRoomNo] = useState(null);
   const [destination, setDestination] = useState(null);
@@ -41,65 +45,104 @@ const NewPassModel = (props) => {
   const [inDateError, setInDateError] = useState(null);
   const [outDateError, setOutDateError] = useState(null);
 
+  const [location, setLocation] = useState(null);
+
   const destinationRef = useRef();
   const purposeRef = useRef();
 
   let navigation = useNavigation();
   let toast = useToast();
 
+  useEffect(() => {
+    fetchLocation()
+  }, [])
+
   const handlePassSubmit = async () => {
     // Form validation
-    if (roomNo === null || roomNo.length == 0) {
-      return setRoomError("Please Enter the Room Number");
-    } else if (destination === null || destination.length == 0) {
-      return setDestinationError("Please Enter Your Destinaion");
-    } else if (purpose === null || purpose.length == 0) {
-      return setPurposeError("Please Enter Your Purpose");
-    } else if (outDateTime === null || outDateTime.length == 0) {
-      return setOutDateError("Please Enter Out date");
-    } else if (inDateTime === null || inDateTime.length == 0) {
-      return setInDateError("Please Enter In date");
+    try {
+      if (roomNo === null || roomNo.length == 0) {
+        return setRoomError("Please Enter the Room Number");
+      } else if (destination === null || destination.length == 0) {
+        return setDestinationError("Please Enter Your Destinaion");
+      } else if (purpose === null || purpose.length == 0) {
+        return setPurposeError("Please Enter Your Purpose");
+      } else if (outDateTime === null || outDateTime.length == 0) {
+        return setOutDateError("Please Enter Out date");
+      } else if (inDateTime === null || inDateTime.length == 0) {
+        return setInDateError("Please Enter In date");
+      }
+
+      const payload = {
+        roomNo,
+        destination,
+        purpose,
+        inDateTime,
+        outDateTime,
+        userId,
+      };
+
+      setSpinnerVisible(true)
+      // get user location
+      await fetchLocation()
+        .then((data) => setLocation(data))
+        .catch((error) => {
+          toast.show(error, {
+            type: "warning",
+            placement: "bottom",
+            duration: 4000,
+            offset: 30,
+            animationType: "slide-in",
+          });
+        })
+      // calculate radius
+      const distance = collageLocationRadius(location?.coords?.longitude, location?.coords?.latitude);
+      if (!distance >= 600) {
+        toast.show("You are not inside the campus", {
+          type: "warning",
+          placement: "bottom",
+          duration: 4000,
+          offset: 30,
+          animationType: "slide-in",
+        });
+        return
+      }
+
+      await axios
+        .post(`${urls.CLIENT_URL}${urls.studentNewRequest}`, payload)
+        .then((data) => {
+          if (data.data.success) {
+            toast.show(data.data.message, {
+              type: "success",
+              placement: "bottom",
+              duration: 4000,
+              offset: 30,
+              animationType: "slide-in",
+            });
+            navigation.navigate("(tabs)");
+            setDestination(null);
+            setinDateTime(null);
+            setoutDateTime(null);
+            setPurpose(null);
+            setRoomNo(null);
+            setPassModelVisible(false);
+            setDataRefresh(!dataRefresh);
+            setSpinnerVisible(false)
+          } else {
+            toast.show(data.data.message, {
+              type: "danger",
+              placement: "bottom",
+              duration: 4000,
+              offset: 30,
+              animationType: "slide-in",
+            });
+            setSpinnerVisible(false)
+          }
+        })
+        .catch((error) => console.log(error))
+    } catch (error) {
+      console.log(error.message)
     }
 
-    const payload = {
-      roomNo,
-      destination,
-      purpose,
-      inDateTime,
-      outDateTime,
-      userId,
-    };
-
-    await axios
-      .post(`${urls.CLIENT_URL}${urls.studentNewRequest}`, payload)
-      .then((data) => {
-        if (data.data.success) {
-          toast.show(data.data.message, {
-            type: "success",
-            placement: "bottom",
-            duration: 4000,
-            offset: 30,
-            animationType: "slide-in",
-          });
-          navigation.navigate("(tabs)");
-          setDestination(null);
-          setinDateTime(null);
-          setoutDateTime(null);
-          setPurpose(null);
-          setRoomNo(null);
-          setPassModelVisible(false);
-          setDataRefresh(!dataRefresh);
-        } else {
-          toast.show(data.data.message, {
-            type: "danger",
-            placement: "bottom",
-            duration: 4000,
-            offset: 30,
-            animationType: "slide-in",
-          });
-        }
-      })
-      .catch((error) => console.log(error));
   };
   const handleInDateTimePicker = (e) => {
     setinDateTime(e.toLocaleString());
@@ -110,8 +153,16 @@ const NewPassModel = (props) => {
     setoutDateTime(e.toLocaleString());
     setOutDatePickerVisible(false);
   };
+
+
   return (
     <View style={styles.modelContainer}>
+      <Spinner
+        visible={spinnerVisible}
+        textContent={"Loading..."}
+        textStyle={{ color: "#FFF" }}
+        cancelable={true}
+      />
       <Modal
         animationType="slide"
         transparent={true}
@@ -136,7 +187,7 @@ const NewPassModel = (props) => {
                 style={styles.input}
                 placeholder="Enter Your Room No"
                 placeholderTextColor={"#AFAFAF"}
-                onSubmitEditing={()=>destinationRef.current.focus()}
+                onSubmitEditing={() => destinationRef.current.focus()}
                 onChangeText={(text) => {
                   setRoomNo(text);
                   setRoomError(null);
@@ -157,7 +208,7 @@ const NewPassModel = (props) => {
                 placeholder="Enter Destination"
                 placeholderTextColor={"#AFAFAF"}
                 ref={destinationRef}
-                onSubmitEditing={()=>purposeRef.current.focus()}
+                onSubmitEditing={() => purposeRef.current.focus()}
                 onChangeText={(text) => {
                   setDestination(text);
                   setDestinationError(null);
