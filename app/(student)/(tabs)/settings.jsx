@@ -43,6 +43,20 @@ const Settings = () => {
     fetchDate();
   }, []);
 
+  const logOutAlert = () => {
+    Alert.alert("Delete Outpass", "Are you deleting your Outpass", [
+      {
+        text: "Cancel",
+        style: "cancel",
+      },
+      {
+        text: "Sure",
+        onPress: () => handleLogout(),
+        style: "default",
+      },
+    ]);
+  };
+
   const handleLogout = async () => {
     try {
       await AsyncStorage.removeItem("student").then(() =>
@@ -63,11 +77,11 @@ const Settings = () => {
       />
       <View style={styles.profile}>
         <AntDesign name="user" size={120} color="black" />
-        <Text>{fetchingData[0]?.name}</Text>
+        <Text>{fetchingData[0]?.name.toUpperCase()}</Text>
         <Text>{fetchingData[0]?.RegisterNumber}</Text>
       </View>
       <View style={styles.btnContainer}>
-        <TouchableOpacity style={styles.btnOutline} onPress={handleLogout}>
+        <TouchableOpacity style={styles.btnOutline} onPress={logOutAlert}>
           <Text style={styles.logoutBtn}>Logout</Text>
         </TouchableOpacity>
       </View>

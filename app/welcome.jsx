@@ -1,5 +1,4 @@
 import { Image, StatusBar, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 let logo = require("@/assets/images/icon.png");
 import themes from "@/constants/themes"
@@ -18,10 +17,10 @@ const Welcome = () => {
         </Text>
       </View>
       <View style={{ rowGap: 30, marginTop: 60 }}>
-        <TouchableOpacity style={styles.buttonOutline} onPress={() => router.navigate('(student)/(tabs)/home')}>
+        <TouchableOpacity style={styles.buttonOutline} onPress={() => router.navigate('(student)/(login)/studentLogin')}>
           <Text style={styles.buttonsText}>Student</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.buttonOutline} onPress={() => router.navigate('(warden)/(tabs)/home')}>
+        <TouchableOpacity style={styles.buttonOutline} onPress={() => router.navigate('(warden)/(login)/wardenLogin')}>
           <Text style={styles.buttonsText}>Warden</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.buttonOutline} onPress={() => router.navigate('(security)/(login)/securityLogin')}>

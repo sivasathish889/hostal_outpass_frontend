@@ -135,6 +135,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "rgb(115,115,115)",
     width: "80%",
+    height:hp(4.5),
     alignSelf: "center",
   },
   lable: {

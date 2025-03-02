@@ -6,7 +6,7 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import annaUniversity from "@/assets/annaUniversity.png";
 import url from "@/constants/urls";
@@ -14,7 +14,7 @@ import { Dropdown } from "react-native-element-dropdown";
 import { useToast } from "react-native-toast-notifications";
 import axios from "axios";
 import { useNavigation } from "expo-router";
-import { hp, wp } from "@/helpers/dimensions"
+import { hp } from "@/helpers/dimensions"
 import themes from "@/constants/themes";
 import Spinner from "react-native-loading-spinner-overlay";
 
@@ -433,13 +433,13 @@ const styles = StyleSheet.create({
   },
   mainHead: {
     textAlign: "center",
-    fontSize: hp(3),
+    fontSize: hp(3.5),
     color: themes.mainColor,
     fontWeight: "700",
   },
   subHead: {
     textAlign: "center",
-    fontSize: hp(1.5),
+    fontSize: hp(2),
     marginBottom: "3%",
     textDecorationLine: "underline",
   },
@@ -464,6 +464,7 @@ const styles = StyleSheet.create({
     width: "100%",
     color: "black",
     fontSize: hp(1.3),
+    height:hp(4.5),
     paddingStart: 15,
   },
   label: {

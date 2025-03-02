@@ -8,7 +8,7 @@ import {
   Platform,
   KeyboardAvoidingView,
 } from "react-native";
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import annaUniversity from "@/assets/annaUniversity.png";
 import { hp, } from "@/helpers/dimensions"
@@ -33,7 +33,6 @@ const studentLogin = () => {
   const [passwordError, setPasswordError] = useState(null);
 
   const nextInputRef = useRef();
-  const btnRef = useRef();
 
   const toggleShowPassword = () => setShowPassword(!showPassword);
 
@@ -73,13 +72,19 @@ const studentLogin = () => {
 
       }
     } catch (error) {
-      console.log(error.message)
+      toast.show(error.message, {
+        type: "danger",
+        placement: "bottom",
+        duration: 4000,
+        offset: 30,
+        animationType: "slide-in",
+      });
     } finally {
       setSpinnerVisible(false)
     }
   };
   return (
-    <KeyboardAvoidingView  behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={{ flex: 1 }}>
+    <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={{ flex: 1 }}>
       <ImageBackground source={annaUniversity} style={styles.backgroundImage}>
         <SafeAreaView style={styles.container}>
           <Spinner
@@ -110,7 +115,7 @@ const studentLogin = () => {
                 aria-label="registerNumber"
               />
               {registerNumberError != null ? (
-                <Text style={{ color: "red" }}>{registerNumberError}</Text>
+                <Text style={styles.errorMsg}>{registerNumberError}</Text>
               ) : (
                 ""
               )}
@@ -132,7 +137,7 @@ const studentLogin = () => {
                   aria-label="password"
                 />
                 {passwordError != null ? (
-                  <Text style={{ color: "red" }}>{passwordError}</Text>
+                  <Text style={styles.errorMsg}>{passwordError}</Text>
                 ) : (
                   ""
                 )}
@@ -222,10 +227,11 @@ const styles = StyleSheet.create({
   },
   inputgroup: {
     marginTop: 25,
-    rowGap: 10,
   },
   lable: {
     fontWeight: "400",
+    marginTop: 10,
+    marginBottom: 5
   },
   input: {
     backgroundColor: "#D9D9D9",
@@ -233,6 +239,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderWidth: 1,
     borderColor: "rgb(115,115,115)",
+    height: hp(4.5),
   },
   forgetPass: {
     textAlign: "right",
@@ -241,7 +248,11 @@ const styles = StyleSheet.create({
   },
   icon: {
     position: "absolute",
-    bottom: "22%",
+    bottom: "17%",
     right: "4%",
   },
+  errorMsg: {
+    color: "red",
+    fontSize: hp(1.3)
+  }
 });

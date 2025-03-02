@@ -1,5 +1,4 @@
 import {
-  Image,
   Modal,
   StatusBar,
   StyleSheet,
@@ -8,7 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import { useToast } from "react-native-toast-notifications";
 import urls from "@/constants/urls";
@@ -17,8 +16,8 @@ import { useNavigation } from "expo-router";
 import themes from "@/constants/themes";
 import { Entypo } from "@expo/vector-icons";
 import { collageLocationRadius } from "@/helpers/calculateUserRadius";
-import { fetchLocation } from "@/helpers/fetchLocation";
 import Spinner from "react-native-loading-spinner-overlay"
+import * as Location from "expo-location"
 
 
 const NewPassModel = (props) => {
@@ -45,17 +44,12 @@ const NewPassModel = (props) => {
   const [inDateError, setInDateError] = useState(null);
   const [outDateError, setOutDateError] = useState(null);
 
-  const [location, setLocation] = useState(null);
 
   const destinationRef = useRef();
   const purposeRef = useRef();
 
   let navigation = useNavigation();
   let toast = useToast();
-
-  useEffect(() => {
-    fetchLocation()
-  }, [])
 
   const handlePassSubmit = async () => {
     // Form validation
@@ -82,65 +76,76 @@ const NewPassModel = (props) => {
       };
 
       setSpinnerVisible(true)
-      // get user location
-      await fetchLocation()
-        .then((data) => setLocation(data))
-        .catch((error) => {
-          toast.show(error, {
+      // get user Permission
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status == 'granted') {
+        // get user Loction
+        let locationData = await Location.getCurrentPositionAsync({});
+        const distance = collageLocationRadius(locationData?.coords?.longitude, locationData?.coords?.latitude);
+        if (!distance >= 600) {
+          toast.show("You are not inside the campus", {
             type: "warning",
             placement: "bottom",
             duration: 4000,
             offset: 30,
             animationType: "slide-in",
           });
-        })
-      // calculate radius
-      const distance = collageLocationRadius(location?.coords?.longitude, location?.coords?.latitude);
-      if (!distance >= 600) {
-        toast.show("You are not inside the campus", {
+          return
+        }
+        await axios
+          .post(`${urls.CLIENT_URL}${urls.studentNewRequest}`, payload)
+          .then((data) => {
+            if (data.data.success) {
+              toast.show(data.data.message, {
+                type: "success",
+                placement: "bottom",
+                duration: 4000,
+                offset: 30,
+                animationType: "slide-in",
+              });
+              navigation.navigate("(tabs)");
+              setDestination(null);
+              setinDateTime(null);
+              setoutDateTime(null);
+              setPurpose(null);
+              setRoomNo(null);
+              setPassModelVisible(false);
+              setDataRefresh(!dataRefresh);
+              setSpinnerVisible(false)
+            } else {
+              toast.show(data.data.message, {
+                type: "danger",
+                placement: "bottom",
+                duration: 4000,
+                offset: 30,
+                animationType: "slide-in",
+              });
+              setSpinnerVisible(false)
+            }
+          })
+          .catch((error) => console.log(error))
+      }
+      else {
+        toast.show('Permission to access location was denied', {
           type: "warning",
           placement: "bottom",
           duration: 4000,
           offset: 30,
           animationType: "slide-in",
         });
+        setSpinnerVisible(false)
         return
       }
 
-      await axios
-        .post(`${urls.CLIENT_URL}${urls.studentNewRequest}`, payload)
-        .then((data) => {
-          if (data.data.success) {
-            toast.show(data.data.message, {
-              type: "success",
-              placement: "bottom",
-              duration: 4000,
-              offset: 30,
-              animationType: "slide-in",
-            });
-            navigation.navigate("(tabs)");
-            setDestination(null);
-            setinDateTime(null);
-            setoutDateTime(null);
-            setPurpose(null);
-            setRoomNo(null);
-            setPassModelVisible(false);
-            setDataRefresh(!dataRefresh);
-            setSpinnerVisible(false)
-          } else {
-            toast.show(data.data.message, {
-              type: "danger",
-              placement: "bottom",
-              duration: 4000,
-              offset: 30,
-              animationType: "slide-in",
-            });
-            setSpinnerVisible(false)
-          }
-        })
-        .catch((error) => console.log(error))
     } catch (error) {
-      console.log(error.message)
+      toast.show('Please Turn On the Location', {
+        type: "warning",
+        placement: "bottom",
+        duration: 4000,
+        offset: 30,
+        animationType: "slide-in",
+      });
+      setSpinnerVisible(false)
     }
 
   };

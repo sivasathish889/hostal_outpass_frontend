@@ -1,5 +1,5 @@
 import { FlatList, StyleSheet, Text, View, RefreshControl, TextInput } from "react-native";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import env from "@/constants/urls";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
@@ -226,6 +226,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderWidth: 1,
     borderColor: "rgb(115,115,115)",
+    height:hp(4.5),
     flex: 1
   },
   dropdown: {

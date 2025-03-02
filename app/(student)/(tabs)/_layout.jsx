@@ -1,5 +1,4 @@
 import {
-  Dimensions,
   Image,
   StyleSheet,
   Text,

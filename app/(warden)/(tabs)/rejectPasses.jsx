@@ -4,11 +4,8 @@ import {
   View,
   FlatList,
   RefreshControl,
-  Alert,
-  Image,
-  ScrollView,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import env from "@/constants/urls";
 import axios from "axios";

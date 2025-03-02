@@ -1,3 +1,11 @@
 filter la starting date to ending date
 dark mode
 auto login
+push notification
+authentication
+admin panel
+every pass info modal
+
+eas build -p android --profile preview
+
+eas build -p ios --profile preview

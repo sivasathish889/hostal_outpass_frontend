@@ -1,7 +1,8 @@
 {
   "expo": {
-    "name": "nativeApp",
-    "slug": "nativeApp",
+    "name": "Hostal Outpass",
+    "slug": "hostal-outpass",
+    "owner": "Shiva",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -9,13 +10,20 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.shiva889.nativeApp",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false,
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "REASON_FOR_REQUEST",
+        "UIBackgroundModes": ["location", "fetch"]
+      }
     },
     "android": {
       "adaptiveIcon": {
         "backgroundColor": "#0B7583"
       },
-      "package": "com.shiva889.nativeApp"
+      "package": "com.shiva889.nativeApp",
+      "permissions": ["ACCESS_BACKGROUND_LOCATION"]
     },
     "web": {
       "bundler": "metro",
@@ -44,9 +52,9 @@
       }
     },
     "splash": {
-            "image": "./assets/splashscreen_logo.png",
-            "resizeMode": "contain",
-            "backgroundColor": "#ffffff"
-        }
+      "image": "./assets/splashscreen_logo.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    }
   }
 }

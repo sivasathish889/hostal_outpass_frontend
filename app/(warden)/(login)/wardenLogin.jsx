@@ -6,16 +6,15 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import React, { useRef, useState } from "react";
+import  { useRef, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import annaUniversity from "@/assets/annaUniversity.png";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import url from "@/constants/urls";
 import { useToast } from "react-native-toast-notifications";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import themes from "@/constants/themes";
-import { useNavigation, useRouter } from "expo-router";
+import { useNavigation } from "expo-router";
 import { hp } from "@/helpers/dimensions";
 import Spinner from "react-native-loading-spinner-overlay";
 
@@ -218,6 +217,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderWidth: 1,
     borderColor: "rgb(115,115,115)",
+    height:hp(4.5),
     marginBottom: "3%"
   },
   forgetPass: {

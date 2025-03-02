@@ -1,5 +1,5 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import axios from "axios";
 import urls from "@/constants/urls";
@@ -37,7 +37,19 @@ const SettingScreen = () => {
     fetchDate();
   }, []);
 
-
+  const logOutAlert = () => {
+    Alert.alert("Delete Outpass", "Are you deleting your Outpass", [
+      {
+        text: "Cancel",
+        style: "cancel",
+      },
+      {
+        text: "Sure",
+        onPress: () => handleLogout(),
+        style: "default",
+      },
+    ]);
+  };
   const handleLogout = async () => {
     try {
       await AsyncStorage.removeItem("warden").then(() =>
@@ -56,10 +68,10 @@ const SettingScreen = () => {
       />
       <View style={styles.profile}>
         <AntDesign name="user" size={120} color="black" />
-        <Text style={styles.nameStyle}>{fetchingData[0]?.userName}</Text>
+        <Text style={styles.nameStyle}>{fetchingData[0]?.userName.toUpperCase()}</Text>
       </View>
       <View style={styles.btnContainer}>
-        <TouchableOpacity style={styles.btnOutline} onPress={handleLogout}>
+        <TouchableOpacity style={styles.btnOutline} onPress={logOutAlert}>
           <Text style={styles.logoutBtn}>Logout</Text>
         </TouchableOpacity>
       </View>

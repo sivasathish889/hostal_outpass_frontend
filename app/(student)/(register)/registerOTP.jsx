@@ -6,7 +6,7 @@ import {
     TouchableOpacity,
     View,
 } from "react-native";
-import React, { useState } from "react";
+import  { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import annaUniversity from "@/assets/annaUniversity.png";
 import url from "@/constants/urls";
@@ -135,7 +135,8 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: "rgb(115,115,115)",
         width: "80%",
-        alignSelf: "center",
+    height:hp(4.5),
+    alignSelf: "center",
     },
     lable: {
         textAlign: "center",

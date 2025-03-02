@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useRef, useState } from "react";
+import  { useRef, useState } from "react";
 import annaUniversity from "@/assets/annaUniversity.png";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useToast } from "react-native-toast-notifications";
@@ -104,7 +104,7 @@ const ChangePassword = () => {
               style={styles.input}
               placeholderTextColor={themes.placeholderTextColor}
               secureTextEntry={!newPasswordVisible}
-              onSubmitEditing={()=>nextInputRef.current.focus()}
+              onSubmitEditing={() => nextInputRef.current.focus()}
               onChangeText={(text) => {
                 setNewPassword(text);
                 setNewPasswordError(null);
@@ -220,7 +220,9 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderWidth: 1,
     borderColor: "rgb(115,115,115)",
-    marginBottom: "7%"
+    marginBottom: "7%",
+    height: hp(4.5)
+
   },
   hideIcon1: {
     position: "absolute",

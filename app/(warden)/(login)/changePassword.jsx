@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import annaUniversity from "@/assets/annaUniversity.png";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useToast } from "react-native-toast-notifications";
@@ -220,6 +220,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderWidth: 1,
     borderColor: "rgb(115,115,115)",
+    height:hp(4.5),
     marginBottom: "7%"
   },
   hideIcon1: {

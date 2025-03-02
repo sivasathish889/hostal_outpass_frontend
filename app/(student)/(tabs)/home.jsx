@@ -8,7 +8,7 @@ import {
   RefreshControl,
 } from "react-native";
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useToast } from "react-native-toast-notifications";
 import Spinner from "react-native-loading-spinner-overlay"
@@ -75,12 +75,12 @@ const HomeScreen = () => {
 
   const fetchData = async () => {
     await AsyncStorage.getItem("student").then((userId) => {
-        setUserId(userId);
+      setUserId(userId);
       axios
         .get(`${env.CLIENT_URL}${env.studentPendingPasses}/${userId}`)
         .then((data) => {
           setFetchPassData(data.data);
-      setRefreshing(false);
+          setRefreshing(false);
           setSpinnerVisible(false)
 
         });
@@ -105,28 +105,28 @@ const HomeScreen = () => {
       .then((data) => {
         if (data.data.success) {
           toast.show(data.data.message, {
-          type: "success",
-          placement: "bottom",
-          duration: 4000,
-          offset: 30,
-          animationType: "slide-in",
-        });
-        navigation.navigate("(tabs)");
-        setEditModelVisible(false);
+            type: "success",
+            placement: "bottom",
+            duration: 4000,
+            offset: 30,
+            animationType: "slide-in",
+          });
+          navigation.navigate("(tabs)");
+          setEditModelVisible(false);
           setDataRefresh(!dataRefresh);
           setSpinnerVisible(false)
 
-      } else {
+        } else {
           toast.show(data.data.message, {
-          type: "danger",
-          placement: "bottom",
-          duration: 4000,
-          offset: 30,
-          animationType: "slide-in",
-        });
-      setSpinnerVisible(false)
+            type: "danger",
+            placement: "bottom",
+            duration: 4000,
+            offset: 30,
+            animationType: "slide-in",
+          });
+          setSpinnerVisible(false)
 
-    }
+        }
       })
       .catch((error) => console.log(error));
   };

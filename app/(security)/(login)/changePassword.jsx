@@ -219,6 +219,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderWidth: 1,
     borderColor: "rgb(115,115,115)",
+    height:hp(4.5),
     marginBottom: "7%"
   },
   hideIcon1: {

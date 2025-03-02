@@ -21,7 +21,7 @@ export const collageLocationRadius = (userLatitude, userLongitude) => {
     }
 
     const distance = calculateDistance(collageLatitude, collageLongitude, userLatitude, userLongitude);
-
+    
     return distance
 
 }
