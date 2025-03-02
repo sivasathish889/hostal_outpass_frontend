@@ -1,8 +1,7 @@
 {
   "expo": {
     "name": "Hostal Outpass",
-    "slug": "hostal-outpass",
-    "owner": "Shiva",
+    "slug": "nativeApp",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
