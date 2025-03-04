@@ -9,6 +9,7 @@ import {
 import { Entypo } from '@expo/vector-icons';
 import { StatusBar } from 'expo-status-bar';
 import DateTimePicker from 'react-native-modal-datetime-picker';
+import { hp } from "@/helpers/dimensions";
 
 const EditPassModals = (props) => {
 
@@ -42,7 +43,7 @@ const EditPassModals = (props) => {
                             <TextInput
                                 style={styles.input}
                                 placeholder={roomNo}
-                                onSubmitEditing={()=>destinationRef.current.focus()}
+                                onSubmitEditing={() => destinationRef.current.focus()}
                                 placeholderTextColor={"#AFAFAF"}
                                 onChangeText={(text) => {
                                     setRoomNo(text);
@@ -58,7 +59,7 @@ const EditPassModals = (props) => {
                                 style={styles.input}
                                 placeholder={destination}
                                 ref={destinationRef}
-                                onSubmitEditing={()=>purposeRef.current.focus()}
+                                onSubmitEditing={() => purposeRef.current.focus()}
                                 placeholderTextColor={"#AFAFAF"}
                                 onChangeText={(text) => {
                                     setDestination(text);
@@ -172,6 +173,7 @@ const styles = StyleSheet.create({
         paddingStart: 10,
         borderRadius: 5,
         borderWidth: 1,
+        height: hp(4.5),
         borderColor: "rgb(115,115,115)",
     },
     inputLabel: {

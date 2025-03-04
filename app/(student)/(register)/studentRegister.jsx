@@ -17,6 +17,7 @@ import { useNavigation } from "expo-router";
 import { hp } from "@/helpers/dimensions"
 import themes from "@/constants/themes";
 import Spinner from "react-native-loading-spinner-overlay";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 
 const StudentRegister = () => {
@@ -45,6 +46,8 @@ const StudentRegister = () => {
   let [passwordError, setPasswordError] = useState(null);
   let [confirmPasswordError, setConfirmPasswordError] = useState(null);
 
+  const [showPassword, setShowPassword] = useState(false);
+
   const registerRef = useRef()
   const departmentRef = useRef()
   const phoneNumberRef = useRef()
@@ -60,25 +63,25 @@ const StudentRegister = () => {
   const handleSubmit = async () => {
     // Form Validationn
     if (name === null || name.length == 0) {
-      return setNameError("Please Enter Your name");
+      return setNameError("Name is Required");
     } else if (registerNumber === null || registerNumber.length == 0) {
-      return setRegisterNumberError("Please Enter RegisterNumber");
+      return setRegisterNumberError("RegisterNumber is Required");
     } else if (department === null || department.length == 0) {
-      return setDepartmentError("Please Enter Your Department");
+      return setDepartmentError("Department is Required");
     } else if (year === null || year.length == 0) {
-      return setYearError("Please Enter Your Year");
+      return setYearError("Year is Required");
     } else if (phoneNumber === null || phoneNumber.length == 0) {
-      return setPhoneNumberError("Please Enter Your Phone Number");
+      return setPhoneNumberError("Phone Number is Required");
     } else if (parentNumber === null || parentNumber.length == 0) {
-      return setParentNumberError("Please Enter Your Parent Number");
+      return setParentNumberError("Parent Number is Required");
     } else if (eMail === null || eMail.length == 0) {
-      return setEMailError("Please Enter Your e-mail");
+      return setEMailError("e-mail is Required");
     } else if (district === null || district.length == 0) {
-      return setDistrictError("Please Enter Your District");
+      return setDistrictError("District is Required");
     } else if (password === null || password.length == 0) {
-      return setPasswordError("Please Enter Your Password");
+      return setPasswordError("Password is Required");
     } else if (confirmPassword === null || confirmPassword.length == 0) {
-      return setConfirmPasswordError("Please Enter Confirm Password");
+      return setConfirmPasswordError("Confirm Password is Required");
     }
 
     let payload = {
@@ -95,7 +98,7 @@ const StudentRegister = () => {
     };
     setSpinnerVisible(true)
     try {
-      const { data } = axios.post(`${url.CLIENT_URL}${url.studentRegister}`, payload)
+      const { data } = await axios.post(`${url.CLIENT_URL}${url.studentRegister}`, payload)
       if (data.success) {
         toast.show(data.message, {
           type: "success",
@@ -133,6 +136,9 @@ const StudentRegister = () => {
       setSpinnerVisible(false)
     }
   };
+  const toggleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
 
   return (
     <ImageBackground source={annaUniversity} style={styles.backgroundImage}>
@@ -152,7 +158,7 @@ const StudentRegister = () => {
               placeholder="Enter Your Name"
               style={styles.input}
               placeholderTextColor={themes.placeholderTextColor}
-              onSubmitEditing={()=>registerRef.current.focus()}
+              onSubmitEditing={() => registerRef.current.focus()}
               onChangeText={(text) => {
                 setName(text);
                 setNameError(null);
@@ -177,7 +183,7 @@ const StudentRegister = () => {
               placeholderTextColor={themes.placeholderTextColor}
               keyboardType="number-pad"
               ref={registerRef}
-              onSubmitEditing={()=>departmentRef.current.focus()}
+              onSubmitEditing={() => departmentRef.current.focus()}
               onChangeText={(text) => {
                 setRegisterNumber(text);
                 setRegisterNumberError(null);
@@ -207,7 +213,7 @@ const StudentRegister = () => {
                 }}
                 value={department}
                 ref={departmentRef}
-                onSubmitEditing={()=>phoneNumberRef.current.focus()}
+                onSubmitEditing={() => phoneNumberRef.current.focus()}
                 inputMode="text"
                 accessibilityLabel="department"
                 aria-label="department"
@@ -269,7 +275,7 @@ const StudentRegister = () => {
               onChangeText={(text) => { setPhoneNumber(text); setPhoneNumberError(null) }}
               value={phoneNumber}
               ref={phoneNumberRef}
-              onSubmitEditing={()=>parentNumberRef.current.focus()}
+              onSubmitEditing={() => parentNumberRef.current.focus()}
               inputMode="numeric"
               accessibilityLabel="phoneNumber"
               aria-label="phoneNumber"
@@ -291,7 +297,7 @@ const StudentRegister = () => {
               onChangeText={(text) => { setParentNumber(text); setParentNumberError(null) }}
               value={parentNumber}
               ref={parentNumberRef}
-              onSubmitEditing={()=>emailRef.current.focus()}
+              onSubmitEditing={() => emailRef.current.focus()}
               inputMode="numeric"
               accessibilityLabel="parentNumber"
               aria-label="parentNumber"
@@ -311,7 +317,7 @@ const StudentRegister = () => {
               onChangeText={(text) => { setEMail(text); setEMailError(null) }}
               value={eMail}
               ref={emailRef}
-              onSubmitEditing={()=>districtRef.current.focus()}
+              onSubmitEditing={() => districtRef.current.focus()}
               keyboardType="email-address"
               inputMode="email"
               accessibilityLabel="email"
@@ -334,7 +340,7 @@ const StudentRegister = () => {
               value={district}
               inputMode="text"
               ref={districtRef}
-              onSubmitEditing={()=>passwordRef.current.focus()}
+              onSubmitEditing={() => passwordRef.current.focus()}
               accessibilityLabel="district"
               aria-label="district"
             />
@@ -347,18 +353,28 @@ const StudentRegister = () => {
           <View style={styles.inputRows}>
             <View style={styles.inputGrid}>
               <Text style={styles.label}>Password :</Text>
-              <TextInput
-                placeholder="Enter Your Password"
-                style={styles.input}
-                placeholderTextColor={themes.placeholderTextColor}
-                onChangeText={(text) => { setPassword(text); setPasswordError(null) }}
-                secureTextEntry
-                value={password}ref={passwordRef}
-                onSubmitEditing={()=>confirmPasswordRef.current.focus()}
-                inputMode="text"
-                accessibilityLabel="password"
-                aria-label="password"
-              />
+              <View>
+                <TextInput
+                  placeholder="Enter Your Password"
+                  style={[styles.input, { paddingEnd: 25 }]}
+                  placeholderTextColor={themes.placeholderTextColor}
+                  onChangeText={(text) => { setPassword(text); setPasswordError(null) }}
+                  secureTextEntry={!showPassword}
+                  value={password} ref={passwordRef}
+                  onSubmitEditing={() => confirmPasswordRef.current.focus()}
+                  inputMode="text"
+                  accessibilityLabel="password"
+                  aria-label="password"
+
+                />
+                <MaterialCommunityIcons
+                  name={showPassword ? "eye" : "eye-off"}
+                  size={18}
+                  color="black"
+                  style={styles.icon}
+                  onPress={toggleShowPassword}
+                />
+              </View>
               {passwordError != null ? (
                 <Text style={styles.errorText}>{passwordError}</Text>
               ) : (
@@ -368,17 +384,26 @@ const StudentRegister = () => {
 
             <View style={styles.inputGrid}>
               <Text style={styles.label}>Confirm Password :</Text>
-              <TextInput
-                placeholder="Enter Confirm Password"
-                style={[styles.input]}
-                placeholderTextColor={themes.placeholderTextColor}
-                onChangeText={(text) => { setConfirmPassword(text); setConfirmPasswordError(null) }}
-                value={confirmPassword}
-                secureTextEntry
-                inputMode="text"
-                aria-label="confirm-password"
-                accessibilityLabel="confirm-password"
-              />
+              <View>
+                <TextInput
+                  placeholder="Enter Confirm Password"
+                  style={[styles.input, { paddingEnd: 25 }]}
+                  placeholderTextColor={themes.placeholderTextColor}
+                  onChangeText={(text) => { setConfirmPassword(text); setConfirmPasswordError(null) }}
+                  value={confirmPassword}
+                  secureTextEntry={!showPassword}
+                  inputMode="text"
+                  aria-label="confirm-password"
+                  accessibilityLabel="confirm-password"
+                />
+                <MaterialCommunityIcons
+                  name={showPassword ? "eye" : "eye-off"}
+                  size={18}
+                  color="black"
+                  style={styles.icon}
+                  onPress={toggleShowPassword}
+                />
+              </View>
               {confirmPasswordError != null ? (
                 <Text style={styles.errorText}>{confirmPasswordError}</Text>
               ) : (
@@ -464,7 +489,7 @@ const styles = StyleSheet.create({
     width: "100%",
     color: "black",
     fontSize: hp(1.3),
-    height:hp(4.5),
+    height: hp(4.5),
     paddingStart: 15,
   },
   label: {
@@ -499,5 +524,10 @@ const styles = StyleSheet.create({
     fontSize: hp(1.3),
     marginStart: 10,
     marginTop: 5,
+  },
+  icon: {
+    position: "absolute",
+    bottom: "30%",
+    right: "4%",
   },
 });

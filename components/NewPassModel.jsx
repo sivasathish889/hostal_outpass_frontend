@@ -18,6 +18,7 @@ import { Entypo } from "@expo/vector-icons";
 import { collageLocationRadius } from "@/helpers/calculateUserRadius";
 import Spinner from "react-native-loading-spinner-overlay"
 import * as Location from "expo-location"
+import { hp } from "@/helpers/dimensions";
 
 
 const NewPassModel = (props) => {
@@ -350,6 +351,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderWidth: 1,
     borderColor: "rgb(115,115,115)",
+    height: hp(4.5),
   },
   inputLabel: {
     fontSize: 18,

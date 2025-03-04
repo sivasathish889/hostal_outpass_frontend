@@ -153,13 +153,13 @@ const home = () => {
                     onPress={() => AlertingAction("Out Time Updated", item._id)}
                     style={{ backgroundColor: "green", padding: 5 }}
                   >
-                    <Text style={{fontSize:10}}>Out Time</Text>
+                    <Text style={{ fontSize: 10 }}>Out Time</Text>
                   </TouchableOpacity>
                   <TouchableOpacity
                     onPress={() => AlertingAction("In Time Updated", item._id)}
                     style={{ backgroundColor: "gray", padding: 5 }}
                   >
-                    <Text  style={{fontSize:10}}>In Time</Text>
+                    <Text style={{ fontSize: 10 }}>In Time</Text>
                   </TouchableOpacity>
                 </View>
 

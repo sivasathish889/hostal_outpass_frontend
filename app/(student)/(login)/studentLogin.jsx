@@ -38,9 +38,9 @@ const studentLogin = () => {
 
   const handleSubmit = async () => {
     if (registerNumber === null || registerNumber.length == 0) {
-      return setRegisterNumberError("Please Enter Register Number");
+      return setRegisterNumberError("Register Number is Required");
     } else if (password === null || password.length == 0) {
-      return setPasswordError("Please Enter Password");
+      return setPasswordError("Password is Required");
     }
     let payload = {
       registerNumber,
@@ -121,33 +121,35 @@ const studentLogin = () => {
               )}
               <View>
                 <Text style={styles.lable}>Password :</Text>
-                <TextInput
-                  placeholder="Enter Your Password"
-                  style={styles.input}
-                  placeholderTextColor={themes.placeholderTextColor}
-                  secureTextEntry={!showPassword}
-                  ref={nextInputRef}
-                  onChangeText={(text) => {
-                    setPassword(text);
-                    setPasswordError(null);
-                  }}
-                  value={password}
-                  inputMode="text"
-                  accessibilityLabel="password"
-                  aria-label="password"
-                />
+                <View>
+                  <TextInput
+                    placeholder="Enter Your Password"
+                    style={styles.input}
+                    placeholderTextColor={themes.placeholderTextColor}
+                    secureTextEntry={!showPassword}
+                    ref={nextInputRef}
+                    onChangeText={(text) => {
+                      setPassword(text);
+                      setPasswordError(null);
+                    }}
+                    value={password}
+                    inputMode="text"
+                    accessibilityLabel="password"
+                    aria-label="password"
+                  />
+                  <MaterialCommunityIcons
+                    name={showPassword ? "eye" : "eye-off"}
+                    size={18}
+                    color="black"
+                    style={styles.icon}
+                    onPress={toggleShowPassword}
+                  />
+                </View>
                 {passwordError != null ? (
                   <Text style={styles.errorMsg}>{passwordError}</Text>
                 ) : (
                   ""
                 )}
-                <MaterialCommunityIcons
-                  name={showPassword ? "eye" : "eye-off"}
-                  size={18}
-                  color="black"
-                  style={styles.icon}
-                  onPress={toggleShowPassword}
-                />
               </View>
               <Text
                 style={styles.forgetPass}
@@ -248,7 +250,7 @@ const styles = StyleSheet.create({
   },
   icon: {
     position: "absolute",
-    bottom: "17%",
+    bottom: "25%",
     right: "4%",
   },
   errorMsg: {

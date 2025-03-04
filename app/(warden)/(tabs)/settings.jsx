@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useEffect, useState } from "react";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import axios from "axios";
@@ -38,7 +38,7 @@ const SettingScreen = () => {
   }, []);
 
   const logOutAlert = () => {
-    Alert.alert("Delete Outpass", "Are you deleting your Outpass", [
+    Alert.alert("Log Out", "Are you sure you want logout?", [
       {
         text: "Cancel",
         style: "cancel",

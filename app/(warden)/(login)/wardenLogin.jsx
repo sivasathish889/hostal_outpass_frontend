@@ -6,7 +6,7 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import  { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import annaUniversity from "@/assets/annaUniversity.png";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -39,9 +39,9 @@ const WardenLogin = () => {
 
   const handleSubmit = async () => {
     if (userName === null || userName.length == 0) {
-      return setUserNameError("Please Enter Username");
+      return setUserNameError("Username is Required");
     } else if (password === null || password.length == 0) {
-      return setPasswordError("Please Enter Password");
+      return setPasswordError("Password is Required");
     }
     let payload = {
       userName,
@@ -96,7 +96,7 @@ const WardenLogin = () => {
               placeholder="Enter Your User Name"
               style={styles.input}
               placeholderTextColor={themes.placeholderTextColor}
-              onSubmitEditing={()=>nextInputRef.current.focus()}
+              onSubmitEditing={() => nextInputRef.current.focus()}
               onChangeText={(text) => {
                 setUserName(text);
                 setUserNameError(null);
@@ -107,39 +107,41 @@ const WardenLogin = () => {
               accessibilityLabel="warden-userName"
             />
             {userNameError != null ? (
-              <Text style={{ color: "red" }}>{userNameError}</Text>
+              <Text style={styles.errorMsg}>{userNameError}</Text>
             ) : (
               ""
             )}
             <View>
               <Text style={styles.lable}>Password :</Text>
-              <TextInput
-                placeholder="Enter Your Password"
-                style={styles.input}
-                placeholderTextColor={themes.placeholderTextColor}
-                secureTextEntry={!showPassword}
-                ref={nextInputRef}
-                onChangeText={(text) => {
-                  setPassword(text);
-                  setPasswordError(null);
-                }}
-                value={password}
-                inputMode="text"
-                aria-label="warden-password"
-                accessibilityLabel="warden-password"
-              />
+              <View>
+                <TextInput
+                  placeholder="Enter Your Password"
+                  style={styles.input}
+                  placeholderTextColor={themes.placeholderTextColor}
+                  secureTextEntry={!showPassword}
+                  ref={nextInputRef}
+                  onChangeText={(text) => {
+                    setPassword(text);
+                    setPasswordError(null);
+                  }}
+                  value={password}
+                  inputMode="text"
+                  aria-label="warden-password"
+                  accessibilityLabel="warden-password"
+                />
+                <MaterialCommunityIcons
+                  name={showPassword ? "eye" : "eye-off"}
+                  size={18}
+                  color="black"
+                  style={styles.icon}
+                  onPress={toggleShowPassword}
+                />
+              </View>
               {passwordError != null ? (
-                <Text style={{ color: "red" }}>{passwordError}</Text>
+                <Text style={styles.errorMsg}>{passwordError}</Text>
               ) : (
                 ""
               )}
-              <MaterialCommunityIcons
-                name={showPassword ? "eye" : "eye-off"}
-                size={18}
-                color="black"
-                style={styles.icon}
-                onPress={toggleShowPassword}
-              />
             </View>
             <Text
               style={styles.forgetPass}
@@ -217,7 +219,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderWidth: 1,
     borderColor: "rgb(115,115,115)",
-    height:hp(4.5),
+    height: hp(4.5),
     marginBottom: "3%"
   },
   forgetPass: {
@@ -227,7 +229,11 @@ const styles = StyleSheet.create({
   },
   icon: {
     position: "absolute",
-    bottom: "27%",
+    bottom: "40%",
     right: "4%",
   },
+  errorMsg: {
+    color: "red",
+    fontSize: hp(1.3)
+  }
 });

@@ -51,9 +51,9 @@ const ChangePassword = () => {
       confirmNewPassword,
     };
     if (newPassword === null || newPassword.length == 0) {
-      return setNewPasswordError("Please Enter New Password");
+      return setNewPasswordError("New Password is Required");
     } else if (confirmNewPassword === null || confirmNewPassword.length == 0) {
-      return setConfirmNewPasswordError("Please Enter Confirm Password");
+      return setConfirmNewPasswordError("Confirm Password is Required");
     }
     setSpinnerVisible(true)
     try {
@@ -99,53 +99,57 @@ const ChangePassword = () => {
 
           <View style={styles.inputgroup}>
             <Text style={styles.lable}>New Password :</Text>
-            <TextInput
-              placeholder="Enter Your New Password"
-              style={styles.input}
-              placeholderTextColor={themes.placeholderTextColor}
-              secureTextEntry={!newPasswordVisible}
-              onSubmitEditing={()=>nextInputRef.current.focus()}
-              onChangeText={(text) => {
-                setNewPassword(text);
-                setNewPasswordError(null);
-              }}
-              inputMode="text"
-            />
-            <MaterialCommunityIcons
-              name={showPassword ? "eye" : "eye-off"}
-              size={18}
-              color="black"
-              style={styles.hideIcon1}
-              onPress={toggleNewPasswordVisible}
-            />
+            <View>
+              <TextInput
+                placeholder="Enter Your New Password"
+                style={styles.input}
+                placeholderTextColor={themes.placeholderTextColor}
+                secureTextEntry={!newPasswordVisible}
+                onSubmitEditing={() => nextInputRef.current.focus()}
+                onChangeText={(text) => {
+                  setNewPassword(text);
+                  setNewPasswordError(null);
+                }}
+                inputMode="text"
+              />
+              <MaterialCommunityIcons
+                name={showPassword ? "eye" : "eye-off"}
+                size={18}
+                color="black"
+                style={styles.hideIcon1}
+                onPress={toggleNewPasswordVisible}
+              />
+            </View>
             {newPasswordError != null ? (
-              <Text style={{ color: "red" }}>{newPasswordError}</Text>
+              <Text style={styles.errorMsg}>{newPasswordError}</Text>
             ) : (
               ""
             )}
             <Text style={styles.lable}>Password :</Text>
-            <TextInput
-              placeholder="Enter Confirm Password"
-              style={styles.input}
-              placeholderTextColor={themes.placeholderTextColor}
-              secureTextEntry={!confrimPasswordVisible}
-              ref={nextInputRef}
-              onChangeText={(text) => {
-                setConfirmNewPassword(text);
-                setConfirmNewPasswordError(null);
-              }}
-              keyboardType="visible-password"
-              inputMode="text"
-            />
-            <MaterialCommunityIcons
-              name={showPassword ? "eye" : "eye-off"}
-              size={18}
-              color="black"
-              style={styles.hideIcon2}
-              onPress={toggleConfirmPasswordVisible}
-            />
+            <View>
+              <TextInput
+                placeholder="Enter Confirm Password"
+                style={styles.input}
+                placeholderTextColor={themes.placeholderTextColor}
+                secureTextEntry={!confrimPasswordVisible}
+                ref={nextInputRef}
+                onChangeText={(text) => {
+                  setConfirmNewPassword(text);
+                  setConfirmNewPasswordError(null);
+                }}
+                keyboardType="visible-password"
+                inputMode="text"
+              />
+              <MaterialCommunityIcons
+                name={showPassword ? "eye" : "eye-off"}
+                size={18}
+                color="black"
+                style={styles.hideIcon2}
+                onPress={toggleConfirmPasswordVisible}
+              />
+            </View>
             {confirmNewPasswordError != null ? (
-              <Text style={{ color: "red" }}>{confirmNewPasswordError}</Text>
+              <Text style={styles.errorMsg}>{confirmNewPasswordError}</Text>
             ) : (
               ""
             )}
@@ -220,17 +224,21 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderWidth: 1,
     borderColor: "rgb(115,115,115)",
-    height:hp(4.5),
+    height: hp(4.5),
     marginBottom: "7%"
   },
   hideIcon1: {
     position: "absolute",
-    bottom: 116,
+    top : "18%",
     right: 10,
   },
   hideIcon2: {
     position: "absolute",
-    bottom: 30,
+    top : "18%",
     right: 10,
   },
+  errorMsg: {
+    color: "red",
+    fontSize: hp(1.3)
+  }
 });

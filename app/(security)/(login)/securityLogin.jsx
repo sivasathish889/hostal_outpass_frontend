@@ -38,9 +38,9 @@ const securityLogin = () => {
 
   const handleSubmit = async () => {
     if (userName === null || userName.length == 0) {
-      return setUserNameError("Please Enter Username");
+      return setUserNameError("Username is Required");
     } else if (password === null || password.length == 0) {
-      return setPasswordError("Please Enter Password");
+      return setPasswordError("Password is Required");
     }
 
     setSpinnerVisible(true)
@@ -101,12 +101,10 @@ const securityLogin = () => {
                 setUserNameError(null);
               }}
               value={userName}
-              key={"warden"}
-              aria-label="warden-userName"
-              accessibilityLabel="warden-userName"
+              autoComplete="securityUserName"
             />
             {userNameError != null ? (
-              <Text style={{ color: "red" }}>{userNameError}</Text>
+              <Text style={styles.errorMsg}>{userNameError}</Text>
             ) : (
               ""
             )}
@@ -124,11 +122,10 @@ const securityLogin = () => {
                 }}
                 value={password}
                 inputMode="text"
-                aria-label="warden-password"
-                accessibilityLabel="warden-password"
+                autoComplete="securityPassword" 
               />
               {passwordError != null ? (
-                <Text style={{ color: "red" }}>{passwordError}</Text>
+                <Text style={styles.errorMsg}>{passwordError}</Text>
               ) : (
                 ""
               )}
@@ -229,4 +226,8 @@ const styles = StyleSheet.create({
     bottom: "27%",
     right: "4%",
   },
+  errorMsg: {
+    color: "red",
+    fontSize: hp(1.3)
+  }
 });

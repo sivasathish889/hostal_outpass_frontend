@@ -92,6 +92,7 @@ const PrevPass = () => {
       </View> */}
       <FlatList
         data={data}
+        style={{ marginBottom: hp(4) }}
         renderItem={({ item }) => {
           return (
             <View
