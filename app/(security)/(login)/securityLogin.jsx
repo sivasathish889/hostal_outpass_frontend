@@ -9,7 +9,7 @@ import {
 import React, { useRef, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import annaUniversity from "@/assets/annaUniversity.png";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { FontAwesome, MaterialCommunityIcons } from "@expo/vector-icons";
 import url from "@/constants/urls";
 import { useToast } from "react-native-toast-notifications";
 import axios from "axios";
@@ -58,7 +58,7 @@ const securityLogin = () => {
         setPassword(null)
         navigation.navigate("verifyOtp", {
           otp: data.Token,
-          user : data.user
+          user: data.user
         });
       } else {
         toast.show(data.message, {
@@ -91,18 +91,21 @@ const securityLogin = () => {
 
           <View style={styles.inputgroup}>
             <Text style={styles.lable}>User Name :</Text>
-            <TextInput
-              placeholder="Enter Your User Name"
-              style={styles.input}
-              placeholderTextColor={themes.placeholderTextColor}
-              onSubmitEditing={()=>nextInputRef.current.focus()}
-              onChangeText={(text) => {
-                setUserName(text);
-                setUserNameError(null);
-              }}
-              value={userName}
-              autoComplete="securityUserName"
-            />
+            <View>
+              <FontAwesome name="user" size={18} color="rgba(0,0,0,.6)" style={styles.inputIcon} />
+              <TextInput
+                placeholder="Enter Your User Name"
+                style={styles.input}
+                placeholderTextColor={themes.placeholderTextColor}
+                onSubmitEditing={() => nextInputRef.current.focus()}
+                onChangeText={(text) => {
+                  setUserName(text);
+                  setUserNameError(null);
+                }}
+                value={userName}
+                autoComplete="securityUserName"
+              />
+            </View>
             {userNameError != null ? (
               <Text style={styles.errorMsg}>{userNameError}</Text>
             ) : (
@@ -110,20 +113,24 @@ const securityLogin = () => {
             )}
             <View>
               <Text style={styles.lable}>Password :</Text>
-              <TextInput
-                placeholder="Enter Your Password"
-                style={styles.input}
-                placeholderTextColor={themes.placeholderTextColor}
-                secureTextEntry={!showPassword}
-                ref={nextInputRef}
-                onChangeText={(text) => {
-                  setPassword(text);
-                  setPasswordError(null);
-                }}
-                value={password}
-                inputMode="text"
-                autoComplete="securityPassword" 
-              />
+              <View>
+                <FontAwesome name="lock" size={18} color="rgba(0,0,0,.6)" style={styles.inputIcon} />
+
+                <TextInput
+                  placeholder="Enter Your Password"
+                  style={styles.input}
+                  placeholderTextColor={themes.placeholderTextColor}
+                  secureTextEntry={!showPassword}
+                  ref={nextInputRef}
+                  onChangeText={(text) => {
+                    setPassword(text);
+                    setPasswordError(null);
+                  }}
+                  value={password}
+                  inputMode="text"
+                  autoComplete="securityPassword"
+                />
+              </View>
               {passwordError != null ? (
                 <Text style={styles.errorMsg}>{passwordError}</Text>
               ) : (
@@ -213,7 +220,8 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderWidth: 1,
     borderColor: "rgb(115,115,115)",
-    height:hp(4.5),
+    height: hp(4.5),
+    paddingStart : "12%",
     marginBottom: "3%"
   },
   forgetPass: {
@@ -229,5 +237,11 @@ const styles = StyleSheet.create({
   errorMsg: {
     color: "red",
     fontSize: hp(1.3)
+  },
+  inputIcon: {
+    position: "absolute",
+    top: "24%",
+    left: "4%",
+    zIndex: 99
   }
 });

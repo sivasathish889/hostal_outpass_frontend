@@ -5,6 +5,7 @@ import {
   View,
   TextInput,
   TouchableOpacity,
+  ScrollView,
 } from "react-native";
 import { useRef, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -18,7 +19,7 @@ import { hp } from "@/helpers/dimensions"
 import themes from "@/constants/themes";
 import Spinner from "react-native-loading-spinner-overlay";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
 
 const StudentRegister = () => {
   const [isFocus, setIsFocus] = useState(false);
@@ -265,49 +266,52 @@ const StudentRegister = () => {
             </View>
           </View>
 
-          <View style={styles.inputGroups}>
-            <Text style={styles.label}>Phone Number :</Text>
-            <TextInput
-              placeholder="Enter Your Phone Number"
-              style={styles.input}
-              placeholderTextColor={themes.placeholderTextColor}
-              keyboardType="number-pad"
-              onChangeText={(text) => { setPhoneNumber(text); setPhoneNumberError(null) }}
-              value={phoneNumber}
-              ref={phoneNumberRef}
-              onSubmitEditing={() => parentNumberRef.current.focus()}
-              inputMode="numeric"
-              accessibilityLabel="phoneNumber"
-              aria-label="phoneNumber"
-            />
-            {phoneNumberError != null ? (
-              <Text style={styles.errorText}>{phoneNumberError}</Text>
-            ) : (
-              ""
-            )}
+          <View style={styles.inputRows}>
+            <View style={styles.inputGrid}>
+              <Text style={styles.label}>Phone Number :</Text>
+              <TextInput
+                placeholder="Enter Your Phone Number"
+                style={styles.input}
+                placeholderTextColor={themes.placeholderTextColor}
+                keyboardType="number-pad"
+                onChangeText={(text) => { setPhoneNumber(text); setPhoneNumberError(null) }}
+                value={phoneNumber}
+                ref={phoneNumberRef}
+                onSubmitEditing={() => parentNumberRef.current.focus()}
+                inputMode="numeric"
+                accessibilityLabel="phoneNumber"
+                aria-label="phoneNumber"
+              />
+              {phoneNumberError != null ? (
+                <Text style={styles.errorText}>{phoneNumberError}</Text>
+              ) : (
+                ""
+              )}
+            </View>
+
+            <View style={styles.inputGrid}>
+              <Text style={styles.label}>Parent Number :</Text>
+              <TextInput
+                placeholder="Enter Your Parent Number "
+                style={styles.input}
+                keyboardType="number-pad"
+                placeholderTextColor={themes.placeholderTextColor}
+                onChangeText={(text) => { setParentNumber(text); setParentNumberError(null) }}
+                value={parentNumber}
+                ref={parentNumberRef}
+                onSubmitEditing={() => emailRef.current.focus()}
+                inputMode="numeric"
+                accessibilityLabel="parentNumber"
+                aria-label="parentNumber"
+              />
+              {parentNumberError != null ? (
+                <Text style={styles.errorText}>{parentNumberError}</Text>
+              ) : (
+                ""
+              )}
+            </View>
           </View>
 
-          <View style={styles.inputGroups}>
-            <Text style={styles.label}>Parent Number :</Text>
-            <TextInput
-              placeholder="Enter Your Parent Number "
-              style={styles.input}
-              keyboardType="number-pad"
-              placeholderTextColor={themes.placeholderTextColor}
-              onChangeText={(text) => { setParentNumber(text); setParentNumberError(null) }}
-              value={parentNumber}
-              ref={parentNumberRef}
-              onSubmitEditing={() => emailRef.current.focus()}
-              inputMode="numeric"
-              accessibilityLabel="parentNumber"
-              aria-label="parentNumber"
-            />
-            {parentNumberError != null ? (
-              <Text style={styles.errorText}>{parentNumberError}</Text>
-            ) : (
-              ""
-            )}
-          </View>
           <View style={styles.inputGroups}>
             <Text style={styles.label}>E-mail :</Text>
             <TextInput
@@ -350,66 +354,66 @@ const StudentRegister = () => {
               ""
             )}
           </View>
-          <View style={styles.inputRows}>
-            <View style={styles.inputGrid}>
-              <Text style={styles.label}>Password :</Text>
-              <View>
-                <TextInput
-                  placeholder="Enter Your Password"
-                  style={[styles.input, { paddingEnd: 25 }]}
-                  placeholderTextColor={themes.placeholderTextColor}
-                  onChangeText={(text) => { setPassword(text); setPasswordError(null) }}
-                  secureTextEntry={!showPassword}
-                  value={password} ref={passwordRef}
-                  onSubmitEditing={() => confirmPasswordRef.current.focus()}
-                  inputMode="text"
-                  accessibilityLabel="password"
-                  aria-label="password"
+          <View style={styles.inputGroups}>
+            <Text style={styles.label}>Password :</Text>
+            <View>
+              <TextInput
+                placeholder="Enter Your Password"
+                style={[styles.input, { paddingEnd: 25 }]}
+                placeholderTextColor={themes.placeholderTextColor}
+                onChangeText={(text) => { setPassword(text); setPasswordError(null) }}
+                secureTextEntry={!showPassword}
+                value={password}
+                ref={passwordRef}
+                onSubmitEditing={() => confirmPasswordRef.current.focus()}
+                inputMode="text"
+                accessibilityLabel="password"
+                aria-label="password"
 
-                />
-                <MaterialCommunityIcons
-                  name={showPassword ? "eye" : "eye-off"}
-                  size={18}
-                  color="black"
-                  style={styles.icon}
-                  onPress={toggleShowPassword}
-                />
-              </View>
-              {passwordError != null ? (
-                <Text style={styles.errorText}>{passwordError}</Text>
-              ) : (
-                ""
-              )}
+              />
+              <MaterialCommunityIcons
+                name={showPassword ? "eye" : "eye-off"}
+                size={18}
+                color="black"
+                style={styles.icon}
+                onPress={toggleShowPassword}
+              />
             </View>
+            {passwordError != null ? (
+              <Text style={styles.errorText}>{passwordError}</Text>
+            ) : (
+              ""
+            )}
+          </View>
 
-            <View style={styles.inputGrid}>
-              <Text style={styles.label}>Confirm Password :</Text>
-              <View>
-                <TextInput
-                  placeholder="Enter Confirm Password"
-                  style={[styles.input, { paddingEnd: 25 }]}
-                  placeholderTextColor={themes.placeholderTextColor}
-                  onChangeText={(text) => { setConfirmPassword(text); setConfirmPasswordError(null) }}
-                  value={confirmPassword}
-                  secureTextEntry={!showPassword}
-                  inputMode="text"
-                  aria-label="confirm-password"
-                  accessibilityLabel="confirm-password"
-                />
-                <MaterialCommunityIcons
-                  name={showPassword ? "eye" : "eye-off"}
-                  size={18}
-                  color="black"
-                  style={styles.icon}
-                  onPress={toggleShowPassword}
-                />
-              </View>
-              {confirmPasswordError != null ? (
-                <Text style={styles.errorText}>{confirmPasswordError}</Text>
-              ) : (
-                ""
-              )}
+          <View style={styles.inputGroups}>
+            <Text style={styles.label}>Confirm Password :</Text>
+            <View>
+              <TextInput
+                placeholder="Enter Confirm Password"
+                style={[styles.input, { paddingEnd: 25 }]}
+                placeholderTextColor={themes.placeholderTextColor}
+                onChangeText={(text) => { setConfirmPassword(text); setConfirmPasswordError(null) }}
+                value={confirmPassword}
+                secureTextEntry={!showPassword}
+                inputMode="text"
+                aria-label="confirm-password"
+                accessibilityLabel="confirm-password"
+                ref={confirmPasswordRef}
+              />
+              <MaterialCommunityIcons
+                name={showPassword ? "eye" : "eye-off"}
+                size={18}
+                color="black"
+                style={styles.icon}
+                onPress={toggleShowPassword}
+              />
             </View>
+            {confirmPasswordError != null ? (
+              <Text style={styles.errorText}>{confirmPasswordError}</Text>
+            ) : (
+              ""
+            )}
           </View>
 
           <Text style={{ marginStart: 15 }}>

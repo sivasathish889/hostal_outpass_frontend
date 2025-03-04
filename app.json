@@ -22,7 +22,8 @@
         "backgroundColor": "#0B7583"
       },
       "package": "com.shiva889.nativeApp",
-      "permissions": ["ACCESS_BACKGROUND_LOCATION"]
+      "permissions": ["ACCESS_BACKGROUND_LOCATION"],
+      "softwareKeyboardLayoutMode": "pan"
     },
     "web": {
       "bundler": "metro",

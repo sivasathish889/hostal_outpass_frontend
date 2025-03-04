@@ -20,6 +20,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import themes from "@/constants/themes";
 import Spinner from "react-native-loading-spinner-overlay";
+import FontAwesome from '@expo/vector-icons/FontAwesome';
+
 
 const studentLogin = () => {
   let navigation = useRouter();
@@ -99,21 +101,24 @@ const studentLogin = () => {
 
             <View style={styles.inputgroup}>
               <Text style={styles.lable}>Register Number :</Text>
-              <TextInput
-                placeholder="Enter Your Regsiter Number"
-                style={styles.input}
-                placeholderTextColor={themes.placeholderTextColor}
-                onSubmitEditing={() => nextInputRef.current.focus()}
-                onChangeText={(text) => {
-                  setRegisterNumber(text);
-                  setRegisterNumberError(null);
-                }}
-                keyboardType="number-pad"
-                value={registerNumber}
-                inputMode="numeric"
-                accessibilityLabel="registerNumber"
-                aria-label="registerNumber"
-              />
+              <View>
+                <FontAwesome name="user" size={18} color="rgba(0,0,0,.6)" style={styles.inputIcon} />
+                <TextInput
+                  placeholder="Enter Your Regsiter Number"
+                  style={styles.input}
+                  placeholderTextColor={themes.placeholderTextColor}
+                  onSubmitEditing={() => nextInputRef.current.focus()}
+                  onChangeText={(text) => {
+                    setRegisterNumber(text);
+                    setRegisterNumberError(null);
+                  }}
+                  keyboardType="number-pad"
+                  value={registerNumber}
+                  inputMode="numeric"
+                  accessibilityLabel="registerNumber"
+                  aria-label="registerNumber"
+                />
+              </View>
               {registerNumberError != null ? (
                 <Text style={styles.errorMsg}>{registerNumberError}</Text>
               ) : (
@@ -122,6 +127,7 @@ const studentLogin = () => {
               <View>
                 <Text style={styles.lable}>Password :</Text>
                 <View>
+                  <FontAwesome name="lock" size={18} color="rgba(0,0,0,.6)" style={styles.inputIcon} />
                   <TextInput
                     placeholder="Enter Your Password"
                     style={styles.input}
@@ -242,6 +248,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "rgb(115,115,115)",
     height: hp(4.5),
+    paddingStart : "12%"
   },
   forgetPass: {
     textAlign: "right",
@@ -256,5 +263,11 @@ const styles = StyleSheet.create({
   errorMsg: {
     color: "red",
     fontSize: hp(1.3)
+  },
+  inputIcon: {
+    position: "absolute",
+    top: "28%",
+    left : "4%",
+    zIndex: 99
   }
 });

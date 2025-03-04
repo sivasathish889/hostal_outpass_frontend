@@ -68,7 +68,7 @@ const SettingScreen = () => {
       />
       <View style={styles.profile}>
         <AntDesign name="user" size={120} color="black" />
-        <Text style={styles.nameStyle}>{fetchingData[0]?.userName.toUpperCase()}</Text>
+        <Text style={styles.nameStyle}>{fetchingData[0]?.userName}</Text>
       </View>
       <View style={styles.btnContainer}>
         <TouchableOpacity style={styles.btnOutline} onPress={logOutAlert}>
