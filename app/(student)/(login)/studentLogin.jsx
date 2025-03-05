@@ -115,8 +115,7 @@ const studentLogin = () => {
                   keyboardType="number-pad"
                   value={registerNumber}
                   inputMode="numeric"
-                  accessibilityLabel="registerNumber"
-                  aria-label="registerNumber"
+                  autoComplete="studentRegisterNumber"
                 />
               </View>
               {registerNumberError != null ? (
@@ -140,8 +139,7 @@ const studentLogin = () => {
                     }}
                     value={password}
                     inputMode="text"
-                    accessibilityLabel="password"
-                    aria-label="password"
+                    autoComplete="studentPassword"
                   />
                   <MaterialCommunityIcons
                     name={showPassword ? "eye" : "eye-off"}

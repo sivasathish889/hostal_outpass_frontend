@@ -11,7 +11,7 @@ import { useEffect, useState } from "react";
 import env from "@/constants/urls";
 import { useToast } from "react-native-toast-notifications";
 import axios from "axios";
-import { hp } from "@/helpers/dimensions";
+import { hp, wp } from "@/helpers/dimensions";
 import Spinner from "react-native-loading-spinner-overlay";
 import themes from "@/constants/themes";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -127,21 +127,21 @@ const home = () => {
               <View style={styles.detailsContainer}>
                 <View style={{ display: "flex", paddingVertical: 15 }}>
                   <View style={styles.titleStyle}>
-                    <Text style={styles.nameStyle}>{item.name.toUpperCase()}</Text>
-                    <View style={{ flexDirection: "row" }}>
+                    <Text style={[styles.nameStyle, item.name.length > 10 ? { fontSize: hp(1.3) } : { fontSize: hp(2) }]}>{item.name.toUpperCase()}</Text>
+                    <View style={{ flexDirection: "row", justifyContent: "center" }}>
                       <Text style={styles.department}>{item.year} year - </Text>
                       <Text style={styles.department}>{item.Department} </Text>
                     </View>
                   </View>
                 </View>
 
-                <View>
-                  <Text style={styles.placeStyle}>{item.Distination}</Text>
+                <View style={{width: wp(27)}}>
+                  <Text style={[styles.placeStyle, item.Distination.length > 15 ? { fontSize: hp(1.3) } : { fontSize: hp(2) }]}>{item.Distination}</Text>
                   <View style={styles.times}>
                     <Text style={styles.outDateTimeStyle}>
-                      {item.OutDateTime}
+                      {item.OutDateTime} 
                     </Text>
-                    <Text>-</Text>
+                    <Text> -</Text>
                     <Text style={styles.inDateTimeStyle}>
                       {item.InDateTime}
                     </Text>
@@ -227,10 +227,12 @@ const styles = StyleSheet.create({
     marginTop: -5,
   },
   department: {
-    fontSize: hp(1.7),
+    fontSize: hp(2),
+    textAlign: "center"
   },
   nameStyle: {
-    fontSize: hp(2),
+    width: wp(40),
+    textAlign: "center"
   },
   times: {
     flexDirection: "row",
@@ -238,17 +240,18 @@ const styles = StyleSheet.create({
   inDateTimeStyle: {
     width: 60,
     marginStart: 5,
-    fontSize: hp(1.2),
+    fontSize: hp(1),
     textAlign: "center",
   },
   outDateTimeStyle: {
     maxWidth: 60,
-    fontSize: hp(1.2),
+    fontSize: hp(1),
     textAlign: "center",
   },
   placeStyle: {
     textAlign: "center",
     fontSize: hp(2),
+    width : wp(25)
   },
   createdStyle: {
     position: "absolute",

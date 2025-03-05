@@ -138,8 +138,22 @@ const PrevPass = () => {
                       .toLocaleString(undefined, "Asia/Kolkata")
                       .split(",")[0]}
               </Text>
-              <PassInfoModal modalVisible={modalVisible} setmodalVisible={setmodalVisible} />
-              <Ionicons name="information-circle" size={24} color="black" style={styles.infoIcon} onPress={()=>setmodalVisible(true)} />
+              {/* pass info component */}
+              <PassInfoModal
+                modalVisible={modalVisible}
+                setmodalVisible={setmodalVisible}
+                name={item.name}
+                roomNo={item.RoomNo}
+                purpose={item.Purpose}
+                inTime={item.InDateTime}
+                outTime={item.OutDateTime}
+                registerNumber={item.RegisterNumber}
+                department={item.Department}
+                destination={item.Distination}
+                parentNumber={item.ParentNumber}
+                phoneNumber={item.PhoneNumber}
+              />
+              <Ionicons name="information-circle" size={24} color="black" style={styles.infoIcon} onPress={() => setmodalVisible(true)} />
             </View>
           );
         }}
@@ -254,7 +268,7 @@ const styles = StyleSheet.create({
     marginBottom: 5
   },
   infoIcon: {
-    position : "absolute",
-    right : "3%"
+    position: "absolute",
+    right: "3%"
   }
 });

@@ -65,6 +65,7 @@ const SettingScreen = () => {
         visible={spinnerVisible}
         textContent={"Loading..."}
         textStyle={{ color: '#FFF' }}
+        cancelable={true}
       />
       <View style={styles.profile}>
         <AntDesign name="user" size={120} color="black" />

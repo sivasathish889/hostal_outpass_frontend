@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 
 import env from "@/constants/urls";
 import axios from "axios";
-import { hp } from "@/helpers/dimensions";
+import { hp, wp } from "@/helpers/dimensions";
 import Spinner from "react-native-loading-spinner-overlay";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import themes from "@/constants/themes";
@@ -41,6 +41,7 @@ const RejectPasses = () => {
         visible={spinnerVisible}
         textContent={"Loading..."}
         textStyle={{ color: "#FFF" }}
+        cancelable={true}
       />
       {fetchPassData.length > 0 ? (
         <FlatList
@@ -58,10 +59,10 @@ const RejectPasses = () => {
                 <View style={styles.detailsContainer}>
                   <View style={{ display: "flex", paddingVertical: 15 }}>
                     <View style={styles.titleStyle}>
-                      <Text style={styles.nameStyle}>{item.name.toUpperCase()}</Text>
-                      <View style={{ flexDirection: "row" }}>
+                      <Text style={[styles.nameStyle, item.name.length > 10 ? { fontSize: hp(1.3) } : { fontSize: hp(2) }]}>{item.name.toUpperCase()}</Text>
+                      <View style={{ flexDirection: "row", justifyContent : "center" }}>
                         <Text style={styles.department}>
-                          {item.year} year -{" "}
+                          {item.year} year -
                         </Text>
                         <Text style={styles.department}>
                           {item.Department.toUpperCase()}{" "}
@@ -71,7 +72,7 @@ const RejectPasses = () => {
                   </View>
 
                   <View>
-                    <Text style={styles.placeStyle}>{item.Distination}</Text>
+                    <Text style={[styles.placeStyle, item.Distination.length > 15 ? { fontSize: hp(1.3) } : { fontSize: hp(2) }]}>{item.Distination}</Text>
                     <View style={styles.times}>
                       <Text style={styles.outDateTimeStyle}>
                         {item.OutDateTime}
@@ -148,14 +149,15 @@ const styles = StyleSheet.create({
     paddingTop: 25,
   },
   titleStyle: {
-    fontSize: 20,
     marginTop: -5,
   },
   department: {
     fontSize: hp(1.7),
+    textAlign: "center"
   },
   nameStyle: {
-    fontSize: hp(2),
+    fontSize: wp(40),
+    textAlign: "center"
   },
   times: {
     flexDirection: "row",

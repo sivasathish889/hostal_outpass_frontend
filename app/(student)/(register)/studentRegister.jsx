@@ -204,7 +204,7 @@ const StudentRegister = () => {
           <View style={styles.inputRows}>
             <View style={styles.inputGrid}>
               <Text style={styles.label}>Department :</Text>
-              <TextInput
+              {/* <TextInput
                 placeholder="Enter Your Department"
                 style={styles.input}
                 placeholderTextColor={themes.placeholderTextColor}
@@ -216,9 +216,35 @@ const StudentRegister = () => {
                 ref={departmentRef}
                 onSubmitEditing={() => phoneNumberRef.current.focus()}
                 inputMode="text"
-                accessibilityLabel="department"
-                aria-label="department"
-              />
+              /> */}
+              <Dropdown
+                style={[styles.dropdown]}
+                data={[
+                  { label: "CSE ", value: "CSE" },
+                  { label: "ECE ", value: "ECE" },
+                  { label: "IT ", value: "IT" },
+                  { label: "CIVIL", value: "CIVIL" },
+                ]}
+                placeholder="Select Department"
+                mode="modal"
+                maxHeight={100}
+                labelField="label"
+                valueField="value"
+                value={department}
+                onFocus={() => setIsFocus(true)}
+                onBlur={() => setIsFocus(false)}
+                onChange={(item) => {
+                  setDepartment(item.value);
+                  setIsFocus(false);
+                  setDepartmentError(null);
+                }}
+                placeholderStyle={{
+                  color: themes.placeholderTextColor,
+                  paddingStart: 10,
+                  fontSize: hp(1.6)
+                }}
+                itemContainerStyle={{ borderRadius: 10 }}
+                />
               {departmentError != null ? (
                 <Text style={styles.errorText}>{departmentError}</Text>
               ) : (

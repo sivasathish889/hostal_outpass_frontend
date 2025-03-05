@@ -85,6 +85,7 @@ const WardenLogin = () => {
           visible={spinnerVisible}
           textContent={"Loading..."}
           textStyle={{ color: "#FFF" }}
+          cancelable={true}
         />
         <View style={styles.form}>
           <Text style={styles.heading}>Warden</Text>

@@ -9,7 +9,7 @@ import Settings from "@/assets/TabBar/Settings.png";
 import IonIcons from "@expo/vector-icons/Ionicons";
 import { Tabs } from "expo-router";
 import themes from "@/constants/themes";
-import { hp } from "@/helpers/dimensions";
+import { hp, wp } from "@/helpers/dimensions";
 
 
 const TabRoute = () => {
@@ -21,7 +21,7 @@ const TabRoute = () => {
       <View style={styles.header}>
         <Text style={styles.headerText}>Welcome </Text>
         <TouchableOpacity>
-          <IonIcons name="notifications-outline" size={27} color="white"/>
+          <IonIcons name="notifications-outline" size={27} color="white" />
         </TouchableOpacity>
       </View>
 
@@ -33,8 +33,8 @@ const TabRoute = () => {
             height: 75,
           },
           tabBarPosition: "bottom",
-          headerShown:false,
-          tabBarHideOnKeyboard:true
+          headerShown: false,
+          tabBarHideOnKeyboard: true
         }}
       >
         <Tabs.Screen
@@ -47,48 +47,44 @@ const TabRoute = () => {
                   style={
                     action == "Home"
                       ? {
-                          backgroundColor: "white",
-                          marginTop: "100%",
-                          height: 50,
-                          borderRadius: 60,
-                          paddingHorizontal: "45%",
-                          paddingTop: 4,
-                          alignItems: "center",
-                          justifyContent: "center",
-                        }
+                        backgroundColor: "white",
+                        marginTop: hp(4),
+                        height: hp(5.5),
+                        borderRadius: 60,
+                        paddingHorizontal: hp(1.6),
+                        paddingTop: hp(0.7),
+                      }
                       : {
-                          marginTop: "100%",
-                          height: 50,
-                          paddingTop: 4,
-                          alignItems: "center",
-                          justifyContent: "center",
-                        }
+                        marginTop: hp(4),
+                        height: hp(5.5),
+                        paddingTop: hp(0.7),
+                      }
                   }
                 >
                   <Image
                     source={homeIcon}
                     style={
                       action == "Home"
-                        ? { tintColor: themes.mainColor }
-                        : { tintColor: "white" }
+                        ? { tintColor: themes.mainColor, alignSelf: "center" }
+                        : { tintColor: "white", alignSelf: "center" }
                     }
                   />
-                  
+
                   <Text
                     style={
                       action == "Home"
                         ? {
-                            color: themes.mainColor,
-                            fontSize: hp(1.2),
-                            width: 25,
-                            textAlign: "center",
-                          }
+                          color: themes.mainColor,
+                          fontSize: hp(1.2),
+                          width: wp(12),
+                          textAlign: "center",
+                        }
                         : {
-                            color: "white",
-                            fontSize: hp(1.2),
-                            width: 25,
-                            textAlign: "center",
-                          }
+                          color: "white",
+                          fontSize: hp(1.2),
+                          width: wp(12),
+                          textAlign: "center",
+                        }
                     }
                   >
                     Home
@@ -102,138 +98,6 @@ const TabRoute = () => {
           }}
           listeners={{ tabPress: () => setAction("Home") }}
         />
-        {/* <Tabs.Screen
-          name="acceptPasses"
-          options={{
-            headerShown: false,
-            tabBarIcon: () => {
-              return (
-                <View
-                  style={
-                    action == "accept"
-                      ? {
-                          backgroundColor: "white",
-                          marginTop: "100%",
-                          height: 50,
-                          borderRadius: 60,
-                          paddingHorizontal: 5,
-                          paddingTop: 4,
-                          alignItems: "center",
-                          justifyContent: "center",
-                        }
-                      : {
-                          marginTop: "100%",
-                          height: 50,
-                          paddingHorizontal: 20,
-                          paddingTop: 4,
-                          alignItems: "center",
-                          justifyContent: "center",
-                        }
-                  }
-                >
-                  <Image
-                    source={acceptPass}
-                    style={
-                      action == "accept"
-                        ? { tintColor: themes.mainColor }
-                        : { tintColor: "white" }
-                    }
-                  />
-                  <Text
-                    style={
-                      action == "accept"
-                        ? {
-                            color: themes.mainColor,
-                            fontSize: hp(1.2),
-                            width: 40,
-                            textAlign: "center",
-                          }
-                        : {
-                            color: "white",
-                            fontSize: hp(1.2),
-                            width: 40,
-                            textAlign: "center",
-                          }
-                    }
-                  >
-                    Accept
-                  </Text>
-                </View>
-              );
-            },
-            tabBarLabel: () => {
-              return null;
-            },
-          }}
-          listeners={{ tabPress: () => setAction("accept") }}
-        /> */}
-
-        {/* <Tabs.Screen
-          name="rejectPasses"
-          options={{
-            headerShown: false,
-            tabBarIcon: () => {
-              return (
-                <View
-                  style={
-                    action == "reject"
-                      ? {
-                          backgroundColor: "white",
-                          marginTop: "100%",
-                          height: 50,
-                          borderRadius: 60,
-                          paddingHorizontal: 5,
-                          paddingTop: 4,
-                          alignItems: "center",
-                          justifyContent: "center",
-                        }
-                      : {
-                          marginTop: "100%",
-                          height: 50,
-                          paddingHorizontal: 20,
-                          paddingTop: 4,
-                          alignItems: "center",
-                          justifyContent: "center",
-                        }
-                  }
-                >
-                  <Image
-                    source={closeIcon}
-                    style={
-                      action == "reject"
-                        ? { tintColor: themes.mainColor }
-                        : { tintColor: "white" }
-                    }
-                  />
-                  <Text
-                    style={
-                      action == "reject"
-                        ? {
-                            color: themes.mainColor,
-                            fontSize: hp(1.2),
-                            width: 40,
-                            textAlign: "center",
-                          }
-                        : {
-                            color: "white",
-                            fontSize: hp(1.2),
-                            width: 40,
-                            textAlign: "center",
-                          }
-                    }
-                  >
-                    Reject
-                  </Text>
-                </View>
-              );
-            },
-            tabBarLabel: () => {
-              return null;
-            },
-          }}
-          listeners={{ tabPress: () => setAction("reject") }}
-        /> */}
-
         <Tabs.Screen
           name="settings"
           options={{
@@ -244,50 +108,43 @@ const TabRoute = () => {
                   style={
                     action == "settings"
                       ? {
-                          backgroundColor: "white",
-                          marginTop: "100%",
-                          height: 50,
-                          borderRadius: 50,
-                          paddingHorizontal: 7,
-                          paddingTop: 4,
-                          alignItems: "center",
-                          justifyContent: "center",
-                        }
+                        backgroundColor: "white",
+                        marginTop: hp(4),
+                        height: hp(5.5),
+                        borderRadius: 60,
+                        paddingHorizontal: hp(1.6),
+                        paddingTop: hp(0.7),
+                      }
                       : {
-                          marginTop: "100%",
-                          height: 50,
-                          paddingHorizontal: 20,
-                          paddingTop: 4,
-                          alignItems: "center",
-                          justifyContent: "center",
-                        }
+                        marginTop: hp(4),
+                        height: hp(5.5),
+                        paddingTop: hp(0.7),
+                      }
                   }
                 >
                   <Image
                     source={Settings}
                     style={
                       action == "settings"
-                        ? { tintColor: themes.mainColor }
-                        : { tintColor: "white" }
+                        ? { tintColor: themes.mainColor, alignSelf: "center" }
+                        : { tintColor: "white", alignSelf: "center" }
                     }
                   />
                   <Text
                     style={
                       action == "settings"
                         ? {
-                            color: themes.mainColor,
-                            fontSize: hp(1.2),
-                            width: 36,
-                            marginStart: 4,
-                            textAlign: "center",
-                          }
+                          color: themes.mainColor,
+                          fontSize: hp(1.2),
+                          width: wp(12),
+                          textAlign: "center",
+                        }
                         : {
-                            color: "white",
-                            fontSize: hp(1.2),
-                            width: 40,
-                            marginStart: 4,
-                            textAlign: "center",
-                          }
+                          color: "white",
+                          fontSize: hp(1.2),
+                          width: wp(12),
+                          textAlign: "center",
+                        }
                     }
                   >
                     Settings

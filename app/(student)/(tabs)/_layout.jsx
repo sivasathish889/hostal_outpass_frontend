@@ -15,7 +15,7 @@ import homeIcon from "@/assets/TabBar/HomeIcon.png";
 import Previous from "@/assets/TabBar/Previous.png";
 import Settings from "@/assets/TabBar/Settings.png";
 import themes from "@/constants/themes";
-import { hp } from "@/helpers/dimensions";
+import { hp, wp } from "@/helpers/dimensions";
 
 
 const Layout = () => {
@@ -40,7 +40,7 @@ const Layout = () => {
           },
           tabBarPosition: "bottom",
           headerShown: false,
-          tabBarHideOnKeyboard:true
+          tabBarHideOnKeyboard: true
         }}>
         <Tabs.Screen
           name="home"
@@ -70,15 +70,15 @@ const Layout = () => {
                     source={homeIcon}
                     style={
                       action == "home"
-                        ? { tintColor: themes.mainColor }
-                        : { tintColor: "white" }
+                        ? { tintColor: themes.mainColor, alignSelf: "center" }
+                        : { tintColor: "white", alignSelf: "center" }
                     }
                   />
                   <Text
                     style={
                       action == "home"
-                        ? { color: themes.mainColor, fontSize: hp(1.1), width: hp(2.6) }
-                        : { color: "white", fontSize: hp(1.1), width: hp(2.6) }
+                        ? { color: themes.mainColor, fontSize: hp(1.1), width: wp(12), textAlign: "center" }
+                        : { color: "white", fontSize: hp(1.1), width: wp(12), textAlign: "center" }
                     }
                   >
                     Home
@@ -120,15 +120,15 @@ const Layout = () => {
                     source={Previous}
                     style={
                       action == "previous"
-                        ? { tintColor: themes.mainColor, marginStart: 7 }
-                        : { tintColor: "white", marginStart: 7 }
+                        ? { tintColor: themes.mainColor, alignSelf: "center" }
+                        : { tintColor: "white", alignSelf: "center" }
                     }
                   />
                   <Text
                     style={
                       action == "previous"
-                        ? { color: themes.mainColor, fontSize: hp(1.1), width: hp(4) }
-                        : { color: "white", fontSize: hp(1.1), width: hp(4) }
+                        ? { color: themes.mainColor, fontSize: hp(1.1), width: wp(15), textAlign: "center" }
+                        : { color: "white", fontSize: hp(1.1), width: wp(15), textAlign: "center" }
                     }
                   >
                     Previous
@@ -170,8 +170,8 @@ const Layout = () => {
                     source={Settings}
                     style={
                       action == "settings"
-                        ? { tintColor: themes.mainColor, marginStart: 8 }
-                        : { tintColor: "white", marginStart: 8 }
+                        ? { tintColor: themes.mainColor, alignSelf: "center" }
+                        : { tintColor: "white", alignSelf: "center" }
                     }
                   />
                   <Text
@@ -180,14 +180,14 @@ const Layout = () => {
                         ? {
                           color: themes.mainColor,
                           fontSize: hp(1.1),
-                          width: 36,
-                          marginStart: 4,
+                          width: wp(15),
+                          textAlign: "center"
                         }
                         : {
                           color: "white",
                           fontSize: hp(1.1),
-                          width: 40,
-                          marginStart: 4,
+                          width: wp(15),
+                          textAlign: "center"
                         }
                     }
                   >

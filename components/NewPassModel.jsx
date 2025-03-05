@@ -33,7 +33,7 @@ const NewPassModel = (props) => {
   const [isOutDatePickerVisible, setOutDatePickerVisible] = useState(false);
   const [spinnerVisible, setSpinnerVisible] = useState(false);
 
-  const [roomNo, setRoomNo] = useState(null);
+  const [roomNo, setRoomNo] = useState("");
   const [destination, setDestination] = useState(null);
   const [purpose, setPurpose] = useState(null);
   const [inDateTime, setinDateTime] = useState(null);
@@ -56,15 +56,15 @@ const NewPassModel = (props) => {
     // Form validation
     try {
       if (roomNo === null || roomNo.length == 0) {
-        return setRoomError("Please Enter the Room Number");
+        return setRoomError("Room Number is required");
       } else if (destination === null || destination.length == 0) {
-        return setDestinationError("Please Enter Your Destinaion");
+        return setDestinationError("Destinaion is required");
       } else if (purpose === null || purpose.length == 0) {
-        return setPurposeError("Please Enter Your Purpose");
+        return setPurposeError("Purpose is required");
       } else if (outDateTime === null || outDateTime.length == 0) {
-        return setOutDateError("Please Enter Out date");
+        return setOutDateError("Out date is required");
       } else if (inDateTime === null || inDateTime.length == 0) {
-        return setInDateError("Please Enter In date");
+        return setInDateError("In date is required");
       }
 
       const payload = {
@@ -109,7 +109,7 @@ const NewPassModel = (props) => {
               setinDateTime(null);
               setoutDateTime(null);
               setPurpose(null);
-              setRoomNo(null);
+              setRoomNo("");
               setPassModelVisible(false);
               setDataRefresh(!dataRefresh);
               setSpinnerVisible(false)
@@ -198,7 +198,7 @@ const NewPassModel = (props) => {
                   setRoomNo(text);
                   setRoomError(null);
                 }}
-                value={roomNo}
+                value={roomNo.toUpperCase()}
               />
               {roomError != null ? (
                 <Text style={{ color: "red" }}>{roomError}</Text>

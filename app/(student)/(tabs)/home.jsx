@@ -21,6 +21,7 @@ import env from "@/constants/urls";
 
 import NewPassModel from "@/components/NewPassModel";
 import EditPassModals from "@/components/EditPassModals";
+import { wp } from "@/helpers/dimensions";
 
 
 const HomeScreen = () => {
@@ -300,6 +301,7 @@ const styles = StyleSheet.create({
     marginStart: 10,
     fontSize: 20,
     marginTop: -5,
+    width :wp(40)
   },
   times: {
     display: "flex",

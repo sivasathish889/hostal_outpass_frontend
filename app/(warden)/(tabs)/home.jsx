@@ -12,7 +12,7 @@ import env from "@/constants/urls";
 import { useToast } from "react-native-toast-notifications";
 import axios from "axios";
 import AntDesign from "@expo/vector-icons/AntDesign";
-import { hp } from "@/helpers/dimensions";
+import { hp, wp } from "@/helpers/dimensions";
 import Spinner from "react-native-loading-spinner-overlay";
 import themes from "@/constants/themes";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -28,7 +28,7 @@ const Home = () => {
   const [spinnerVisible, setSpinnerVisible] = useState(false);
 
   useEffect(() => {
-    AsyncStorage.getItem("warden").then((data)=>setUserId(data))
+    AsyncStorage.getItem("warden").then((data) => setUserId(data))
     setSpinnerVisible(true);
     fetchData();
   }, [dataRefresh, refreshing]);
@@ -59,7 +59,7 @@ const Home = () => {
   const actionHandle = (action, id) => {
     if (action === "Accept") {
       axios
-        .put(`${env.CLIENT_URL}${env.wardenPassAccept}`, {id, userId})
+        .put(`${env.CLIENT_URL}${env.wardenPassAccept}`, { id, userId })
         .then((data) => {
           if (data.data.success) {
             toast.show(data.data.message, {
@@ -83,7 +83,7 @@ const Home = () => {
         .catch((error) => console.log(error));
     } else if (action === "Reject") {
       axios
-        .put(`${env.CLIENT_URL}${env.wardenPassReject}`, {id, userId})
+        .put(`${env.CLIENT_URL}${env.wardenPassReject}`, { id, userId })
         .then((data) => {
           if (data.data.success) {
             toast.show(data.data.message, {
@@ -113,6 +113,7 @@ const Home = () => {
         visible={spinnerVisible}
         textContent={"Loading..."}
         textStyle={{ color: "#FFF" }}
+        cancelable={true}
       />
       <FlatList
         data={fetchPassData}
@@ -128,8 +129,8 @@ const Home = () => {
               <View style={styles.detailsContainer}>
                 <View style={{ display: "flex", paddingVertical: 15 }}>
                   <View style={styles.titleStyle}>
-                    <Text style={styles.nameStyle}>{item.name.toUpperCase()}</Text>
-                    <View style={{ flexDirection: "row" }}>
+                    <Text style={[styles.nameStyle, item.name.length > 10 ? { fontSize: hp(1.3) } : { fontSize: hp(2) }]}>{item.name.toUpperCase()}</Text>
+                    <View style={{ flexDirection: "row", justifyContent: "center" }}>
                       <Text style={styles.department}>{item.year} year - </Text>
                       <Text style={styles.department}>{item.Department} </Text>
                     </View>
@@ -137,7 +138,7 @@ const Home = () => {
                 </View>
 
                 <View>
-                  <Text style={styles.placeStyle}>{item.Distination}</Text>
+                  <Text style={[styles.placeStyle, item.Distination.length > 10 ? { fontSize: hp(1.3) } : { fontSize: hp(2) }]}>{item.Distination}</Text>
                   <View style={styles.times}>
                     <Text style={styles.outDateTimeStyle}>
                       {item.OutDateTime}
@@ -222,14 +223,15 @@ const styles = StyleSheet.create({
   },
   titleStyle: {
     marginStart: 10,
-    fontSize: 20,
     marginTop: -5,
+    width: wp(30)
   },
   department: {
     fontSize: hp(1.7),
+    textAlign: "center"
   },
   nameStyle: {
-    fontSize: hp(2),
+    textAlign: "center"
   },
   times: {
     flexDirection: "row",
@@ -247,7 +249,7 @@ const styles = StyleSheet.create({
   },
   placeStyle: {
     textAlign: "center",
-    fontSize: hp(2),
+    width: wp(30)
   },
   createdStyle: {
     position: "absolute",
