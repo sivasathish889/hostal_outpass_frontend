@@ -1,10 +1,9 @@
 filter la starting date to ending date
-dark mode
 auto login
 push notification
-authentication
 admin panel
 every pass info modal
+unique warden name security name
 
 eas build -p android --profile preview
 

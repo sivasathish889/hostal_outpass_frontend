@@ -1,4 +1,4 @@
-import { FlatList, StyleSheet, Text, View, RefreshControl, TextInput } from "react-native";
+import { FlatList, StyleSheet, Text, View, RefreshControl, TextInput, Modal } from "react-native";
 import { useEffect, useState } from "react";
 import env from "@/constants/urls";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -7,6 +7,8 @@ import Spinner from "react-native-loading-spinner-overlay";
 import themes from "@/constants/themes";
 import { hp } from "@/helpers/dimensions";
 import { Dropdown } from "react-native-element-dropdown";
+import PassInfoModal from "@/components/PassInfoModal";
+import { Ionicons } from "@expo/vector-icons";
 
 
 const PrevPass = () => {
@@ -14,6 +16,7 @@ const PrevPass = () => {
   const [data, setData] = useState({});
   const [refreshing, setRefreshing] = useState(false);
   const [spinnerVisible, setSpinnerVisible] = useState(false);
+  const [modalVisible, setmodalVisible] = useState(false);
   const [isFocus, setIsFocus] = useState(false);
 
   const [searchQuery, setSearchQuery] = useState("")
@@ -29,7 +32,7 @@ const PrevPass = () => {
       await AsyncStorage.getItem("student").then(async (userId) => {
         await axios
           .get(`${env.CLIENT_URL}${env.studentAllPasses}/${userId}`)
-          .then(async(data) => {
+          .then(async (data) => {
             setData(data.data.data);
             setDropDownData("")
             setSearchQuery("")
@@ -135,6 +138,8 @@ const PrevPass = () => {
                       .toLocaleString(undefined, "Asia/Kolkata")
                       .split(",")[0]}
               </Text>
+              <PassInfoModal modalVisible={modalVisible} setmodalVisible={setmodalVisible} />
+              <Ionicons name="information-circle" size={24} color="black" style={styles.infoIcon} onPress={()=>setmodalVisible(true)} />
             </View>
           );
         }}
@@ -227,7 +232,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderWidth: 1,
     borderColor: "rgb(115,115,115)",
-    height:hp(4.5),
+    height: hp(4.5),
     flex: 1
   },
   dropdown: {
@@ -247,5 +252,9 @@ const styles = StyleSheet.create({
     gap: "10",
     marginHorizontal: 7,
     marginBottom: 5
+  },
+  infoIcon: {
+    position : "absolute",
+    right : "3%"
   }
 });
