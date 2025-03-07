@@ -6,6 +6,8 @@ import {
   TextInput,
   TouchableOpacity,
   ScrollView,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 import { useRef, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -50,7 +52,6 @@ const StudentRegister = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   const registerRef = useRef()
-  const departmentRef = useRef()
   const phoneNumberRef = useRef()
   const parentNumberRef = useRef()
   const emailRef = useRef()
@@ -108,16 +109,7 @@ const StudentRegister = () => {
           offset: 30,
           animationType: "slide-in",
         });
-        setRegisterNumber(null);
-        setConfirmPassword(null);
-        setDepartment(null);
-        setDistrict(null);
-        setEMail(null);
-        setName(null);
-        setYear(null);
-        setPhoneNumber(null);
-        setParentNumber(null);
-        setPassword(null);
+
         navigation.navigate("(register)/registerOTP", {
           token: data.Token,
         });
@@ -143,12 +135,12 @@ const StudentRegister = () => {
 
   return (
     <ImageBackground source={annaUniversity} style={styles.backgroundImage}>
-      <SafeAreaView style={styles.container}>
-        <Spinner
-          visible={spinnerVisible}
-          textContent={"Loading..."}
-          textStyle={{ color: "#FFF" }}
-        />
+      <Spinner
+        visible={spinnerVisible}
+        textContent={"Loading..."}
+        textStyle={{ color: "#FFF" }}
+      />
+      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : "height"} style={styles.container}>
         <View style={styles.form}>
           <Text style={styles.mainHead}>Student</Text>
           <Text style={styles.subHead}>Register</Text>
@@ -184,7 +176,6 @@ const StudentRegister = () => {
               placeholderTextColor={themes.placeholderTextColor}
               keyboardType="number-pad"
               ref={registerRef}
-              onSubmitEditing={() => departmentRef.current.focus()}
               onChangeText={(text) => {
                 setRegisterNumber(text);
                 setRegisterNumberError(null);
@@ -204,19 +195,6 @@ const StudentRegister = () => {
           <View style={styles.inputRows}>
             <View style={styles.inputGrid}>
               <Text style={styles.label}>Department :</Text>
-              {/* <TextInput
-                placeholder="Enter Your Department"
-                style={styles.input}
-                placeholderTextColor={themes.placeholderTextColor}
-                onChangeText={(text) => {
-                  setDepartment(text);
-                  setDepartmentError(null);
-                }}
-                value={department}
-                ref={departmentRef}
-                onSubmitEditing={() => phoneNumberRef.current.focus()}
-                inputMode="text"
-              /> */}
               <Dropdown
                 style={[styles.dropdown]}
                 data={[
@@ -244,7 +222,7 @@ const StudentRegister = () => {
                   fontSize: hp(1.6)
                 }}
                 itemContainerStyle={{ borderRadius: 10 }}
-                />
+              />
               {departmentError != null ? (
                 <Text style={styles.errorText}>{departmentError}</Text>
               ) : (
@@ -464,8 +442,8 @@ const StudentRegister = () => {
             </TouchableOpacity>
           </View>
         </View>
-      </SafeAreaView>
-    </ImageBackground>
+      </KeyboardAvoidingView>
+    </ImageBackground >
   )
 }
 

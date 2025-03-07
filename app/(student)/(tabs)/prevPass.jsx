@@ -1,4 +1,4 @@
-import { FlatList, StyleSheet, Text, View, RefreshControl, TextInput, Modal } from "react-native";
+import { FlatList, StyleSheet, Text, View, RefreshControl, TextInput, Modal, TouchableOpacity, ImageBackground } from "react-native";
 import { useEffect, useState } from "react";
 import env from "@/constants/urls";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -7,8 +7,9 @@ import Spinner from "react-native-loading-spinner-overlay";
 import themes from "@/constants/themes";
 import { hp } from "@/helpers/dimensions";
 import { Dropdown } from "react-native-element-dropdown";
-import PassInfoModal from "@/components/PassInfoModal";
-import { Ionicons } from "@expo/vector-icons";
+import { Entypo } from "@expo/vector-icons";
+import InfoGrid from "@/components/InfoGrid";
+import backgroundIcon from "@/assets/backgroundPic.png"
 
 
 const PrevPass = () => {
@@ -16,7 +17,8 @@ const PrevPass = () => {
   const [data, setData] = useState({});
   const [refreshing, setRefreshing] = useState(false);
   const [spinnerVisible, setSpinnerVisible] = useState(false);
-  const [modalVisible, setmodalVisible] = useState(false);
+  const [modalVisible, setmodalVisible] = useState(false)
+  const [infoData, setInfoData] = useState({})
   const [isFocus, setIsFocus] = useState(false);
 
   const [searchQuery, setSearchQuery] = useState("")
@@ -47,24 +49,75 @@ const PrevPass = () => {
     }
   };
 
-
-  return (
-    <View
+  const renderItem = (item) => {
+    return <View
+      style={[
+        styles.container,
+        {
+          backgroundColor: `${item.item.status == 2
+            ? themes.acceptColor
+            : item.item.status == 3
+              ? themes.rejectColor
+              : ""
+            }`,
+        },
+      ]}
     >
-      <Spinner
-        visible={spinnerVisible}
-        textContent={"Loading..."}
-        textStyle={{ color: "#FFF" }}
-        cancelable={true}
-      />
-      <View style={styles.header}>
-        <Text style={{ color: themes.acceptColor, fontSize: hp(2) }}>Accept </Text>
-        <Text style={{ fontSize: hp(2) }}>and </Text>
-        <Text style={{ color: themes.rejectColor, fontSize: hp(2) }}>
-          Rejecting Passes
+      <View style={styles.titleContainer}>
+        <Text style={styles.roomNoStyle}>
+          {item.item.RoomNo}.
         </Text>
       </View>
-      {/* <View style={styles.filterInputs}>
+
+      <View style={{ display: "flex" }}>
+        <Text style={styles.titleStyle}>{item.item.Purpose}</Text>
+        <View style={styles.times}>
+          <Text style={styles.outDateTimeStyle}>
+            {item.item.OutDateTime}
+          </Text>
+          <Text style={{ marginEnd: "2%" }}>-</Text>
+          <Text style={styles.inDateTimeStyle}>{item.item.InDateTime}</Text>
+        </View>
+      </View>
+      <Text style={styles.placeStyle}>{item.item.Distination}</Text>
+      <Text style={styles.createdStyle}>
+        {new Date(item.item.createdAt).getDate() == String(now.getDate())
+          ? "Today"
+          : new Date(item.item.createdAt).getDate() + 1 ==
+            String(now.getDate())
+            ? "YesterDay"
+            : new Date(item.item.createdAt)
+              .toLocaleString(undefined, "Asia/Kolkata")
+              .split(",")[0]}
+      </Text>
+      <TouchableOpacity onPress={() => openSheet(item.item)} style={styles.infoIcon}>
+        <Entypo size={25} name="info-with-circle" />
+      </TouchableOpacity>
+    </View>
+  }
+
+  const openSheet = (item) => {
+    setmodalVisible(true)
+    setInfoData(item)
+  }
+  return (
+    <View
+      style={{ flex: 1 }}>
+      <ImageBackground source={backgroundIcon} resizeMode="contain" style={{ flex: 1 }}>
+        <Spinner
+          visible={spinnerVisible}
+          textContent={"Loading..."}
+          textStyle={{ color: "#FFF" }}
+          cancelable={true}
+        />
+        <View style={styles.header}>
+          <Text style={{ color: themes.acceptColor, fontSize: hp(2) }}>Accept </Text>
+          <Text style={{ fontSize: hp(2) }}>and </Text>
+          <Text style={{ color: themes.rejectColor, fontSize: hp(2) }}>
+            Rejecting Passes
+          </Text>
+        </View>
+        {/* <View style={styles.filterInputs}>
         <TextInput style={styles.input} placeholder="Search" onChangeText={(text) => setSearchQuery(text)} value={searchQuery} />
         <Dropdown
           style={[styles.dropdown]}
@@ -93,79 +146,50 @@ const PrevPass = () => {
           aria-label="pass Status"
         />
       </View> */}
-      <FlatList
-        data={data}
-        style={{ marginBottom: hp(4) }}
-        renderItem={({ item }) => {
-          return (
-            <View
-              style={[
-                styles.container,
-                {
-                  backgroundColor: `${item.status == 2
-                    ? themes.acceptColor
-                    : item.status == 3
-                      ? themes.rejectColor
-                      : ""
-                    }`,
-                },
-              ]}
-            >
-              <View style={styles.titleContainer}>
-                <Text style={styles.roomNoStyle}>
-                  {item.RoomNo.toUpperCase()}.
-                </Text>
+        <FlatList
+          data={data}
+          style={{ marginBottom: hp(4) }}
+          renderItem={renderItem}
+          keyExtractor={(item) => item._id}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={() => setRefreshing(true)}
+              style={{ flex: 1 }}
+            />
+          }
+        />
+        {/* Info Modal */}
+        <View style={styles.modal}>
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={() => setmodalVisible(false)}
+            onDismiss={() => setmodalVisible(false)}
+          >
+            <View style={styles.ModelContent}>
+              <Text style={styles.heading}> Pass Info </Text>
+              <TouchableOpacity onPress={() => setmodalVisible(false)} style={styles.cancelIcon} >
+                <Entypo name="circle-with-cross" size={35} color="red" />
+              </TouchableOpacity>
+              <View style={styles.infoGrid}>
+                <InfoGrid label="Name" value={infoData?.name} />
+                <InfoGrid label="Reg.No" value={infoData?.RegisterNumber || ""} />
+                <InfoGrid label="Year & Dept" value={infoData?.Department || ""} />
+                <InfoGrid label="Room No" value={infoData?.RoomNo || ""} />
+                <InfoGrid label="Destination" value={infoData?.Distination || ""} />
+                <InfoGrid label="Purpose" value={infoData?.Purpose || ""} />
+                <InfoGrid label="Phone No" value={infoData?.PhoneNumber || ""} />
+                <InfoGrid label="Parent No" value={infoData?.ParentNumber || ""} />
+                <InfoGrid label="Out Time" value={infoData?.OutDateTime || ""} />
+                <InfoGrid label="In Time" value={infoData?.InDateTime || ""} />
+                <InfoGrid label={infoData.status == "2" ? "Approved By" : "Rejected By"} value={infoData?.warden || ""} />
               </View>
-
-              <View style={{ display: "flex" }}>
-                <Text style={styles.titleStyle}>{item.Purpose}</Text>
-                <View style={styles.times}>
-                  <Text style={styles.outDateTimeStyle}>
-                    {item.OutDateTime}
-                  </Text>
-                  <Text style={{ marginEnd: "2%" }}>-</Text>
-                  <Text style={styles.inDateTimeStyle}>{item.InDateTime}</Text>
-                </View>
-              </View>
-              <Text style={styles.placeStyle}>{item.Distination}</Text>
-              <Text style={styles.createdStyle}>
-                {new Date(item.createdAt).getDate() == String(now.getDate())
-                  ? "Today"
-                  : new Date(item.createdAt).getDate() + 1 ==
-                    String(now.getDate())
-                    ? "YesterDay"
-                    : new Date(item.createdAt)
-                      .toLocaleString(undefined, "Asia/Kolkata")
-                      .split(",")[0]}
-              </Text>
-              {/* pass info component */}
-              <PassInfoModal
-                modalVisible={modalVisible}
-                setmodalVisible={setmodalVisible}
-                name={item.name}
-                roomNo={item.RoomNo}
-                purpose={item.Purpose}
-                inTime={item.InDateTime}
-                outTime={item.OutDateTime}
-                registerNumber={item.RegisterNumber}
-                department={item.Department}
-                destination={item.Distination}
-                parentNumber={item.ParentNumber}
-                phoneNumber={item.PhoneNumber}
-              />
-              <Ionicons name="information-circle" size={24} color="black" style={styles.infoIcon} onPress={() => setmodalVisible(true)} />
             </View>
-          );
-        }}
-        keyExtractor={(item) => item._id}
-        refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={() => setRefreshing(true)}
-            style={{ flex: 1 }}
-          />
-        }
-      />
+          </Modal>
+        </View>
+      </ImageBackground>
     </View>
   );
 };
@@ -270,5 +294,31 @@ const styles = StyleSheet.create({
   infoIcon: {
     position: "absolute",
     right: "3%"
-  }
+  },
+  modelContainer: {
+    backgroundColor: "rgba(0,0,0,0.5)",
+  },
+  ModelContent: {
+    padding: 20,
+    margin: "10%",
+    marginVertical: "50%",
+    backgroundColor: themes.mainColor,
+    borderRadius: 10,
+  },
+  cancelIcon: {
+    position: "absolute",
+    right: 10,
+    top: 10
+
+  },
+  heading: {
+    textAlign: "center",
+    fontSize: hp(3),
+    color: "black",
+    paddingBottom: 20,
+    textDecorationLine: "underline"
+  },
+  infoGrid: {
+    width: "100%",
+  },
 });

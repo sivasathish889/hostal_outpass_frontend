@@ -6,6 +6,8 @@ import {
   TouchableOpacity,
   RefreshControl,
   Alert,
+  Modal,
+  ImageBackground,
 } from "react-native";
 import { useEffect, useState } from "react";
 import env from "@/constants/urls";
@@ -16,7 +18,9 @@ import { hp, wp } from "@/helpers/dimensions";
 import Spinner from "react-native-loading-spinner-overlay";
 import themes from "@/constants/themes";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
+import { Entypo } from "@expo/vector-icons";
+import InfoGrid from "@/components/InfoGrid";
+import backgroundIcon from "@/assets/backgroundPic.png"
 
 const Home = () => {
   let toast = useToast();
@@ -26,6 +30,8 @@ const Home = () => {
   const [dataRefresh, setDataRefresh] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [spinnerVisible, setSpinnerVisible] = useState(false);
+  const [modalVisible, setmodalVisible] = useState(false)
+  const [infoData, setInfoData] = useState({})
 
   useEffect(() => {
     AsyncStorage.getItem("warden").then((data) => setUserId(data))
@@ -107,84 +113,124 @@ const Home = () => {
         .catch((error) => console.log(error));
     }
   };
+
+  const openSheet = (item) => {
+    setmodalVisible(true)
+    setInfoData(item)
+  }
+
   return (
     <View style={{ flex: 1 }}>
-      <Spinner
-        visible={spinnerVisible}
-        textContent={"Loading..."}
-        textStyle={{ color: "#FFF" }}
-        cancelable={true}
-      />
-      <FlatList
-        data={fetchPassData}
-        renderItem={({ item }) => {
-          return (
-            <View style={styles.container}>
-              <View style={styles.title}>
-                <Text style={styles.roomNoStyle}>
-                  {item.RoomNo.toUpperCase()}.
-                </Text>
-              </View>
+      <ImageBackground source={backgroundIcon} resizeMode="contain" style={{ flex: 1 }}>
+        <Spinner
+          visible={spinnerVisible}
+          textContent={"Loading..."}
+          textStyle={{ color: "#FFF" }}
+          cancelable={true}
+        />
+        <FlatList
+          data={fetchPassData}
+          renderItem={({ item }) => {
+            return (
+              <View style={styles.container}>
+                <View style={styles.title}>
+                  <Text style={styles.roomNoStyle}>
+                    {item.RoomNo.toUpperCase()}.
+                  </Text>
+                </View>
 
-              <View style={styles.detailsContainer}>
-                <View style={{ display: "flex", paddingVertical: 15 }}>
-                  <View style={styles.titleStyle}>
-                    <Text style={[styles.nameStyle, item.name.length > 10 ? { fontSize: hp(1.3) } : { fontSize: hp(2) }]}>{item.name.toUpperCase()}</Text>
-                    <View style={{ flexDirection: "row", justifyContent: "center" }}>
-                      <Text style={styles.department}>{item.year} year - </Text>
-                      <Text style={styles.department}>{item.Department} </Text>
+                <View style={styles.detailsContainer}>
+                  <View style={{ display: "flex", paddingVertical: 15 }}>
+                    <View style={styles.titleStyle}>
+                      <Text style={[styles.nameStyle, item.name.length > 10 ? { fontSize: hp(1.3) } : { fontSize: hp(2) }]}>{item.name.toUpperCase()}</Text>
+                      <View style={{ flexDirection: "row", justifyContent: "center" }}>
+                        <Text style={styles.department}>{item.year} year - </Text>
+                        <Text style={styles.department}>{item.Department} </Text>
+                      </View>
                     </View>
                   </View>
-                </View>
 
-                <View>
-                  <Text style={[styles.placeStyle, item.Distination.length > 10 ? { fontSize: hp(1.3) } : { fontSize: hp(2) }]}>{item.Distination}</Text>
-                  <View style={styles.times}>
-                    <Text style={styles.outDateTimeStyle}>
-                      {item.OutDateTime}
-                    </Text>
-                    <Text>-</Text>
-                    <Text style={styles.inDateTimeStyle}>
-                      {item.InDateTime}
-                    </Text>
+                  <View>
+                    <Text style={[styles.placeStyle, item.Distination.length > 10 ? { fontSize: hp(1.3) } : { fontSize: hp(2) }]}>{item.Distination}</Text>
+                    <View style={styles.times}>
+                      <Text style={styles.outDateTimeStyle}>
+                        {item.OutDateTime}
+                      </Text>
+                      <Text>-</Text>
+                      <Text style={styles.inDateTimeStyle}>
+                        {item.InDateTime}
+                      </Text>
+                    </View>
                   </View>
-                </View>
 
-                <View style={styles.btnGroup}>
-                  <TouchableOpacity
-                    onPress={() => AlertingAction("Accept", item._id)}
-                  >
-                    <AntDesign name="checkcircle" size={30} color="green" />
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    onPress={() => AlertingAction("Reject", item._id)}
-                  >
-                    <AntDesign name="closecircle" size={30} color="red" />
-                  </TouchableOpacity>
-                </View>
+                  <View style={styles.btnGroup}>
+                    <TouchableOpacity
+                      onPress={() => AlertingAction("Accept", item._id)}
+                    >
+                      <AntDesign name="checkcircle" size={30} color="green" />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => AlertingAction("Reject", item._id)}
+                    >
+                      <AntDesign name="closecircle" size={30} color="red" />
+                    </TouchableOpacity>
+                  </View>
 
-                <Text style={styles.createdStyle}>
-                  {new Date(item.createdAt).getDate() == String(now.getDate())
-                    ? "Today"
-                    : new Date(item.createdAt).getDate() + 1 ==
-                      String(now.getDate())
-                      ? "YesterDay"
-                      : new Date(item.createdAt)
-                        .toLocaleString(undefined, "Asia/Kolkata")
-                        .split(",")[0]}
-                </Text>
+                  <Text style={styles.createdStyle}>
+                    {new Date(item.createdAt).getDate() == String(now.getDate())
+                      ? "Today"
+                      : new Date(item.createdAt).getDate() + 1 ==
+                        String(now.getDate())
+                        ? "YesterDay"
+                        : new Date(item.createdAt)
+                          .toLocaleString(undefined, "Asia/Kolkata")
+                          .split(",")[0]}
+                  </Text>
+                </View>
+                <TouchableOpacity onPress={() => openSheet(item)} style={styles.infoIcon}>
+                  <Entypo size={15} name="info-with-circle" color={"black"} />
+                </TouchableOpacity>
+              </View>
+            );
+          }}
+          keyExtractor={(item) => item._id}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={() => setRefreshing(true)}
+            />
+          }
+        />
+        {/* Info Modal */}
+        <View style={styles.modal}>
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={() => setmodalVisible(false)}
+            onDismiss={() => setmodalVisible(false)}
+          >
+            <View style={styles.ModelContent}>
+              <Text style={styles.heading}> Pass Info </Text>
+              <TouchableOpacity onPress={() => setmodalVisible(false)} style={styles.cancelIcon} >
+                <Entypo name="circle-with-cross" size={35} color="red" />
+              </TouchableOpacity>
+              <View style={styles.infoGrid}>
+                <InfoGrid label="Name" value={infoData?.name} />
+                <InfoGrid label="Reg.No" value={infoData?.RegisterNumber || ""} />
+                <InfoGrid label="Year & Dept" value={infoData?.Department || ""} />
+                <InfoGrid label="Room No" value={infoData?.RoomNo || ""} />
+                <InfoGrid label="Destination" value={infoData?.Distination || ""} />
+                <InfoGrid label="Purpose" value={infoData?.Purpose || ""} />
+                <InfoGrid label="Phone No" value={infoData?.PhoneNumber || ""} />
+                <InfoGrid label="Parent No" value={infoData?.ParentNumber || ""} />
+                <InfoGrid label="Out Time" value={infoData?.OutDateTime || ""} />
+                <InfoGrid label="In Time" value={infoData?.InDateTime || ""} />
               </View>
             </View>
-          );
-        }}
-        keyExtractor={(item) => item._id}
-        refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={() => setRefreshing(true)}
-          />
-        }
-      />
+          </Modal>
+        </View>
+      </ImageBackground>
     </View>
   );
 };
@@ -278,5 +324,36 @@ const styles = StyleSheet.create({
   deleteBtn: {
     color: "white",
     fontSize: 10,
+  },
+  infoIcon: {
+    position: "absolute",
+    right: 0,
+    bottom: 0
+  },
+  modelContainer: {
+    backgroundColor: "rgba(0,0,0,0.5)",
+  },
+  ModelContent: {
+    padding: 20,
+    margin: "10%",
+    marginVertical: "50%",
+    backgroundColor: themes.mainColor,
+    borderRadius: 10,
+  },
+  cancelIcon: {
+    position: "absolute",
+    right: 10,
+    top: 10,
+
+  },
+  heading: {
+    textAlign: "center",
+    fontSize: hp(3),
+    color: "black",
+    paddingBottom: 20,
+    textDecorationLine: "underline"
+  },
+  infoGrid: {
+    width: "100%",
   },
 });

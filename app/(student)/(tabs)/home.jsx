@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Alert,
   RefreshControl,
+  ImageBackground,
 } from "react-native";
 
 import { useEffect, useState } from "react";
@@ -22,6 +23,7 @@ import env from "@/constants/urls";
 import NewPassModel from "@/components/NewPassModel";
 import EditPassModals from "@/components/EditPassModals";
 import { wp } from "@/helpers/dimensions";
+import backgroundIcon from "@/assets/backgroundPic.png"
 
 
 const HomeScreen = () => {
@@ -164,6 +166,7 @@ const HomeScreen = () => {
 
   return (
     <View style={{ flex: 1 }}>
+            <ImageBackground source={backgroundIcon} resizeMode="contain" style={{ flex: 1 }}>
       <Spinner
         visible={spinnerVisible}
         textContent={"Loading..."}
@@ -267,6 +270,7 @@ const HomeScreen = () => {
         handleInDateTimePicker={handleInDateTimePicker}
         handelPassUpdate={handelPassUpdate}
       />
+      </ImageBackground>
     </View>
   );
 };

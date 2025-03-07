@@ -5,6 +5,8 @@ import {
   View,
   TextInput,
   TouchableOpacity,
+  Platform,
+  KeyboardAvoidingView,
 } from "react-native";
 import React, { useRef, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -78,13 +80,13 @@ const securityLogin = () => {
   };
   return (
     <ImageBackground source={annaUniversity} style={styles.backgroundImage}>
-      <SafeAreaView style={styles.container}>
-        <Spinner
-          visible={spinnerVisible}
-          textContent={"Loading..."}
-          textStyle={{ color: "#FFF" }}
-          cancelable={true}
-        />
+      <Spinner
+        visible={spinnerVisible}
+        textContent={"Loading..."}
+        textStyle={{ color: "#FFF" }}
+        cancelable={true}
+      />
+      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : "height"} style={styles.container}>
         <View style={styles.form}>
           <Text style={styles.heading}>Security</Text>
           <Text style={styles.subHead}>Login</Text>
@@ -161,7 +163,7 @@ const securityLogin = () => {
             </TouchableOpacity>
           </View>
         </View>
-      </SafeAreaView>
+      </KeyboardAvoidingView>
     </ImageBackground>
   )
 }
@@ -221,7 +223,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "rgb(115,115,115)",
     height: hp(4.5),
-    paddingStart : "12%",
+    paddingStart: "12%",
     marginBottom: "3%"
   },
   forgetPass: {

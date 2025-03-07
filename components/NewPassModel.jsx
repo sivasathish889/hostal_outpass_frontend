@@ -1,5 +1,7 @@
 import {
+  KeyboardAvoidingView,
   Modal,
+  Platform,
   StatusBar,
   StyleSheet,
   Text,
@@ -174,152 +176,156 @@ const NewPassModel = (props) => {
         transparent={true}
         visible={passModelVisible}
       >
+        <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : "padding"} style={styles.container}>
 
-        <View style={styles.modelContainer}>
-          <StatusBar backgroundColor={"rgba(0,0,0,0.5)"} />
-          <View style={styles.ModelContent}>
-            <TouchableOpacity
-              onPress={() => setPassModelVisible(!passModelVisible)}
-              style={styles.closeBtn}
-            >
-              <Entypo name="cross" size={24} color="black" />
-            </TouchableOpacity>
-
-            <Text style={styles.modelHeading}>New Out Pass</Text>
-
-            <View style={styles.inputGroup}>
-              <Text style={styles.inputLabel}>Room No :</Text>
-              <TextInput
-                style={styles.input}
-                placeholder="Enter Your Room No"
-                placeholderTextColor={"#AFAFAF"}
-                onSubmitEditing={() => destinationRef.current.focus()}
-                onChangeText={(text) => {
-                  setRoomNo(text);
-                  setRoomError(null);
-                }}
-                value={roomNo.toUpperCase()}
-              />
-              {roomError != null ? (
-                <Text style={{ color: "red" }}>{roomError}</Text>
-              ) : (
-                ""
-              )}
-            </View>
-
-            <View style={styles.inputGroup}>
-              <Text style={styles.inputLabel}>Destination :</Text>
-              <TextInput
-                style={styles.input}
-                placeholder="Enter Destination"
-                placeholderTextColor={"#AFAFAF"}
-                ref={destinationRef}
-                onSubmitEditing={() => purposeRef.current.focus()}
-                onChangeText={(text) => {
-                  setDestination(text);
-                  setDestinationError(null);
-                }}
-                value={destination}
-              />
-              {destinationError != null ? (
-                <Text style={{ color: "red" }}>{destinationError}</Text>
-              ) : (
-                ""
-              )}
-            </View>
-
-            <View style={styles.inputGroup}>
-              <Text style={styles.inputLabel}>Purpose :</Text>
-              <TextInput
-                style={styles.input}
-                placeholder="Enter Purpose"
-                ref={purposeRef}
-                placeholderTextColor={"#AFAFAF"}
-                onChangeText={(text) => {
-                  setPurpose(text);
-                  setPurposeError(null);
-                }}
-                value={purpose}
-              />
-              {purposeError != null ? (
-                <Text style={{ color: "red" }}>{purposeError}</Text>
-              ) : (
-                ""
-              )}
-            </View>
-
-            <View style={styles.inputGroup}>
-              <Text style={styles.inputLabel}>Out Date & Time:</Text>
-              <TextInput
-                style={styles.input}
-                placeholderTextColor={"#AFAFAF"}
-                placeholder=" Out Time &  Date"
-                defaultValue={outDateTime}
-                editable={false}
-              />
-              {outDateError != null ? (
-                <Text style={{ color: "red" }}>{outDateError}</Text>
-              ) : (
-                ""
-              )}
-              <DateTimePicker
-                onCancel={() => setOutDatePickerVisible(false)}
-                onConfirm={(e) => {
-                  handleOutDateTimePicker(e);
-                  setOutDateError(null);
-                }}
-                isVisible={isOutDatePickerVisible}
-              />
+          <View style={styles.modelContainer}>
+            <StatusBar backgroundColor={"rgba(0,0,0,0.5)"} />
+            <View style={styles.ModelContent}>
               <TouchableOpacity
-                style={styles.calendarIconStyle}
-                onPress={() => setOutDatePickerVisible(!isInDatePickerVisible)}
+                onPress={() => setPassModelVisible(!passModelVisible)}
+                style={styles.closeBtn}
               >
-                <Entypo name="calendar" size={24} color="black" />
+                <Entypo name="cross" size={24} color="black" />
               </TouchableOpacity>
-            </View>
 
-            <View style={styles.inputGroup}>
-              <Text style={styles.inputLabel}>In Date & Time :</Text>
-              <TextInput
-                style={styles.input}
-                placeholder=" In Time and Date"
-                placeholderTextColor={"#AFAFAF"}
-                defaultValue={inDateTime}
-                editable={false}
-              />
-              {inDateError != null ? (
-                <Text style={{ color: "red" }}>{inDateError}</Text>
-              ) : (
-                ""
-              )}
-              <DateTimePicker
-                onCancel={() => setInDatePickerVisible(false)}
-                onConfirm={(e) => {
-                  handleInDateTimePicker(e);
-                  setInDateError(null);
-                }}
-                isVisible={isInDatePickerVisible}
-              />
-              <TouchableOpacity
-                style={styles.calendarIconStyle}
-                onPress={() => setInDatePickerVisible(!isInDatePickerVisible)}
-              >
-                <Entypo name="calendar" size={24} color="black" />
-              </TouchableOpacity>
-            </View>
+              <Text style={styles.modelHeading}>New Out Pass</Text>
 
-            <View style={{ alignItems: "center" }}>
-              <TouchableOpacity
-                style={styles.buttonOutline}
-                onPress={() => {
-                  handlePassSubmit();
-                }}
-              >
-                <Text style={styles.btn}>Send</Text>
-              </TouchableOpacity>
+              <View style={styles.inputGroup}>
+                <Text style={styles.inputLabel}>Room No :</Text>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Enter Your Room No"
+                  placeholderTextColor={"#AFAFAF"}
+                  onSubmitEditing={() => destinationRef.current.focus()}
+                  onChangeText={(text) => {
+                    setRoomNo(text);
+                    setRoomError(null);
+                  }}
+                  value={roomNo.toUpperCase()}
+                />
+                {roomError != null ? (
+                  <Text style={{ color: "red" }}>{roomError}</Text>
+                ) : (
+                  ""
+                )}
+              </View>
+
+              <View style={styles.inputGroup}>
+                <Text style={styles.inputLabel}>Destination :</Text>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Enter Destination"
+                  placeholderTextColor={"#AFAFAF"}
+                  ref={destinationRef}
+                  onSubmitEditing={() => purposeRef.current.focus()}
+                  onChangeText={(text) => {
+                    setDestination(text);
+                    setDestinationError(null);
+                  }}
+                  value={destination}
+                />
+                {destinationError != null ? (
+                  <Text style={{ color: "red" }}>{destinationError}</Text>
+                ) : (
+                  ""
+                )}
+              </View>
+
+              <View style={styles.inputGroup}>
+                <Text style={styles.inputLabel}>Purpose :</Text>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Enter Purpose"
+                  ref={purposeRef}
+                  placeholderTextColor={"#AFAFAF"}
+                  onChangeText={(text) => {
+                    setPurpose(text);
+                    setPurposeError(null);
+                  }}
+                  value={purpose}
+                />
+                {purposeError != null ? (
+                  <Text style={{ color: "red" }}>{purposeError}</Text>
+                ) : (
+                  ""
+                )}
+              </View>
+
+              <View style={styles.inputGroup}>
+                <Text style={styles.inputLabel}>Out Date & Time:</Text>
+                <TextInput
+                  style={styles.input}
+                  placeholderTextColor={"#AFAFAF"}
+                  placeholder=" Out Time &  Date"
+                  defaultValue={outDateTime}
+                  editable={false}
+                />
+                {outDateError != null ? (
+                  <Text style={{ color: "red" }}>{outDateError}</Text>
+                ) : (
+                  ""
+                )}
+                <DateTimePicker
+                  onCancel={() => setOutDatePickerVisible(false)}
+                  mode="datetime"
+                  onConfirm={(e) => {
+                    handleOutDateTimePicker(e);
+                    setOutDateError(null);
+                  }}
+                  isVisible={isOutDatePickerVisible}
+                />
+                <TouchableOpacity
+                  style={styles.calendarIconStyle}
+                  onPress={() => setOutDatePickerVisible(!isInDatePickerVisible)}
+                >
+                  <Entypo name="calendar" size={24} color="black" />
+                </TouchableOpacity>
+              </View>
+
+              <View style={styles.inputGroup}>
+                <Text style={styles.inputLabel}>In Date & Time :</Text>
+                <TextInput
+                  style={styles.input}
+                  placeholder=" In Time and Date"
+                  placeholderTextColor={"#AFAFAF"}
+                  defaultValue={inDateTime}
+                  editable={false}
+                />
+                {inDateError != null ? (
+                  <Text style={{ color: "red" }}>{inDateError}</Text>
+                ) : (
+                  ""
+                )}
+                <DateTimePicker
+                  mode="datetime"
+                  onCancel={() => setInDatePickerVisible(false)}
+                  onConfirm={(e) => {
+                    handleInDateTimePicker(e);
+                    setInDateError(null);
+                  }}
+                  isVisible={isInDatePickerVisible}
+                />
+                <TouchableOpacity
+                  style={styles.calendarIconStyle}
+                  onPress={() => setInDatePickerVisible(!isInDatePickerVisible)}
+                >
+                  <Entypo name="calendar" size={24} color="black" />
+                </TouchableOpacity>
+              </View>
+
+              <View style={{ alignItems: "center" }}>
+                <TouchableOpacity
+                  style={styles.buttonOutline}
+                  onPress={() => {
+                    handlePassSubmit();
+                  }}
+                >
+                  <Text style={styles.btn}>Send</Text>
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
-        </View>
+        </KeyboardAvoidingView>
       </Modal>
     </View>
   );
@@ -328,6 +334,9 @@ const NewPassModel = (props) => {
 export default NewPassModel;
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1
+  },
   modelContainer: {
     backgroundColor: "rgba(0,0,0,0.5)",
   },
@@ -379,5 +388,8 @@ const styles = StyleSheet.create({
   },
   closeBtn: {
     alignSelf: "flex-end",
+    backgroundColor: "red",
+    borderRadius: 6,
+    padding : 2
   },
 });

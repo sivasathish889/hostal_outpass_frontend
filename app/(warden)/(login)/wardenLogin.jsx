@@ -5,6 +5,8 @@ import {
   View,
   TextInput,
   TouchableOpacity,
+  Platform,
+  KeyboardAvoidingView,
 } from "react-native";
 import { useRef, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -80,13 +82,13 @@ const WardenLogin = () => {
   };
   return (
     <ImageBackground source={annaUniversity} style={styles.backgroundImage}>
-      <SafeAreaView style={styles.container}>
-        <Spinner
-          visible={spinnerVisible}
-          textContent={"Loading..."}
-          textStyle={{ color: "#FFF" }}
-          cancelable={true}
-        />
+      <Spinner
+        visible={spinnerVisible}
+        textContent={"Loading..."}
+        textStyle={{ color: "#FFF" }}
+        cancelable={true}
+      />
+      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : "height"} style={styles.container}>
         <View style={styles.form}>
           <Text style={styles.heading}>Warden</Text>
           <Text style={styles.subHead}>Login</Text>
@@ -165,7 +167,7 @@ const WardenLogin = () => {
             </TouchableOpacity>
           </View>
         </View>
-      </SafeAreaView>
+      </KeyboardAvoidingView>
     </ImageBackground>
   );
 };

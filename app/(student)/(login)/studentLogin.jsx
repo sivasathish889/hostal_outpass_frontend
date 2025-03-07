@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Platform,
   KeyboardAvoidingView,
+  Keyboard
 } from "react-native";
 import { useRef, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -86,107 +87,105 @@ const studentLogin = () => {
     }
   };
   return (
-    <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={{ flex: 1 }}>
-      <ImageBackground source={annaUniversity} style={styles.backgroundImage}>
-        <SafeAreaView style={styles.container}>
-          <Spinner
-            visible={spinnerVisible}
-            textContent={"Loading..."}
-            textStyle={{ color: "#FFF" }}
-            cancelable={true}
-          />
-          <View style={styles.form}>
-            <Text style={styles.heading}>Student</Text>
-            <Text style={styles.subHead}>Login</Text>
+    <ImageBackground source={annaUniversity} style={styles.backgroundImage}>
+      <Spinner
+        visible={spinnerVisible}
+        textContent={"Loading..."}
+        textStyle={{ color: "#FFF" }}
+        cancelable={true}
+      />
+      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : "height"} style={styles.container}>
+        <View style={styles.form}>
+          <Text style={styles.heading}>Student</Text>
+          <Text style={styles.subHead}>Login</Text>
 
-            <View style={styles.inputgroup}>
-              <Text style={styles.lable}>Register Number :</Text>
+          <View style={styles.inputgroup}>
+            <Text style={styles.lable}>Register Number :</Text>
+            <View>
+              <FontAwesome name="user" size={18} color="rgba(0,0,0,.6)" style={styles.inputIcon} />
+              <TextInput
+                placeholder="Enter Your Regsiter Number"
+                style={styles.input}
+                placeholderTextColor={themes.placeholderTextColor}
+                onSubmitEditing={() => nextInputRef.current.focus()}
+                onChangeText={(text) => {
+                  setRegisterNumber(text);
+                  setRegisterNumberError(null);
+                }}
+                keyboardType="number-pad"
+                value={registerNumber}
+                inputMode="numeric"
+                autoComplete="studentRegisterNumber"
+              />
+            </View>
+            {registerNumberError != null ? (
+              <Text style={styles.errorMsg}>{registerNumberError}</Text>
+            ) : (
+              ""
+            )}
+            <View>
+              <Text style={styles.lable}>Password :</Text>
               <View>
-                <FontAwesome name="user" size={18} color="rgba(0,0,0,.6)" style={styles.inputIcon} />
+                <FontAwesome name="lock" size={18} color="rgba(0,0,0,.6)" style={styles.inputIcon} />
                 <TextInput
-                  placeholder="Enter Your Regsiter Number"
+                  placeholder="Enter Your Password"
                   style={styles.input}
                   placeholderTextColor={themes.placeholderTextColor}
-                  onSubmitEditing={() => nextInputRef.current.focus()}
+                  secureTextEntry={!showPassword}
+                  ref={nextInputRef}
                   onChangeText={(text) => {
-                    setRegisterNumber(text);
-                    setRegisterNumberError(null);
+                    setPassword(text);
+                    setPasswordError(null);
                   }}
-                  keyboardType="number-pad"
-                  value={registerNumber}
-                  inputMode="numeric"
-                  autoComplete="studentRegisterNumber"
+                  value={password}
+                  inputMode="text"
+                  autoComplete="studentPassword"
+                />
+                <MaterialCommunityIcons
+                  name={showPassword ? "eye" : "eye-off"}
+                  size={18}
+                  color="black"
+                  style={styles.icon}
+                  onPress={toggleShowPassword}
                 />
               </View>
-              {registerNumberError != null ? (
-                <Text style={styles.errorMsg}>{registerNumberError}</Text>
+              {passwordError != null ? (
+                <Text style={styles.errorMsg}>{passwordError}</Text>
               ) : (
                 ""
               )}
-              <View>
-                <Text style={styles.lable}>Password :</Text>
-                <View>
-                  <FontAwesome name="lock" size={18} color="rgba(0,0,0,.6)" style={styles.inputIcon} />
-                  <TextInput
-                    placeholder="Enter Your Password"
-                    style={styles.input}
-                    placeholderTextColor={themes.placeholderTextColor}
-                    secureTextEntry={!showPassword}
-                    ref={nextInputRef}
-                    onChangeText={(text) => {
-                      setPassword(text);
-                      setPasswordError(null);
-                    }}
-                    value={password}
-                    inputMode="text"
-                    autoComplete="studentPassword"
-                  />
-                  <MaterialCommunityIcons
-                    name={showPassword ? "eye" : "eye-off"}
-                    size={18}
-                    color="black"
-                    style={styles.icon}
-                    onPress={toggleShowPassword}
-                  />
-                </View>
-                {passwordError != null ? (
-                  <Text style={styles.errorMsg}>{passwordError}</Text>
-                ) : (
-                  ""
-                )}
-              </View>
-              <Text
-                style={styles.forgetPass}
-                onPress={() => navigation.navigate("(login)/forgetPassword")}
-              >
-                Forget/Change Password
-              </Text>
             </View>
-            <Text style={{ marginTop: 10, fontSize: hp(1.3) }}>
-              If you dont have account..
-              <Text
-                onPress={() => navigation.navigate("(register)/studentRegister")}
-                style={{
-                  color: themes.mainColor,
-                  textDecorationLine: "underline",
-                  fontSize: hp(1.5),
-                }}
-              >
-                Please Register
-              </Text>
+            <Text
+              style={styles.forgetPass}
+              onPress={() => navigation.navigate("(login)/forgetPassword")}
+            >
+              Forget/Change Password
             </Text>
-            <View style={{ alignItems: "center" }}>
-              <TouchableOpacity
-                style={styles.buttonOutline}
-                onPress={handleSubmit}
-              >
-                <Text style={styles.btn}>Login</Text>
-              </TouchableOpacity>
-            </View>
           </View>
-        </SafeAreaView>
-      </ImageBackground>
-    </KeyboardAvoidingView>
+          <Text style={{ marginTop: 10, fontSize: hp(1.3) }}>
+            If you dont have account..
+            <Text
+              onPress={() => navigation.navigate("(register)/studentRegister")}
+              style={{
+                color: themes.mainColor,
+                textDecorationLine: "underline",
+                fontSize: hp(1.5),
+              }}
+            >
+              Please Register
+            </Text>
+          </Text>
+          <View style={{ alignItems: "center" }}>
+            <TouchableOpacity
+              style={styles.buttonOutline}
+              onPress={handleSubmit}
+            >
+              <Text style={styles.btn}>Login</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </KeyboardAvoidingView>
+    </ImageBackground>
   )
 }
 
@@ -246,7 +245,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "rgb(115,115,115)",
     height: hp(4.5),
-    paddingStart : "12%"
+    paddingStart: "12%"
   },
   forgetPass: {
     textAlign: "right",
@@ -265,7 +264,7 @@ const styles = StyleSheet.create({
   inputIcon: {
     position: "absolute",
     top: "28%",
-    left : "4%",
+    left: "4%",
     zIndex: 99
   }
 });
