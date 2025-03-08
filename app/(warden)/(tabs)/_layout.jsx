@@ -29,7 +29,9 @@ const TabRoute = () => {
           tabBarStyle: {
             backgroundColor: themes.mainColor,
             borderRadius: 30,
-            height: 75,
+            height: "9%",
+            position: "absolute",
+            bottom: 0
           },
           tabBarPosition: "bottom",
           headerShown: false,

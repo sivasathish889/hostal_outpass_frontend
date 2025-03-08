@@ -69,17 +69,21 @@ const PrevPass = () => {
         </Text>
       </View>
 
-      <View style={{ display: "flex" }}>
-        <Text style={styles.titleStyle}>{item.item.Purpose}</Text>
-        <View style={styles.times}>
-          <Text style={styles.outDateTimeStyle}>
-            {item.item.OutDateTime}
-          </Text>
-          <Text style={{ marginEnd: "2%" }}>-</Text>
-          <Text style={styles.inDateTimeStyle}>{item.item.InDateTime}</Text>
+      <View style={styles.leftCont}>
+        <View>
+          <Text style={[styles.nameStyle]}>{item.item.Purpose}</Text>
+        </View>
+
+        <View style={styles.timeContainer}>
+          <Text style={styles.time}>{item.item.InDateTime}</Text>
+          <Text> - </Text>
+          <Text style={styles.time}>{item.item.OutDateTime}</Text>
         </View>
       </View>
-      <Text style={styles.placeStyle}>{item.item.Distination}</Text>
+
+      <View style={styles.rightCon}>
+        <Text style={[styles.placeStyle]}>{item.item.Distination}</Text>
+      </View>
       <Text style={styles.createdStyle}>
         {new Date(item.item.createdAt).getDate() == String(now.getDate())
           ? "Today"
@@ -227,26 +231,27 @@ const styles = StyleSheet.create({
     textAlign: "center",
     paddingTop: "7%",
   },
-  titleStyle: {
-    marginStart: "4%",
-    fontSize: hp(2.3),
-    marginTop: -5,
+  leftCont: {
+    width: "40%",
   },
-  times: {
-    display: "flex",
-    flexDirection: "row",
-    marginTop: 5,
-    marginStart: 10,
+  nameStyle: {
+    textAlign: "center",
+    fontSize: hp(1.7),
+    
   },
-  inDateTimeStyle: {
-    width: 80,
-    marginStart: 5,
-  },
-  outDateTimeStyle: {
-    width: 80,
+  rightCon: {
+    width: "40%",
   },
   placeStyle: {
-    paddingHorizontal: 20,
+    textAlign: "center"
+  },
+  timeContainer: {
+    flexDirection: "row"
+  },
+  time: {
+    width: "50%",
+    fontSize: hp(1.3),
+    textAlign: "center"
   },
   createdStyle: {
     position: "absolute",

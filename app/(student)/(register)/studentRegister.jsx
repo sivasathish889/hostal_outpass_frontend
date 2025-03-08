@@ -158,8 +158,7 @@ const StudentRegister = () => {
               }}
               value={name}
               inputMode="text"
-              accessibilityLabel="name"
-              aria-label="name"
+              autoComplete="studentName"
             />
             {nameError != null ? (
               <Text style={styles.errorText}>{nameError}</Text>
@@ -182,8 +181,7 @@ const StudentRegister = () => {
               }}
               value={registerNumber}
               inputMode="numeric"
-              accessibilityLabel="registerNumber"
-              aria-label="registerNumber"
+              autoComplete="registerNumber"
             />
             {registerNumberError != null ? (
               <Text style={styles.errorText}>{registerNumberError}</Text>
@@ -216,6 +214,7 @@ const StudentRegister = () => {
                   setIsFocus(false);
                   setDepartmentError(null);
                 }}
+                autoComplete="department"
                 placeholderStyle={{
                   color: themes.placeholderTextColor,
                   paddingStart: 10,
@@ -244,6 +243,7 @@ const StudentRegister = () => {
                 mode="modal"
                 maxHeight={100}
                 labelField="label"
+                autoComplete="year"
                 valueField="value"
                 value={year}
                 onFocus={() => setIsFocus(true)}
@@ -283,8 +283,7 @@ const StudentRegister = () => {
                 ref={phoneNumberRef}
                 onSubmitEditing={() => parentNumberRef.current.focus()}
                 inputMode="numeric"
-                accessibilityLabel="phoneNumber"
-                aria-label="phoneNumber"
+                autoComplete="phoneNumber"
               />
               {phoneNumberError != null ? (
                 <Text style={styles.errorText}>{phoneNumberError}</Text>
@@ -305,8 +304,7 @@ const StudentRegister = () => {
                 ref={parentNumberRef}
                 onSubmitEditing={() => emailRef.current.focus()}
                 inputMode="numeric"
-                accessibilityLabel="parentNumber"
-                aria-label="parentNumber"
+                autoComplete="parentNumber"
               />
               {parentNumberError != null ? (
                 <Text style={styles.errorText}>{parentNumberError}</Text>
@@ -328,8 +326,7 @@ const StudentRegister = () => {
               onSubmitEditing={() => districtRef.current.focus()}
               keyboardType="email-address"
               inputMode="email"
-              accessibilityLabel="email"
-              aria-label="email"
+              autoComplete="studentEmail"
             />
             {eMailError != null ? (
               <Text style={styles.errorText}>{eMailError}</Text>
@@ -341,7 +338,7 @@ const StudentRegister = () => {
           <View style={styles.inputGroups}>
             <Text style={styles.label}>District :</Text>
             <TextInput
-              placeholder="Enter Your District "
+              placeholder="Enter Your District"
               style={styles.input}
               placeholderTextColor={themes.placeholderTextColor}
               onChangeText={(text) => { setDistrict(text); setDistrictError(null) }}
@@ -349,8 +346,7 @@ const StudentRegister = () => {
               inputMode="text"
               ref={districtRef}
               onSubmitEditing={() => passwordRef.current.focus()}
-              accessibilityLabel="district"
-              aria-label="district"
+              autoComplete="studentDistrict"
             />
             {districtError != null ? (
               <Text style={styles.errorText}>{districtError}</Text>
@@ -371,8 +367,7 @@ const StudentRegister = () => {
                 ref={passwordRef}
                 onSubmitEditing={() => confirmPasswordRef.current.focus()}
                 inputMode="text"
-                accessibilityLabel="password"
-                aria-label="password"
+                autoComplete="studentPassword"
 
               />
               <MaterialCommunityIcons
@@ -401,8 +396,6 @@ const StudentRegister = () => {
                 value={confirmPassword}
                 secureTextEntry={!showPassword}
                 inputMode="text"
-                aria-label="confirm-password"
-                accessibilityLabel="confirm-password"
                 ref={confirmPasswordRef}
               />
               <MaterialCommunityIcons

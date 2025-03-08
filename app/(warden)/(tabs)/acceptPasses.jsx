@@ -80,8 +80,10 @@ const AcceptPass = () => {
                       </View>
                     </View>
 
-                    <View>
-                      <Text style={[styles.placeStyle, item.Distination.length > 15 ? { fontSize: hp(1.3) } : { fontSize: hp(2) }]}>{item.Distination}</Text>
+                    <View style={{ flexDirection: "column",  alignItems: "center" , maxWidth:wp(30)}}>
+                      <View>
+                        <Text style={[styles.placeStyle, item.Distination.length > 15 ? { fontSize: hp(1.3) } : { fontSize: hp(2) }]}>{item.Distination}</Text>
+                      </View>
                       <View style={styles.times}>
                         <Text style={styles.outDateTimeStyle}>
                           {item.OutDateTime}
@@ -154,7 +156,7 @@ const AcceptPass = () => {
             </View>
           </Modal>
         </View>
-        </ImageBackground>
+      </ImageBackground>
     </View>
   );
 };
@@ -163,7 +165,7 @@ export default AcceptPass;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: themes.rejectColor,
+    backgroundColor: themes.acceptColor,
     margin: 10,
     boxShadow: "2 2 5 1",
     display: "flex",
@@ -173,7 +175,6 @@ const styles = StyleSheet.create({
   },
   detailsContainer: {
     flexDirection: "row",
-    justifyContent: "space-around",
     alignItems: "center",
     flex: 1,
   },
@@ -192,32 +193,32 @@ const styles = StyleSheet.create({
     paddingTop: 25,
   },
   titleStyle: {
+    marginStart: 10,
     marginTop: -5,
+    width: wp(40)
   },
   department: {
     fontSize: hp(1.7),
     textAlign: "center"
   },
   nameStyle: {
-    fontSize: wp(40),
-    textAlign: "center"
+    textAlign: "center",
   },
   times: {
     flexDirection: "row",
   },
   inDateTimeStyle: {
-    width: 60,
+    width: 64,
     marginStart: 5,
-    fontSize: hp(1.2),
+    fontSize: hp(1),
     textAlign: "center",
   },
   outDateTimeStyle: {
-    maxWidth: 60,
-    fontSize: hp(1.2),
+    maxWidth: 64,
+    fontSize: hp(1),
     textAlign: "center",
   },
   placeStyle: {
-    textAlign: "center",
     fontSize: hp(2),
   },
   createdStyle: {

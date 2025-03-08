@@ -3,8 +3,6 @@ import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import homeIcon from "@/assets/TabBar/HomeIcon.png";
-import acceptPass from "@/assets/TabBar/acceptPass.png";
-import closeIcon from "@/assets/TabBar/close.png";
 import Settings from "@/assets/TabBar/Settings.png";
 import IonIcons from "@expo/vector-icons/Ionicons";
 import { Tabs } from "expo-router";
@@ -30,7 +28,9 @@ const TabRoute = () => {
           tabBarStyle: {
             backgroundColor: themes.mainColor,
             borderRadius: 30,
-            height: 75,
+            height: "9%",
+            position : "absolute",
+            bottom : 0
           },
           tabBarPosition: "bottom",
           headerShown: false,

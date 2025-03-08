@@ -119,7 +119,7 @@ const home = () => {
   }
   return (
     <View style={{ flex: 1 }}>
-      <ImageBackground source={icon} style={styles.backgoundImage}  resizeMode="contain" >
+      <ImageBackground source={icon} style={styles.backgoundImage} resizeMode="contain" >
         <Spinner
           visible={spinnerVisible}
           textContent={"Loading..."}
@@ -138,56 +138,50 @@ const home = () => {
                   </Text>
                 </View>
 
-                <View style={styles.detailsContainer}>
-                  <View style={{ display: "flex", paddingVertical: 15 }}>
-                    <View style={styles.titleStyle}>
-                      <Text style={[styles.nameStyle, item.name.length > 10 ? { fontSize: hp(1.3) } : { fontSize: hp(2) }]}>{item.name.toUpperCase()}</Text>
-                      <View style={{ flexDirection: "row", justifyContent: "center" }}>
-                        <Text style={styles.department}>{item.year} year - </Text>
-                        <Text style={styles.department}>{item.Department} </Text>
-                      </View>
-                    </View>
+                <View style={styles.leftCon}>
+                  <Text style={[styles.nameStyle, item.name.length > 10 ? { fontSize: hp(1.3) } : { fontSize: hp(1.7) }]}>{item.name.toUpperCase()}</Text>
+                  <View style={{ flexDirection: "row", justifyContent: "center" }}>
+                    <Text style={styles.department}>{item.year} year - </Text>
+                    <Text style={styles.department}>{item.Department} </Text>
                   </View>
-
-                  <View style={{ width: wp(27) }}>
-                    <Text style={[styles.placeStyle, item.Distination.length > 15 ? { fontSize: hp(1.3) } : { fontSize: hp(2) }]}>{item.Distination}</Text>
-                    <View style={styles.times}>
-                      <Text style={styles.outDateTimeStyle}>
-                        {item.OutDateTime}
-                      </Text>
-                      <Text> -</Text>
-                      <Text style={styles.inDateTimeStyle}>
-                        {item.InDateTime}
-                      </Text>
-                    </View>
-                  </View>
-
-                  <View style={styles.btnGroup}>
-                    <TouchableOpacity
-                      onPress={() => AlertingAction("Out Time Updated", item._id)}
-                      style={{ backgroundColor: "green", padding: 5 }}
-                    >
-                      <Text style={{ fontSize: 10 }}>Out Time</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      onPress={() => AlertingAction("In Time Updated", item._id)}
-                      style={{ backgroundColor: "gray", padding: 5 }}
-                    >
-                      <Text style={{ fontSize: 10 }}>In Time</Text>
-                    </TouchableOpacity>
-                  </View>
-
-                  <Text style={styles.createdStyle}>
-                    {new Date(item.createdAt).getDate() == String(now.getDate())
-                      ? "Today"
-                      : new Date(item.createdAt).getDate() + 1 ==
-                        String(now.getDate())
-                        ? "YesterDay"
-                        : new Date(item.createdAt)
-                          .toLocaleString(undefined, "Asia/Kolkata")
-                          .split(",")[0]}
-                  </Text>
                 </View>
+
+                <View style={styles.rightCon}>
+                  <View>
+                    <Text style={[styles.placeStyle, item.Distination.length > 10 ? { fontSize: hp(1.3) } : { fontSize: hp(1.7) }]}>{item.Distination}</Text>
+                  </View>
+                  <View style={styles.timeContainer}>
+                    <Text style={styles.time}>{item.InDateTime}</Text>
+                    <Text> - </Text>
+                    <Text style={styles.time}>{item.OutDateTime}</Text>
+                  </View>
+                </View>
+
+                <View style={styles.btnGroup}>
+                  <TouchableOpacity
+                    onPress={() => AlertingAction("Out Time Updated", item._id)}
+                    style={{ backgroundColor: "green", padding: 5 }}
+                  >
+                    <Text style={{ fontSize: 10 }}>Out Time</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => AlertingAction("In Time Updated", item._id)}
+                    style={{ backgroundColor: "gray", padding: 5 }}
+                  >
+                    <Text style={{ fontSize: 10 }}>In Time</Text>
+                  </TouchableOpacity>
+
+                </View>
+                <Text style={styles.createdStyle}>
+                  {new Date(item.createdAt).getDate() == String(now.getDate())
+                    ? "Today"
+                    : new Date(item.createdAt).getDate() + 1 ==
+                      String(now.getDate())
+                      ? "YesterDay"
+                      : new Date(item.createdAt)
+                        .toLocaleString(undefined, "Asia/Kolkata")
+                        .split(",")[0]}
+                </Text>
                 <TouchableOpacity onPress={() => openSheet(item)} style={styles.infoIcon}>
                   <Entypo size={15} name="info-with-circle" color={"black"} />
                 </TouchableOpacity>
@@ -269,51 +263,45 @@ const styles = StyleSheet.create({
     textAlign: "center",
     paddingTop: 25,
   },
-  titleStyle: {
-    marginStart: 10,
-    fontSize: 20,
-    marginTop: -5,
+  leftCon: {
+    width: "32%"
+  },
+  rightCon: {
+    width: "35%"
   },
   department: {
-    fontSize: hp(2),
+    fontSize: hp(1.6),
     textAlign: "center"
   },
   nameStyle: {
-    width: wp(40),
     textAlign: "center"
   },
-  times: {
-    flexDirection: "row",
+  timeContainer: {
+    flexDirection: "row"
   },
-  inDateTimeStyle: {
-    width: 60,
-    marginStart: 5,
-    fontSize: hp(1),
-    textAlign: "center",
-  },
-  outDateTimeStyle: {
-    maxWidth: 60,
-    fontSize: hp(1),
-    textAlign: "center",
+  time: {
+    width: "50%",
+    fontSize: hp(1.2),
+    textAlign: "center"
+
   },
   placeStyle: {
     textAlign: "center",
-    fontSize: hp(2),
-    width: wp(25)
   },
   createdStyle: {
     position: "absolute",
     right: 3,
-    top: 1,
+    top: 3,
     fontSize: 8,
     opacity: 0.5,
   },
   btnGroup: {
-    rowGap: 4,
+    columnGap: 8,
     flexDirection: "column",
-    marginEnd: "5%",
+    position :"absolute",
+    right : 6,
+    rowGap : 2,
   },
-
   editBtn: {
     color: "white",
     fontSize: 10,
@@ -360,7 +348,7 @@ const styles = StyleSheet.create({
   infoGrid: {
     width: "100%",
   },
-  backgoundImage : {
-    flex : 1,
+  backgoundImage: {
+    flex: 1,
   }
 });

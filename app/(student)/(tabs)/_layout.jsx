@@ -36,7 +36,9 @@ const Layout = () => {
           tabBarStyle: {
             backgroundColor: themes.mainColor,
             borderRadius: 40,
-            height: hp(7)
+            height: "9%",
+            position: "absolute",
+            bottom: 0
           },
           tabBarPosition: "bottom",
           headerShown: false,

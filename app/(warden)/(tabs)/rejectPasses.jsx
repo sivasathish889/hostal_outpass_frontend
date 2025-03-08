@@ -78,14 +78,16 @@ const RejectPasses = () => {
                             {item.year} year -
                           </Text>
                           <Text style={styles.department}>
-                            {item.Department.toUpperCase()}{" "}
+                            {item.Department.toUpperCase()}
                           </Text>
                         </View>
                       </View>
                     </View>
 
-                    <View>
-                      <Text style={[styles.placeStyle, item.Distination.length > 15 ? { fontSize: hp(1.3) } : { fontSize: hp(2) }]}>{item.Distination}</Text>
+                    <View style={{display:"flex", flexDirection: "column", justifyContent:"center", alignItems:"center", width: wp(30) }} >
+                      <View>
+                        <Text style={[styles.placeStyle, item.Distination.length > 15 ? { fontSize: hp(1.3) } : { fontSize: hp(2) }]}>{item.Distination}</Text>
+                      </View>
                       <View style={styles.times}>
                         <Text style={styles.outDateTimeStyle}>
                           {item.OutDateTime}
@@ -177,7 +179,6 @@ const styles = StyleSheet.create({
   },
   detailsContainer: {
     flexDirection: "row",
-    justifyContent: "space-around",
     alignItems: "center",
     flex: 1,
   },
@@ -196,28 +197,29 @@ const styles = StyleSheet.create({
     paddingTop: 25,
   },
   titleStyle: {
+    marginStart: 10,
     marginTop: -5,
+    width: wp(30)
   },
   department: {
     fontSize: hp(1.7),
     textAlign: "center"
   },
   nameStyle: {
-    fontSize: wp(40),
     textAlign: "center"
   },
   times: {
     flexDirection: "row",
   },
   inDateTimeStyle: {
-    width: 60,
+    width: 64,
     marginStart: 5,
-    fontSize: hp(1.2),
+    fontSize: hp(1),
     textAlign: "center",
   },
   outDateTimeStyle: {
-    maxWidth: 60,
-    fontSize: hp(1.2),
+    maxWidth: 64,
+    fontSize: hp(1),
     textAlign: "center",
   },
   placeStyle: {

@@ -22,7 +22,7 @@ import env from "@/constants/urls";
 
 import NewPassModel from "@/components/NewPassModel";
 import EditPassModals from "@/components/EditPassModals";
-import { wp } from "@/helpers/dimensions";
+import { hp, wp } from "@/helpers/dimensions";
 import backgroundIcon from "@/assets/backgroundPic.png"
 
 
@@ -80,8 +80,8 @@ const HomeScreen = () => {
     await AsyncStorage.getItem("student").then((userId) => {
       setUserId(userId);
       axios
-        .get(`${env.CLIENT_URL}${env.studentPendingPasses}/${userId}`)
-        .then((data) => {
+      .get(`${env.CLIENT_URL}${env.studentPendingPasses}/${userId}`)
+      .then((data) => {
           setFetchPassData(data.data);
           setRefreshing(false);
           setSpinnerVisible(false)
@@ -166,110 +166,119 @@ const HomeScreen = () => {
 
   return (
     <View style={{ flex: 1 }}>
-            <ImageBackground source={backgroundIcon} resizeMode="contain" style={{ flex: 1 }}>
-      <Spinner
-        visible={spinnerVisible}
-        textContent={"Loading..."}
-        textStyle={{ color: "#FFF" }}
-        cancelable={true}
-      />
-      <FlatList
-        data={fetchPassData.pass}
-        renderItem={({ item }) => {
-          return (
-            <View style={styles.container}>
-              <View style={styles.titleContainer}>
-                <Text style={styles.roomNoStyle}>
-                  {item.RoomNo.toUpperCase()}.
-                </Text>
-              </View>
+      <ImageBackground source={backgroundIcon} resizeMode="contain" style={{ flex: 1 }}>
+        <Spinner
+          visible={spinnerVisible}
+          textContent={"Loading..."}
+          textStyle={{ color: "#FFF" }}
+          cancelable={true}
+        />
+        <FlatList
+          data={fetchPassData.pass}
+          renderItem={({ item }) => {
+            return (
+              <View style={styles.container}>
 
-              <View style={{ display: "flex", paddingVertical: 10 }}>
-                <Text style={styles.titleStyle}>{item.Purpose}</Text>
-                <View style={styles.times}>
-                  <Text style={styles.outDateTimeStyle}>
-                    {item.OutDateTime}
+                <View style={styles.titleContainer}>
+                  <Text style={styles.roomNoStyle}>
+                    {item.RoomNo.toUpperCase()}.
                   </Text>
-                  <Text style={{ marginEnd: 10 }}>-</Text>
-                  <Text style={styles.inDateTimeStyle}>{item.InDateTime}</Text>
                 </View>
-              </View>
-              <Text style={styles.placeStyle}>{item.Distination}</Text>
-              <View style={styles.btnGroup}>
-                <TouchableOpacity
-                  style={styles.editBtnOutline}
-                  onPress={() => {
-                    setEditModelVisible(!editModelVisible);
-                    setinDateTime(item.InDateTime);
-                    setoutDateTime(item.OutDateTime);
-                    setRoomNo(item.RoomNo);
-                    setPurpose(item.Purpose);
-                    setDestination(item.Distination);
-                    setPassId(item._id);
-                  }}
-                >
-                  <Text style={styles.editBtn}>Edit</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={styles.deleteBtnOutline}
-                  onPress={() => DeleteAlerting(item._id)}
-                >
-                  <Text style={styles.deleteBtn}>Delete</Text>
-                </TouchableOpacity>
-              </View>
-              <Text style={styles.createdStyle}>
-                {new Date(item.createdAt).getDate() == String(now.getDate())
-                  ? "Today"
-                  : new Date(item.createdAt).getDate() + 1 ==
-                    String(now.getDate())
-                    ? "YesterDay"
-                    : new Date(item.createdAt)
-                      .toLocaleString(undefined, "Asia/Kolkata")
-                      .split(",")[0]}
-              </Text>
-            </View>
-          );
-        }}
-        keyExtractor={(item) => item._id}
-        refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={() => setRefreshing(true)}
-          />
-        }
-      />
 
-      <TouchableOpacity
-        style={styles.plusIconStyle}
-        onPress={() => setPassModelVisible(!passModelVisible)}
-      >
-        <Entypo name="plus" size={24} color="black" />
-      </TouchableOpacity>
+                <View style={styles.leftCont}>
+                  <View>
+                    <Text style={[styles.nameStyle, item.Purpose.length > 10 ? { fontSize: hp(1.5) } : { fontSize: hp(2) }]}>{item.Purpose}</Text>
+                  </View>
 
-      {/* New Pass Model */}
-      <NewPassModel
-        setDataRefresh={setDataRefresh}
-        userId={userId}
-        passModelVisible={passModelVisible}
-        setPassModelVisible={setPassModelVisible}
-        dataRefresh={dataRefresh}
-      />
-      {/* Edit Pass Model */}
-      <EditPassModals
-        editModelVisible={editModelVisible}
-        setEditModelVisible={setEditModelVisible}
-        roomNo={roomNo}
-        setRoomNo={setRoomNo}
-        destination={destination}
-        setDestination={setDestination}
-        purpose={purpose}
-        setPurpose={setPurpose}
-        outDateTime={outDateTime}
-        handleOutDateTimePicker={handleOutDateTimePicker}
-        inDateTime={inDateTime}
-        handleInDateTimePicker={handleInDateTimePicker}
-        handelPassUpdate={handelPassUpdate}
-      />
+                  <View style={styles.timeContainer}>
+                    <Text style={styles.time}>{item.InDateTime}</Text>
+                    <Text> - </Text>
+                    <Text style={styles.time}>{item.OutDateTime}</Text>
+                  </View>
+                </View>
+
+                <View style={styles.rightCon}>
+                  <Text style={[styles.placeStyle, item.Distination.length > 10 ? { fontSize: hp(1.5) } : { fontSize: hp(2) }]}>{item.Distination}</Text>
+                </View>
+
+
+                <View style={styles.btnGroup}>
+                  <TouchableOpacity
+                    style={styles.editBtnOutline}
+                    onPress={() => {
+                      setEditModelVisible(!editModelVisible);
+                      setinDateTime(item.InDateTime);
+                      setoutDateTime(item.OutDateTime);
+                      setRoomNo(item.RoomNo);
+                      setPurpose(item.Purpose);
+                      setDestination(item.Distination);
+                      setPassId(item._id);
+                    }}
+                  >
+                    <Text style={styles.editBtn}>Edit</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={styles.deleteBtnOutline}
+                    onPress={() => DeleteAlerting(item._id)}
+                  >
+                    <Text style={styles.deleteBtn}>Delete</Text>
+                  </TouchableOpacity>
+                </View>
+
+                <Text style={styles.createdStyle}>
+                  {new Date(item.createdAt).getDate() == String(now.getDate())
+                    ? "Today"
+                    : new Date(item.createdAt).getDate() + 1 ==
+                      String(now.getDate())
+                      ? "YesterDay"
+                      : new Date(item.createdAt)
+                        .toLocaleString(undefined, "Asia/Kolkata")
+                        .split(",")[0]}
+                </Text>
+                
+              </View>
+            );
+          }}
+          keyExtractor={(item) => item._id}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={() => setRefreshing(true)}
+            />
+          }
+        />
+
+        <TouchableOpacity
+          style={styles.plusIconStyle}
+          onPress={() => setPassModelVisible(!passModelVisible)}
+        >
+          <Entypo name="plus" size={24} color="black" />
+        </TouchableOpacity>
+
+        {/* New Pass Model */}
+        <NewPassModel
+          setDataRefresh={setDataRefresh}
+          userId={userId}
+          passModelVisible={passModelVisible}
+          setPassModelVisible={setPassModelVisible}
+          dataRefresh={dataRefresh}
+        />
+        {/* Edit Pass Model */}
+        <EditPassModals
+          editModelVisible={editModelVisible}
+          setEditModelVisible={setEditModelVisible}
+          roomNo={roomNo}
+          setRoomNo={setRoomNo}
+          destination={destination}
+          setDestination={setDestination}
+          purpose={purpose}
+          setPurpose={setPurpose}
+          outDateTime={outDateTime}
+          handleOutDateTimePicker={handleOutDateTimePicker}
+          inDateTime={inDateTime}
+          handleInDateTimePicker={handleInDateTimePicker}
+          handelPassUpdate={handelPassUpdate}
+        />
       </ImageBackground>
     </View>
   );
@@ -287,11 +296,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flex: 1,
   },
-  titleContainer: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-  },
   roomNoStyle: {
     fontSize: 16,
     backgroundColor: "#D9D9D9",
@@ -301,27 +305,27 @@ const styles = StyleSheet.create({
     textAlign: "center",
     paddingTop: 25,
   },
-  titleStyle: {
-    marginStart: 10,
-    fontSize: 20,
-    marginTop: -5,
-    width :wp(40)
+
+  leftCont: {
+    width: "40%",
   },
-  times: {
-    display: "flex",
-    flexDirection: "row",
-    marginTop: 5,
-    marginStart: 10,
+  nameStyle: {
+    textAlign: "center"
   },
-  inDateTimeStyle: {
-    width: 80,
-    marginStart: 5,
-  },
-  outDateTimeStyle: {
-    width: 80,
+  rightCon: {
+    width: "40%",
   },
   placeStyle: {
-    paddingHorizontal: 20,
+    textAlign: "center"
+  },
+  timeContainer: {
+    flexDirection: "row"
+  },
+  time: {
+    width: "50%",
+    fontSize: hp(1.3),
+    textAlign: "center"
+
   },
   createdStyle: {
     position: "absolute",
@@ -358,8 +362,8 @@ const styles = StyleSheet.create({
   },
   plusIconStyle: {
     position: "absolute",
-    bottom: 50,
-    right: 50,
+    bottom : hp(12),
+    right: hp(5),
     backgroundColor: "#AFAFAF",
     padding: 12,
     borderRadius: 25,

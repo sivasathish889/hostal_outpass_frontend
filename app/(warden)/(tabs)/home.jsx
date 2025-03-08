@@ -139,54 +139,48 @@ const Home = () => {
                   </Text>
                 </View>
 
-                <View style={styles.detailsContainer}>
-                  <View style={{ display: "flex", paddingVertical: 15 }}>
-                    <View style={styles.titleStyle}>
-                      <Text style={[styles.nameStyle, item.name.length > 10 ? { fontSize: hp(1.3) } : { fontSize: hp(2) }]}>{item.name.toUpperCase()}</Text>
-                      <View style={{ flexDirection: "row", justifyContent: "center" }}>
-                        <Text style={styles.department}>{item.year} year - </Text>
-                        <Text style={styles.department}>{item.Department} </Text>
-                      </View>
-                    </View>
+                <View style={styles.leftCon}>
+                  <Text style={[styles.nameStyle, item.name.length > 10 ? { fontSize: hp(1.3) } : { fontSize: hp(2) }]}>{item.name.toUpperCase()}</Text>
+                  <View style={{ flexDirection: "row", justifyContent: "center" }}>
+                    <Text style={styles.department}>{item.year} year - </Text>
+                    <Text style={styles.department}>{item.Department} </Text>
                   </View>
+                </View>
 
+                <View style={styles.rightCon}>
                   <View>
                     <Text style={[styles.placeStyle, item.Distination.length > 10 ? { fontSize: hp(1.3) } : { fontSize: hp(2) }]}>{item.Distination}</Text>
-                    <View style={styles.times}>
-                      <Text style={styles.outDateTimeStyle}>
-                        {item.OutDateTime}
-                      </Text>
-                      <Text>-</Text>
-                      <Text style={styles.inDateTimeStyle}>
-                        {item.InDateTime}
-                      </Text>
-                    </View>
                   </View>
-
-                  <View style={styles.btnGroup}>
-                    <TouchableOpacity
-                      onPress={() => AlertingAction("Accept", item._id)}
-                    >
-                      <AntDesign name="checkcircle" size={30} color="green" />
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      onPress={() => AlertingAction("Reject", item._id)}
-                    >
-                      <AntDesign name="closecircle" size={30} color="red" />
-                    </TouchableOpacity>
+                  <View style={styles.timeContainer}>
+                    <Text style={styles.time}>{item.InDateTime}</Text>
+                    <Text> - </Text>
+                    <Text style={styles.time}>{item.OutDateTime}</Text>
                   </View>
-
-                  <Text style={styles.createdStyle}>
-                    {new Date(item.createdAt).getDate() == String(now.getDate())
-                      ? "Today"
-                      : new Date(item.createdAt).getDate() + 1 ==
-                        String(now.getDate())
-                        ? "YesterDay"
-                        : new Date(item.createdAt)
-                          .toLocaleString(undefined, "Asia/Kolkata")
-                          .split(",")[0]}
-                  </Text>
                 </View>
+
+                <View style={styles.btnGroup}>
+                  <TouchableOpacity
+                    onPress={() => AlertingAction("Accept", item._id)}
+                  >
+                    <AntDesign name="checkcircle" size={30} color="green" />
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => AlertingAction("Reject", item._id)}
+                  >
+                    <AntDesign name="closecircle" size={30} color="red" />
+                  </TouchableOpacity>
+
+                </View>
+                <Text style={styles.createdStyle}>
+                  {new Date(item.createdAt).getDate() == String(now.getDate())
+                    ? "Today"
+                    : new Date(item.createdAt).getDate() + 1 ==
+                      String(now.getDate())
+                      ? "YesterDay"
+                      : new Date(item.createdAt)
+                        .toLocaleString(undefined, "Asia/Kolkata")
+                        .split(",")[0]}
+                </Text>
                 <TouchableOpacity onPress={() => openSheet(item)} style={styles.infoIcon}>
                   <Entypo size={15} name="info-with-circle" color={"black"} />
                 </TouchableOpacity>
@@ -267,63 +261,43 @@ const styles = StyleSheet.create({
     textAlign: "center",
     paddingTop: 25,
   },
-  titleStyle: {
-    marginStart: 10,
-    marginTop: -5,
-    width: wp(30)
+  leftCon: {
+    width: "30%"
+  },
+  rightCon: {
+    width: "35%"
   },
   department: {
-    fontSize: hp(1.7),
+    fontSize: hp(1.6),
     textAlign: "center"
   },
   nameStyle: {
     textAlign: "center"
   },
-  times: {
-    flexDirection: "row",
+  timeContainer: {
+    flexDirection: "row"
   },
-  inDateTimeStyle: {
-    width: 60,
-    marginStart: 5,
+  time: {
+    width: "50%",
     fontSize: hp(1.2),
-    textAlign: "center",
-  },
-  outDateTimeStyle: {
-    maxWidth: 60,
-    fontSize: hp(1.2),
-    textAlign: "center",
+    textAlign: "center"
+
   },
   placeStyle: {
     textAlign: "center",
-    width: wp(30)
   },
   createdStyle: {
     position: "absolute",
     right: 3,
-    top: 1,
+    top: 3,
     fontSize: 8,
     opacity: 0.5,
   },
   btnGroup: {
     columnGap: 8,
     flexDirection: "row",
-    marginEnd: "5%",
-  },
-
-  editBtn: {
-    color: "white",
-    fontSize: 10,
-    textAlign: "center",
-  },
-  deleteBtnOutline: {
-    paddingHorizontal: 10,
-    paddingVertical: 3,
-    backgroundColor: "red",
-    borderRadius: 5,
-  },
-  deleteBtn: {
-    color: "white",
-    fontSize: 10,
+    position: "absolute",
+    right: 3
   },
   infoIcon: {
     position: "absolute",

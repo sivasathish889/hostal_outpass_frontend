@@ -47,8 +47,7 @@ const SettingScreen = () => {
     }
   };
   return (
-    <View style={styles.container}>
-      <ImageBackground source={backgroundIcon} resizeMode="contain" style={{flex:1}}>
+      <ImageBackground source={backgroundIcon} resizeMode="contain" style={styles.container}>
         <Spinner
           visible={spinnerVisible}
           textContent={"Loading..."}
@@ -65,7 +64,6 @@ const SettingScreen = () => {
           </TouchableOpacity>
         </View>
       </ImageBackground>
-    </View>
   );
 };
 

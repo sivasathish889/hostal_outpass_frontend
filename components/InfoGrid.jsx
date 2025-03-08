@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     },
     infoLabel: {
         width: 100,
-        fontSize: hp(2),
+        fontSize: hp(1.7),
         color: "white",
     },
     infoSeparator: {
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     },
     infoValue: {
         flex: 1,
-        fontSize: hp(2),
+        fontSize: hp(1.7),
         color: "white",
     },
 })
