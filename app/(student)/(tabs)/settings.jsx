@@ -105,6 +105,7 @@ const styles = StyleSheet.create({
   },
   btnContainer: {
     width: "80%",
+    height : "20%"
   },
   btnOutline: {
     backgroundColor: "red",

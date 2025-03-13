@@ -47,23 +47,23 @@ const SettingScreen = () => {
     }
   };
   return (
-      <ImageBackground source={backgroundIcon} resizeMode="contain" style={styles.container}>
-        <Spinner
-          visible={spinnerVisible}
-          textContent={"Loading..."}
-          textStyle={{ color: '#FFF' }}
-          cancelable={true}
-        />
-        <View style={styles.profile}>
-          <AntDesign name="user" size={120} color="black" />
-          <Text style={styles.nameStyle}>{fetchingData[0]?.userName}</Text>
-        </View>
-        <View style={styles.btnContainer}>
-          <TouchableOpacity style={styles.btnOutline} onPress={handleLogout}>
-            <Text style={styles.logoutBtn}>Logout</Text>
-          </TouchableOpacity>
-        </View>
-      </ImageBackground>
+    <ImageBackground source={backgroundIcon} resizeMode="contain" style={styles.container}>
+      <Spinner
+        visible={spinnerVisible}
+        textContent={"Loading..."}
+        textStyle={{ color: '#FFF' }}
+        cancelable={true}
+      />
+      <View style={styles.profile}>
+        <AntDesign name="user" size={120} color="black" />
+        <Text style={styles.nameStyle}>{fetchingData[0]?.userName}</Text>
+      </View>
+      <View style={styles.btnContainer}>
+        <TouchableOpacity style={styles.btnOutline} onPress={handleLogout}>
+          <Text style={styles.logoutBtn}>Logout</Text>
+        </TouchableOpacity>
+      </View>
+    </ImageBackground>
   );
 };
 
@@ -83,6 +83,7 @@ const styles = StyleSheet.create({
   },
   btnContainer: {
     width: "80%",
+    height: "20%"
   },
   btnOutline: {
     backgroundColor: "red",

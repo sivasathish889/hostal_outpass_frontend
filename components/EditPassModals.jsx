@@ -93,6 +93,7 @@ const EditPassModals = (props) => {
                             />
 
                             <DateTimePicker
+                            mode="datetime"
                                 onCancel={() => setOutDatePickerVisible(false)}
                                 onConfirm={(e) => {
                                     handleOutDateTimePicker(e);
@@ -119,6 +120,7 @@ const EditPassModals = (props) => {
                             />
 
                             <DateTimePicker
+                            mode="datetime"
                                 onCancel={() => setInDatePickerVisible(false)}
                                 onConfirm={(e) => {
                                     handleInDateTimePicker(e);

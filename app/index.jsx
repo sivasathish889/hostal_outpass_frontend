@@ -9,25 +9,14 @@ const Welcome = () => {
   const getToken = async () => {
     await AsyncStorage.getAllKeys().then((data) => setisAuth(data))
   }
-
-  useEffect(() => {
-    getToken()
-  }, [])
-
+  
+  getToken()
   console.log(isAuth);
 
   return (
-    isAuth.includes('student') ?
 
-      <Redirect href="(student)/(tabs)/home" />
-      :
-      isAuth.includes('warden')
-        ?
-        <Redirect href="(warden)/(tabs)/home" />
-        :
-        <Redirect href="welcome" />
-
-
+    isAuth.includes('security') ? <Redirect href='(security)/(tabs)/home'/> : isAuth.includes('student') ? <Redirect href='(student)/(tabs)/home'/> : isAuth.includes('warden') ? <Redirect href='(warden)/(tabs)/home'/> : <Redirect href="welcome" /> 
+   
   );
 };
 
