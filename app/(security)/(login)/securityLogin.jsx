@@ -51,10 +51,12 @@ const securityLogin = () => {
       if (data.success) {
         toast.show(data.message, {
           type: "success",
-          placement: "bottom",
+          placement: "top",
           duration: 4000,
           offset: 30,
           animationType: "slide-in",
+          successIcon: <MaterialCommunityIcons name="check-circle" size={24} color="white" />,
+          style: { marginTop: hp(5), width: "100%",display :"flex", justifyContent:"center", alignItems:"center" },
         });
         setUserName(null);
         setPassword(null)
@@ -65,10 +67,12 @@ const securityLogin = () => {
       } else {
         toast.show(data.message, {
           type: "danger",
-          placement: "bottom",
-          duration: 4000,
-          offset: 30,
-          animationType: "slide-in",
+          placement: "top",
+          duration: 3000,
+          offset: 50,
+          animationType: "zoom-in",
+          dangerIcon: <FontAwesome name="warning" size={20} color="white" />,
+          style: { marginTop: hp(5), width: "100%",display :"flex", justifyContent:"center", alignItems:"center" },
         });
       }
     } catch (error) {
@@ -86,84 +90,87 @@ const securityLogin = () => {
         textStyle={{ color: "#FFF" }}
         cancelable={true}
       />
-      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : "height"} style={styles.container}>
-        <View style={styles.form}>
-          <Text style={styles.heading}>Security</Text>
-          <Text style={styles.subHead}>Login</Text>
+      {/* <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : "height"} style={styles.container}> */}
+        <SafeAreaView style={styles.container}>
 
-          <View style={styles.inputgroup}>
-            <Text style={styles.lable}>User Name :</Text>
-            <View>
-              <FontAwesome name="user" size={18} color="rgba(0,0,0,.6)" style={styles.inputIcon} />
-              <TextInput
-                placeholder="Enter Your User Name"
-                style={styles.input}
-                placeholderTextColor={themes.placeholderTextColor}
-                onSubmitEditing={() => nextInputRef.current.focus()}
-                onChangeText={(text) => {
-                  setUserName(text);
-                  setUserNameError(null);
-                }}
-                value={userName}
-                autoComplete="securityUserName"
-              />
-            </View>
-            {userNameError != null ? (
-              <Text style={styles.errorMsg}>{userNameError}</Text>
-            ) : (
-              ""
-            )}
-            <View>
-              <Text style={styles.lable}>Password :</Text>
+          <View style={styles.form}>
+            <Text style={styles.heading}>Security</Text>
+            <Text style={styles.subHead}>Login</Text>
+
+            <View style={styles.inputgroup}>
+              <Text style={styles.lable}>User Name :</Text>
               <View>
-                <FontAwesome name="lock" size={18} color="rgba(0,0,0,.6)" style={styles.inputIcon} />
-
+                <FontAwesome name="user" size={18} color="rgba(0,0,0,.6)" style={styles.inputIcon} />
                 <TextInput
-                  placeholder="Enter Your Password"
+                  placeholder="Enter Your User Name"
                   style={styles.input}
                   placeholderTextColor={themes.placeholderTextColor}
-                  secureTextEntry={!showPassword}
-                  ref={nextInputRef}
+                  onSubmitEditing={() => nextInputRef.current.focus()}
                   onChangeText={(text) => {
-                    setPassword(text);
-                    setPasswordError(null);
+                    setUserName(text);
+                    setUserNameError(null);
                   }}
-                  value={password}
-                  inputMode="text"
-                  autoComplete="securityPassword"
+                  value={userName}
+                  autoComplete="securityUserName"
                 />
               </View>
-              {passwordError != null ? (
-                <Text style={styles.errorMsg}>{passwordError}</Text>
+              {userNameError != null ? (
+                <Text style={styles.errorMsg}>{userNameError}</Text>
               ) : (
                 ""
               )}
-              <MaterialCommunityIcons
-                name={showPassword ? "eye" : "eye-off"}
-                size={18}
-                color="black"
-                style={styles.icon}
-                onPress={toggleShowPassword}
-              />
-            </View>
-            <Text
-              style={styles.forgetPass}
-              onPress={() => navigation.navigate("forgetPassword")}
-            >
-              Forget/Change Password
-            </Text>
-          </View>
+              <View>
+                <Text style={styles.lable}>Password :</Text>
+                <View>
+                  <FontAwesome name="lock" size={18} color="rgba(0,0,0,.6)" style={styles.inputIcon} />
 
-          <View style={{ alignItems: "center" }}>
-            <TouchableOpacity
-              style={styles.buttonOutline}
-              onPress={handleSubmit}
-            >
-              <Text style={styles.btn}>Login</Text>
-            </TouchableOpacity>
+                  <TextInput
+                    placeholder="Enter Your Password"
+                    style={styles.input}
+                    placeholderTextColor={themes.placeholderTextColor}
+                    secureTextEntry={!showPassword}
+                    ref={nextInputRef}
+                    onChangeText={(text) => {
+                      setPassword(text);
+                      setPasswordError(null);
+                    }}
+                    value={password}
+                    inputMode="text"
+                    autoComplete="securityPassword"
+                  />
+                </View>
+                {passwordError != null ? (
+                  <Text style={styles.errorMsg}>{passwordError}</Text>
+                ) : (
+                  ""
+                )}
+                <MaterialCommunityIcons
+                  name={showPassword ? "eye" : "eye-off"}
+                  size={18}
+                  color="black"
+                  style={styles.icon}
+                  onPress={toggleShowPassword}
+                />
+              </View>
+              <Text
+                style={styles.forgetPass}
+                onPress={() => navigation.navigate("forgetPassword")}
+              >
+                Forget/Change Password
+              </Text>
+            </View>
+
+            <View style={{ alignItems: "center" }}>
+              <TouchableOpacity
+                style={styles.buttonOutline}
+                onPress={handleSubmit}
+              >
+                <Text style={styles.btn}>Login</Text>
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
-      </KeyboardAvoidingView>
+        </SafeAreaView>
+      {/* </KeyboardAvoidingView> */}
     </ImageBackground>
   )
 }

@@ -16,6 +16,7 @@ import { useNavigation } from "expo-router";
 import themes from "@/constants/themes"
 import { hp } from "@/helpers/dimensions";
 import Spinner from "react-native-loading-spinner-overlay";
+import { FontAwesome, MaterialCommunityIcons } from "@expo/vector-icons";
 
 const forgetPassword = () => {
     let navigation = useNavigation()
@@ -30,11 +31,13 @@ const forgetPassword = () => {
             if (data.success) {
                 toast.show(data.message, {
                     type: "success",
-                    placement: "bottom",
+                    placement: "top",
                     duration: 4000,
                     offset: 30,
                     animationType: "slide-in",
-                });
+                    successIcon: <MaterialCommunityIcons name="check-circle" size={24} color="white" />,
+                    style: { marginTop: hp(5), width: "100%",display :"flex", justifyContent:"center", alignItems:"center" },
+                  });
                 setUserName(null)
                 navigation.navigate("forgetVerifyOtp", {
                     otp: data.Token,
@@ -43,11 +46,13 @@ const forgetPassword = () => {
             } else {
                 toast.show(data.message, {
                     type: "danger",
-                    placement: "bottom",
-                    duration: 4000,
-                    offset: 30,
-                    animationType: "slide-in",
-                });
+                    placement: "top",
+                    duration: 3000,
+                    offset: 50,
+                    animationType: "zoom-in",
+                    dangerIcon: <FontAwesome name="warning" size={20} color="white" />,
+                    style: { marginTop: hp(5), width: "100%",display :"flex", justifyContent:"center", alignItems:"center" },
+                  });
             }
         } catch (error) {
             console.log(error.message)

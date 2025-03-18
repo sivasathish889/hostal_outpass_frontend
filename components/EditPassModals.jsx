@@ -93,12 +93,13 @@ const EditPassModals = (props) => {
                             />
 
                             <DateTimePicker
-                            mode="datetime"
+                                mode="datetime"
                                 onCancel={() => setOutDatePickerVisible(false)}
                                 onConfirm={(e) => {
                                     handleOutDateTimePicker(e);
                                 }}
                                 isVisible={isOutDatePickerVisible}
+                                minimumDate={new Date()}
                             />
                             <TouchableOpacity
                                 style={styles.calendarIconStyle}
@@ -120,12 +121,13 @@ const EditPassModals = (props) => {
                             />
 
                             <DateTimePicker
-                            mode="datetime"
+                                mode="datetime"
                                 onCancel={() => setInDatePickerVisible(false)}
                                 onConfirm={(e) => {
                                     handleInDateTimePicker(e);
                                 }}
                                 isVisible={isInDatePickerVisible}
+                                minimumDate={new Date()}
                             />
                             <TouchableOpacity
                                 onPress={() => setInDatePickerVisible(!isInDatePickerVisible)}

@@ -1,6 +1,6 @@
 import { Image, StatusBar, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-let logo = require("@/assets/images/icon.png");
+let logo = require("@/assets/splashscreen_logo.png");
 import themes from "@/constants/themes"
 import { useRouter } from "expo-router";
 import { hp } from "@/helpers/dimensions";

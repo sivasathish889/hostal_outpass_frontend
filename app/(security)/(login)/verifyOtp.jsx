@@ -1,5 +1,7 @@
 import {
   ImageBackground,
+  KeyboardAvoidingView,
+  Platform,
   StyleSheet,
   Text,
   TextInput,
@@ -17,6 +19,7 @@ import themes from "@/constants/themes";
 import { hp } from "@/helpers/dimensions";
 import Spinner from "react-native-loading-spinner-overlay";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { FontAwesome, MaterialCommunityIcons } from "@expo/vector-icons";
 
 const VerifyOTP = () => {
   let [otp, setOtp] = useState(null);
@@ -38,10 +41,12 @@ const VerifyOTP = () => {
       if (data.success) {
         toast.show(data.message, {
           type: "success",
-          placement: "bottom",
+          placement: "top",
           duration: 4000,
           offset: 30,
           animationType: "slide-in",
+          successIcon: <MaterialCommunityIcons name="check-circle" size={24} color="white" />,
+          style: { marginTop: hp(5), width: "100%", display: "flex", justifyContent: "center", alignItems: "center" },
         });
         setOtp(null)
         AsyncStorage.setItem("security", data.user);
@@ -49,10 +54,12 @@ const VerifyOTP = () => {
       } else {
         toast.show(data.message, {
           type: "danger",
-          placement: "bottom",
-          duration: 4000,
-          offset: 30,
-          animationType: "slide-in",
+          placement: "top",
+          duration: 3000,
+          offset: 50,
+          animationType: "zoom-in",
+          dangerIcon: <FontAwesome name="warning" size={20} color="white" />,
+          style: { marginTop: hp(5), width: "100%", display: "flex", justifyContent: "center", alignItems: "center" },
         });
 
       }
@@ -72,30 +79,32 @@ const VerifyOTP = () => {
           textStyle={{ color: "#FFF" }}
           cancelable={true}
         />
-        <View style={styles.form}>
-          <Text style={styles.heading}>Security</Text>
-          <Text style={styles.subHead}>Verify OTP</Text>
+        <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : "height"} style={styles.container}>
+          <View style={styles.form}>
+            <Text style={styles.heading}>Security</Text>
+            <Text style={styles.subHead}>Verify OTP</Text>
 
-          <View style={styles.inputgroup}>
-            <Text style={styles.lable}>OTP</Text>
-            <TextInput
-              placeholder="Enter Your OTP"
-              style={styles.input}
-              placeholderTextColor={themes.placeholderTextColor}
-              keyboardType="number-pad"
-              onChangeText={(text) => setOtp(text)}
-              inputMode="numeric"
-            />
+            <View style={styles.inputgroup}>
+              <Text style={styles.lable}>OTP</Text>
+              <TextInput
+                placeholder="Enter Your OTP"
+                style={styles.input}
+                placeholderTextColor={themes.placeholderTextColor}
+                keyboardType="number-pad"
+                onChangeText={(text) => setOtp(text)}
+                inputMode="numeric"
+              />
+            </View>
+            <View style={{ alignItems: "center", marginVertical: 10 }}>
+              <TouchableOpacity
+                style={styles.buttonOutline}
+                onPress={handleSubmit}
+              >
+                <Text style={styles.btn}>Verify OTP</Text>
+              </TouchableOpacity>
+            </View>
           </View>
-          <View style={{ alignItems: "center", marginVertical: 10 }}>
-            <TouchableOpacity
-              style={styles.buttonOutline}
-              onPress={handleSubmit}
-            >
-              <Text style={styles.btn}>Verify OTP</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
+        </KeyboardAvoidingView>
       </SafeAreaView>
     </ImageBackground>
   );
@@ -135,7 +144,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "rgb(115,115,115)",
     width: "80%",
-    height:hp(4.5),
+    height: hp(4.5),
     alignSelf: "center",
   },
   lable: {

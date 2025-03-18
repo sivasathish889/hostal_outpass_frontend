@@ -16,7 +16,7 @@ import urls from "@/constants/urls";
 import axios from "axios";
 import { useNavigation } from "expo-router";
 import themes from "@/constants/themes";
-import { Entypo } from "@expo/vector-icons";
+import { Entypo, FontAwesome, MaterialCommunityIcons } from "@expo/vector-icons";
 import { collageLocationRadius } from "@/helpers/calculateUserRadius";
 import Spinner from "react-native-loading-spinner-overlay"
 import * as Location from "expo-location"
@@ -86,12 +86,14 @@ const NewPassModel = (props) => {
         let locationData = await Location.getCurrentPositionAsync({});
         const distance = collageLocationRadius(locationData?.coords?.longitude, locationData?.coords?.latitude);
         if (!distance >= 600) {
-          toast.show("You are not inside the campus", {
-            type: "warning",
-            placement: "bottom",
+          toast.show("You are mot inside the campus", {
+            type: "danger",
+            placement: "top",
             duration: 4000,
             offset: 30,
             animationType: "slide-in",
+            dangerIcon: <FontAwesome name="warning" size={20} color="white" />,
+            style: { marginTop: hp(5), width: "100%", display: "flex", justifyContent: "center", alignItems: "center" },
           });
           return
         }
@@ -101,10 +103,12 @@ const NewPassModel = (props) => {
             if (data.data.success) {
               toast.show(data.data.message, {
                 type: "success",
-                placement: "bottom",
+                placement: "top",
                 duration: 4000,
                 offset: 30,
                 animationType: "slide-in",
+                successIcon: <MaterialCommunityIcons name="check-circle" size={24} color="white" />,
+                style: { marginTop: hp(5), width: "100%", display: "flex", justifyContent: "center", alignItems: "center" },
               });
               navigation.navigate("(tabs)");
               setDestination(null);
@@ -273,6 +277,7 @@ const NewPassModel = (props) => {
                     setOutDateError(null);
                   }}
                   isVisible={isOutDatePickerVisible}
+                  minimumDate={new Date()}
                 />
                 <TouchableOpacity
                   style={styles.calendarIconStyle}
@@ -304,6 +309,7 @@ const NewPassModel = (props) => {
                     setInDateError(null);
                   }}
                   isVisible={isInDatePickerVisible}
+                  minimumDate={new Date()}
                 />
                 <TouchableOpacity
                   style={styles.calendarIconStyle}
@@ -390,6 +396,6 @@ const styles = StyleSheet.create({
     alignSelf: "flex-end",
     backgroundColor: "red",
     borderRadius: 6,
-    padding : 2
+    padding: 2
   },
 });

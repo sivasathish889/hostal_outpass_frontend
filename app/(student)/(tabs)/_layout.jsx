@@ -19,7 +19,7 @@ import { hp, wp } from "@/helpers/dimensions";
 
 
 const Layout = () => {
-  const [action, setAction] = useState("Home");
+  const [action, setAction] = useState("home");
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -32,6 +32,7 @@ const Layout = () => {
       </View>
 
       <Tabs
+        initialRouteName="home"
         screenOptions={{
           tabBarStyle: {
             backgroundColor: themes.mainColor,
@@ -40,9 +41,11 @@ const Layout = () => {
             position: "absolute",
             bottom: 0
           },
+          animation: "shift",
           tabBarPosition: "bottom",
           headerShown: false,
-          tabBarHideOnKeyboard: true
+          tabBarHideOnKeyboard: true,
+
         }}>
         <Tabs.Screen
           name="home"

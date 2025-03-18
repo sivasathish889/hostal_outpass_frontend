@@ -6,7 +6,7 @@ import {
     TouchableOpacity,
     View,
 } from "react-native";
-import  { useState } from "react";
+import { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import annaUniversity from "@/assets/annaUniversity.png";
 import url from "@/constants/urls";
@@ -16,6 +16,7 @@ import { useLocalSearchParams, useRouter } from "expo-router";
 import themes from "@/constants/themes";
 import { hp } from "@/helpers/dimensions"
 import Spinner from "react-native-loading-spinner-overlay";
+import { FontAwesome, MaterialCommunityIcons } from "@expo/vector-icons";
 
 
 const registerOTP = () => {
@@ -37,20 +38,24 @@ const registerOTP = () => {
             if (data.success) {
                 toast.show(data.message, {
                     type: "success",
-                    placement: "bottom",
+                    placement: "top",
                     duration: 4000,
                     offset: 30,
                     animationType: "slide-in",
+                    successIcon: <MaterialCommunityIcons name="check-circle" size={24} color="white" />,
+                    style: { marginTop: hp(5), width: "100%", display: "flex", justifyContent: "center", alignItems: "center" },
                 });
                 router.dismissTo("(login)/studentLogin")
             }
             else {
                 toast.show(data.message, {
                     type: "danger",
-                    placement: "bottom",
-                    duration: 4000,
-                    offset: 30,
-                    animationType: "slide-in",
+                    placement: "top",
+                    duration: 3000,
+                    offset: 50,
+                    animationType: "zoom-in",
+                    dangerIcon: <FontAwesome name="warning" size={20} color="white" />,
+                    style: { marginTop: hp(5), width: "100%", display: "flex", justifyContent: "center", alignItems: "center" },
                 });
             }
         } catch (error) {
@@ -135,8 +140,8 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: "rgb(115,115,115)",
         width: "80%",
-    height:hp(4.5),
-    alignSelf: "center",
+        height: hp(4.5),
+        alignSelf: "center",
     },
     lable: {
         textAlign: "center",

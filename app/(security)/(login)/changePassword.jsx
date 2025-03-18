@@ -17,6 +17,7 @@ import { useLocalSearchParams, useRouter } from "expo-router";
 import { hp } from "@/helpers/dimensions"
 import themes from "@/constants/themes";
 import Spinner from "react-native-loading-spinner-overlay";
+import { FontAwesome } from "@expo/vector-icons";
 
 const ChangePassword = () => {
   let router = useRouter();
@@ -61,19 +62,23 @@ const ChangePassword = () => {
       if (data.success) {
         toast.show(data.message, {
           type: "success",
-          placement: "bottom",
+          placement: "top",
           duration: 4000,
           offset: 30,
           animationType: "slide-in",
+          successIcon: <MaterialCommunityIcons name="check-circle" size={24} color="white" />,
+          style: { marginTop: hp(5), width: "100%",display :"flex", justifyContent:"center", alignItems:"center" },
         });
         router.dismissTo("securityLogin");
       } else {
         toast.show(data.message, {
           type: "danger",
-          placement: "bottom",
-          duration: 4000,
-          offset: 30,
-          animationType: "slide-in",
+          placement: "top",
+          duration: 3000,
+          offset: 50,
+          animationType: "zoom-in",
+          dangerIcon: <FontAwesome name="warning" size={20} color="white" />,
+          style: { marginTop: hp(5), width: "100%",display :"flex", justifyContent:"center", alignItems:"center" },
         });
       }
     } catch (error) {

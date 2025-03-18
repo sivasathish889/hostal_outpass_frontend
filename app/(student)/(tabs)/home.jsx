@@ -24,6 +24,7 @@ import NewPassModel from "@/components/NewPassModel";
 import EditPassModals from "@/components/EditPassModals";
 import { hp, wp } from "@/helpers/dimensions";
 import backgroundIcon from "@/assets/backgroundPic.png"
+import { FontAwesome, MaterialCommunityIcons } from "@expo/vector-icons";
 
 
 const HomeScreen = () => {
@@ -80,8 +81,8 @@ const HomeScreen = () => {
     await AsyncStorage.getItem("student").then((userId) => {
       setUserId(userId);
       axios
-      .get(`${env.CLIENT_URL}${env.studentPendingPasses}/${userId}`)
-      .then((data) => {
+        .get(`${env.CLIENT_URL}${env.studentPendingPasses}/${userId}`)
+        .then((data) => {
           setFetchPassData(data.data);
           setRefreshing(false);
           setSpinnerVisible(false)
@@ -107,12 +108,14 @@ const HomeScreen = () => {
       )
       .then((data) => {
         if (data.data.success) {
-          toast.show(data.data.message, {
+          toast.show(data.data.message  , {
             type: "success",
-            placement: "bottom",
+            placement: "top",
             duration: 4000,
             offset: 30,
             animationType: "slide-in",
+            successIcon: <MaterialCommunityIcons name="check-circle" size={24} color="white" />,
+            style: { marginTop: hp(8), width: "100%", display: "flex", justifyContent: "center", alignItems: "center" },
           });
           navigation.navigate("(tabs)");
           setEditModelVisible(false);
@@ -122,10 +125,12 @@ const HomeScreen = () => {
         } else {
           toast.show(data.data.message, {
             type: "danger",
-            placement: "bottom",
-            duration: 4000,
-            offset: 30,
-            animationType: "slide-in",
+            placement: "top",
+            duration: 3000,
+            offset: 50,
+            animationType: "zoom-in",
+            dangerIcon: <FontAwesome name="warning" size={20} color="white" />,
+            style: { marginTop: hp(5), width: "100%", display: "flex", justifyContent: "center", alignItems: "center" },
           });
           setSpinnerVisible(false)
 
@@ -136,24 +141,28 @@ const HomeScreen = () => {
   const handlePassDelete = async (deletePassId) => {
     setSpinnerVisible(true)
     try {
-      const { data } = await axios.delete(`${env.CLIENT_URL}${env.studentDeletePass}/${deletePassId}`)
+      const { data } = await axios.post(`${env.CLIENT_URL}${env.studentDeletePass}/${deletePassId}`)
       if (data.success) {
         toast.show(data.message, {
           type: "success",
-          placement: "bottom",
+          placement: "top",
           duration: 4000,
           offset: 30,
           animationType: "slide-in",
+          successIcon: <MaterialCommunityIcons name="check-circle" size={24} color="white" />,
+          style: { marginTop: hp(5), width: "100%", display: "flex", justifyContent: "center", alignItems: "center" },
         });
         navigation.navigate("(tabs)");
         setEditModelVisible(false);
       } else {
         toast.show(data.message, {
           type: "danger",
-          placement: "bottom",
-          duration: 4000,
-          offset: 30,
-          animationType: "slide-in",
+          placement: "top",
+          duration: 3000,
+          offset: 50,
+          animationType: "zoom-in",
+          dangerIcon: <FontAwesome name="warning" size={20} color="white" />,
+          style: { marginTop: hp(5), width: "100%", display: "flex", justifyContent: "center", alignItems: "center" },
         });
       }
     } catch (error) {
@@ -235,7 +244,7 @@ const HomeScreen = () => {
                         .toLocaleString(undefined, "Asia/Kolkata")
                         .split(",")[0]}
                 </Text>
-                
+
               </View>
             );
           }}
@@ -362,7 +371,7 @@ const styles = StyleSheet.create({
   },
   plusIconStyle: {
     position: "absolute",
-    bottom : hp(12),
+    bottom: hp(12),
     right: hp(5),
     backgroundColor: "#AFAFAF",
     padding: 12,

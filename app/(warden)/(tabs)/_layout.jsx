@@ -35,7 +35,8 @@ const TabRoute = () => {
           },
           tabBarPosition: "bottom",
           headerShown: false,
-          tabBarHideOnKeyboard: true
+          tabBarHideOnKeyboard: true,
+          animation:"shift"
         }}
       >
         <Tabs.Screen

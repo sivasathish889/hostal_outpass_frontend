@@ -2,6 +2,15 @@ import { Stack, Slot } from "expo-router";
 import themes from "@/constants/themes"
 import { ToastProvider } from "react-native-toast-notifications";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+// import * as Notifications from "expo-notifications"
+
+// Notifications.setNotificationHandler({
+//   handleNotification: async () => ({
+//       shouldShowAlert: true,
+//       shouldPlaySound: true,
+//       shouldSetBadge: true,
+//   }),
+// });
 
 
 export default function RootLayout() {

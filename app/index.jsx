@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Redirect } from "expo-router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 
 const Welcome = () => {
@@ -9,9 +9,7 @@ const Welcome = () => {
   const getToken = async () => {
     await AsyncStorage.getAllKeys().then((data) => setisAuth(data))
   }
-  
   getToken()
-  console.log(isAuth);
 
   return (
 

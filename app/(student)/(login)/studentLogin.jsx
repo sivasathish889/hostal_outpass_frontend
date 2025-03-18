@@ -55,10 +55,12 @@ const studentLogin = () => {
       if (data.success) {
         toast.show(data.message, {
           type: "success",
-          placement: "bottom",
+          placement: "top",
           duration: 4000,
           offset: 30,
           animationType: "slide-in",
+          successIcon: <MaterialCommunityIcons name="check-circle" size={24} color="white" />,
+          style: { marginTop: hp(8), width: "100%", display: "flex", justifyContent: "center", alignItems: "center" },
         });
         AsyncStorage.setItem("student", data.user);
         setRegisterNumber(null);
@@ -67,20 +69,24 @@ const studentLogin = () => {
       } else {
         toast.show(data.message, {
           type: "danger",
-          placement: "bottom",
-          duration: 4000,
-          offset: 30,
-          animationType: "slide-in",
+          placement: "top",
+          duration: 3000,
+          offset: 50,
+          animationType: "zoom-in",
+          dangerIcon: <FontAwesome name="warning" size={20} color="white" />,
+          style: { marginTop: hp(5), width: "100%", display: "flex", justifyContent: "center", alignItems: "center" },
         });
 
       }
     } catch (error) {
-      toast.show(error.message, {
+      toast.show(data.message, {
         type: "danger",
-        placement: "bottom",
-        duration: 4000,
-        offset: 30,
-        animationType: "slide-in",
+        placement: "top",
+        duration: 3000,
+        offset: 50,
+        animationType: "zoom-in",
+        dangerIcon: <FontAwesome name="warning" size={20} color="white" />,
+        style: { marginTop: hp(5), width: "100%", display: "flex", justifyContent: "center", alignItems: "center" },
       });
     } finally {
       setSpinnerVisible(false)

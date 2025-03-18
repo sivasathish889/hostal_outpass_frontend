@@ -20,7 +20,7 @@ import { useNavigation } from "expo-router";
 import { hp } from "@/helpers/dimensions"
 import themes from "@/constants/themes";
 import Spinner from "react-native-loading-spinner-overlay";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { FontAwesome, MaterialCommunityIcons } from "@expo/vector-icons";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
 
 const StudentRegister = () => {
@@ -49,7 +49,8 @@ const StudentRegister = () => {
   let [passwordError, setPasswordError] = useState(null);
   let [confirmPasswordError, setConfirmPasswordError] = useState(null);
 
-  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword1, setShowPassword1] = useState(false);
+  const [showPassword2, setShowPassword2] = useState(false);
 
   const registerRef = useRef()
   const phoneNumberRef = useRef()
@@ -104,22 +105,25 @@ const StudentRegister = () => {
       if (data.success) {
         toast.show(data.message, {
           type: "success",
-          placement: "bottom",
+          placement: "top",
           duration: 4000,
           offset: 30,
           animationType: "slide-in",
+          successIcon: <MaterialCommunityIcons name="check-circle" size={24} color="white" />,
+          style: { marginTop: hp(5), width: "100%", display: "flex", justifyContent: "center", alignItems: "center" },
         });
-
         navigation.navigate("(register)/registerOTP", {
           token: data.Token,
         });
       } else {
         toast.show(data.message, {
           type: "danger",
-          placement: "bottom",
-          duration: 4000,
-          offset: 30,
-          animationType: "slide-in",
+          placement: "top",
+          duration: 3000,
+          offset: 50,
+          animationType: "zoom-in",
+          dangerIcon: <FontAwesome name="warning" size={20} color="white" />,
+          style: { marginTop: hp(5), width: "100%", display: "flex", justifyContent: "center", alignItems: "center" },
         });
 
       }
@@ -129,10 +133,12 @@ const StudentRegister = () => {
       setSpinnerVisible(false)
     }
   };
-  const toggleShowPassword = () => {
-    setShowPassword(!showPassword);
+  const toggleShowPassword1 = () => {
+    setShowPassword1(!showPassword1);
   };
-
+  const toggleShowPassword2 = () => {
+    setShowPassword2(!showPassword2);
+  };
   return (
     <ImageBackground source={annaUniversity} style={styles.backgroundImage}>
       <Spinner
@@ -362,7 +368,7 @@ const StudentRegister = () => {
                 style={[styles.input, { paddingEnd: 25 }]}
                 placeholderTextColor={themes.placeholderTextColor}
                 onChangeText={(text) => { setPassword(text); setPasswordError(null) }}
-                secureTextEntry={!showPassword}
+                secureTextEntry={!showPassword1}
                 value={password}
                 ref={passwordRef}
                 onSubmitEditing={() => confirmPasswordRef.current.focus()}
@@ -371,11 +377,11 @@ const StudentRegister = () => {
 
               />
               <MaterialCommunityIcons
-                name={showPassword ? "eye" : "eye-off"}
+                name={showPassword1 ? "eye" : "eye-off"}
                 size={18}
                 color="black"
                 style={styles.icon}
-                onPress={toggleShowPassword}
+                onPress={toggleShowPassword1}
               />
             </View>
             {passwordError != null ? (
@@ -394,16 +400,16 @@ const StudentRegister = () => {
                 placeholderTextColor={themes.placeholderTextColor}
                 onChangeText={(text) => { setConfirmPassword(text); setConfirmPasswordError(null) }}
                 value={confirmPassword}
-                secureTextEntry={!showPassword}
+                secureTextEntry={!showPassword2}
                 inputMode="text"
                 ref={confirmPasswordRef}
               />
               <MaterialCommunityIcons
-                name={showPassword ? "eye" : "eye-off"}
+                name={showPassword2 ? "eye" : "eye-off"}
                 size={18}
                 color="black"
                 style={styles.icon}
-                onPress={toggleShowPassword}
+                onPress={toggleShowPassword2}
               />
             </View>
             {confirmPasswordError != null ? (
