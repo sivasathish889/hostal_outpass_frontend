@@ -1,9 +1,6 @@
 filter la starting date to ending date
-auto login
 push notification
 admin panel
-every pass info modal
-unique warden name security name
 
 eas build -p android --profile preview
 

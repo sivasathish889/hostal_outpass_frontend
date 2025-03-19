@@ -138,6 +138,7 @@ const HomeScreen = () => {
       })
       .catch((error) => console.log(error));
   };
+  
   const handlePassDelete = async (deletePassId) => {
     setSpinnerVisible(true)
     try {
@@ -193,7 +194,6 @@ const HomeScreen = () => {
                     {item.RoomNo.toUpperCase()}.
                   </Text>
                 </View>
-
                 <View style={styles.leftCont}>
                   <View>
                     <Text style={[styles.nameStyle, item.Purpose.length > 10 ? { fontSize: hp(1.5) } : { fontSize: hp(2) }]}>{item.Purpose}</Text>
@@ -207,7 +207,7 @@ const HomeScreen = () => {
                 </View>
 
                 <View style={styles.rightCon}>
-                  <Text style={[styles.placeStyle, item.Distination.length > 10 ? { fontSize: hp(1.5) } : { fontSize: hp(2) }]}>{item.Distination}</Text>
+                  <Text style={[styles.placeStyle, item.Destination.length > 10 ? { fontSize: hp(1.5) } : { fontSize: hp(2) }]}>{item.Destination}</Text>
                 </View>
 
 
@@ -220,7 +220,7 @@ const HomeScreen = () => {
                       setoutDateTime(item.OutDateTime);
                       setRoomNo(item.RoomNo);
                       setPurpose(item.Purpose);
-                      setDestination(item.Distination);
+                      setDestination(item.Destination);
                       setPassId(item._id);
                     }}
                   >

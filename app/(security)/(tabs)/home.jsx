@@ -8,8 +8,9 @@ import {
   Alert,
   Modal,
   ImageBackground,
+  TextInput,
 } from "react-native";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import env from "@/constants/urls";
 import { useToast } from "react-native-toast-notifications";
 import axios from "axios";
@@ -20,18 +21,24 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Entypo } from "@expo/vector-icons";
 import InfoGrid from "@/components/InfoGrid";
 import icon from "@/assets/backgroundPic.png"
+import DateTimePicker from "react-native-modal-datetime-picker";
 
 const home = () => {
   let toast = useToast();
   let now = new Date();
 
-  const [fetchPassData, setFetchPassData] = useState({});
+  const [fetchPassData, setFetchPassData] = useState([]);
   const [dataRefresh, setDataRefresh] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [spinnerVisible, setSpinnerVisible] = useState(false);
   const [userId, setUserId] = useState(null)
   const [modalVisible, setmodalVisible] = useState(false)
   const [infoData, setInfoData] = useState({})
+
+  const [dateQuery, setDateQuery] = useState("")
+  const [searchQuery, setSearchQuery] = useState("")
+  const [dateVisible, setDateVisble] = useState(false);
+
 
   useEffect(() => {
     AsyncStorage.getItem('security').then((data) => setUserId(data))
@@ -40,10 +47,12 @@ const home = () => {
   }, [dataRefresh, refreshing]);
 
   const fetchData = async () => {
-    axios.get(`${env.CLIENT_URL}${env.securityAcceptPass}`).then((data) => {
+    await axios.get(`${env.CLIENT_URL}${env.securityAcceptPass}`).then((data) => {
       setFetchPassData(data.data.pass);
       setSpinnerVisible(false)
       setRefreshing(false);
+      setDateQuery("")
+      setSearchQuery("")
     });
   };
 
@@ -85,7 +94,15 @@ const home = () => {
             });
           }
         })
-        .catch((error) => console.log(error));
+        .catch((error) => {
+          toast.show(error.message, {
+            type: "danger",
+            placement: "bottom",
+            duration: 4000,
+            offset: 30,
+            animationType: "slide-in",
+          });
+        });
     } else if (action === "In Time Updated") {
       axios
         .put(`${env.CLIENT_URL}${env.securityUpdateInTime}`, { id, userId })
@@ -117,6 +134,16 @@ const home = () => {
     setmodalVisible(true)
     setInfoData(item)
   }
+
+  const handleDateSubmit = (e) => {
+    setDateQuery(e.toLocaleString());
+    setDateVisble(false);
+  };
+
+  const filteredData = fetchPassData.filter((item) => {
+    return (item.RegisterNumber.toString().toLocaleLowerCase().includes(searchQuery.toLocaleLowerCase().toString())) && (item.OutDateTime.toString().split(",")[0].includes(dateQuery.toString().split(",")[0]))
+  })
+
   return (
     <View style={{ flex: 1 }}>
       <ImageBackground source={icon} style={styles.backgoundImage} resizeMode="contain" >
@@ -126,9 +153,24 @@ const home = () => {
           textStyle={{ color: "#FFF" }}
           cancelable={true}
         />
+        <View style={styles.filterInputs}>
+          <TextInput style={styles.input} placeholder="Search Register Number" onChangeText={(text) => setSearchQuery(text)} value={searchQuery} keyboardType="numeric" />
+          <TextInput style={styles.input} placeholder="Select Date" onChangeText={(text) => setDateQuery(text)} value={dateQuery.split(",")[0]} onPress={() => setDateVisble(true)} />
+          <DateTimePicker
+            onCancel={() => setDateVisble(false)}
+            mode="date"
+            display="spinner"
+            onConfirm={(e) => {
+              handleDateSubmit(e);
+              setOutDateError(null);
+            }}
+            isVisible={dateVisible}
+            style={{ flex: 1 }}
+          />
+        </View>
         <FlatList
-          data={fetchPassData}
-          style={{ marginBottom: hp(4) }}
+          data={filteredData}
+          style={{ marginBottom: hp(4), marginTop: hp(2), }}
           renderItem={({ item }) => {
             return (
               <View style={styles.container}>
@@ -148,7 +190,7 @@ const home = () => {
 
                 <View style={styles.rightCon}>
                   <View>
-                    <Text style={[styles.placeStyle, item.Distination.length > 10 ? { fontSize: hp(1.3) } : { fontSize: hp(1.7) }]}>{item.Distination}</Text>
+                    <Text style={[styles.placeStyle, item.Destination.length > 10 ? { fontSize: hp(1.3) } : { fontSize: hp(1.7) }]}>{item.Destination}</Text>
                   </View>
                   <View style={styles.timeContainer}>
                     <Text style={styles.time}>{item.InDateTime}</Text>
@@ -161,14 +203,15 @@ const home = () => {
                   <TouchableOpacity
                     onPress={() => AlertingAction("Out Time Updated", item._id)}
                     style={{ backgroundColor: "green", padding: 5 }}
+                    disabled={item.studentOutTime ? true : false}
                   >
-                    <Text style={{ fontSize: 10 }}>Out Time</Text>
+                    <Text style={[{ fontSize: hp(1.2) }, item.studentOutTime ? { textDecorationLine: "line-through" } : ""]} >Out Time</Text>
                   </TouchableOpacity>
                   <TouchableOpacity
                     onPress={() => AlertingAction("In Time Updated", item._id)}
                     style={{ backgroundColor: "gray", padding: 5 }}
                   >
-                    <Text style={{ fontSize: 10 }}>In Time</Text>
+                    <Text style={{ fontSize: hp(1.2) }}>In Time</Text>
                   </TouchableOpacity>
 
                 </View>
@@ -215,7 +258,7 @@ const home = () => {
                 <InfoGrid label="Reg.No" value={infoData?.RegisterNumber || ""} />
                 <InfoGrid label="Year & Dept" value={infoData?.Department || ""} />
                 <InfoGrid label="Room No" value={infoData?.RoomNo || ""} />
-                <InfoGrid label="Destination" value={infoData?.Distination || ""} />
+                <InfoGrid label="Destination" value={infoData?.Destination || ""} />
                 <InfoGrid label="Purpose" value={infoData?.Purpose || ""} />
                 <InfoGrid label="Phone No" value={infoData?.PhoneNumber || ""} />
                 <InfoGrid label="Parent No" value={infoData?.ParentNumber || ""} />
@@ -298,9 +341,9 @@ const styles = StyleSheet.create({
   btnGroup: {
     columnGap: 8,
     flexDirection: "column",
-    position :"absolute",
-    right : 6,
-    rowGap : 2,
+    position: "absolute",
+    right: 6,
+    rowGap: 2,
   },
   editBtn: {
     color: "white",
@@ -350,5 +393,32 @@ const styles = StyleSheet.create({
   },
   backgoundImage: {
     flex: 1,
-  }
+  },
+  input: {
+    backgroundColor: "#D9D9D9",
+    paddingStart: 10,
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: "rgb(115,115,115)",
+    height: hp(4.5),
+    flex: 1
+  },
+  dropdown: {
+    backgroundColor: "#D9D9D9",
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: "rgb(115,115,115)",
+    color: "black",
+    fontSize: hp(1.6),
+    height: 42,
+    borderRadius: 10,
+    paddingStart: 10,
+    flex: 1
+  },
+  filterInputs: {
+    flexDirection: "row",
+    gap: "10",
+    marginHorizontal: hp(2),
+    marginTop: hp(1),
+  },
 });

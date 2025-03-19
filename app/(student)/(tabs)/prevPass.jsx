@@ -14,7 +14,7 @@ import backgroundIcon from "@/assets/backgroundPic.png"
 
 const PrevPass = () => {
   let now = new Date();
-  const [data, setData] = useState({});
+  const [data, setData] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
   const [spinnerVisible, setSpinnerVisible] = useState(false);
   const [modalVisible, setmodalVisible] = useState(false)
@@ -22,7 +22,7 @@ const PrevPass = () => {
   const [isFocus, setIsFocus] = useState(false);
 
   const [searchQuery, setSearchQuery] = useState("")
-  const [passDropDownData, setDropDownData] = useState("")
+  const [statusQuery, setStatusQuery] = useState("")
 
   useEffect(() => {
     setSpinnerVisible(true);
@@ -36,7 +36,7 @@ const PrevPass = () => {
           .get(`${env.CLIENT_URL}${env.studentAllPasses}/${userId}`)
           .then(async (data) => {
             setData(data.data.data);
-            setDropDownData("")
+            setStatusQuery("")
             setSearchQuery("")
           })
           .catch((error) => console.log(error));
@@ -82,7 +82,7 @@ const PrevPass = () => {
       </View>
 
       <View style={styles.rightCon}>
-        <Text style={[styles.placeStyle]}>{item.item.Distination}</Text>
+        <Text style={[styles.placeStyle]}>{item.item.Destination}</Text>
       </View>
       <Text style={styles.createdStyle}>
         {new Date(item.item.createdAt).getDate() == String(now.getDate())
@@ -104,6 +104,10 @@ const PrevPass = () => {
     setmodalVisible(true)
     setInfoData(item)
   }
+  const filteredData = data.filter((item) => {
+    return (item.Destination.toString().toLocaleLowerCase().startsWith(searchQuery.toString().toLocaleLowerCase())) && (item.status.toString().toLocaleLowerCase().includes(statusQuery.toString().toLocaleLowerCase()))
+  })
+
   return (
     <View
       style={{ flex: 1 }}>
@@ -121,37 +125,38 @@ const PrevPass = () => {
             Rejecting Passes
           </Text>
         </View>
-        {/* <View style={styles.filterInputs}>
-        <TextInput style={styles.input} placeholder="Search" onChangeText={(text) => setSearchQuery(text)} value={searchQuery} />
-        <Dropdown
-          style={[styles.dropdown]}
-          data={[
-            { label: "Accept ", value: "Accept" },
-            { label: "Reject ", value: "Reject" },
-          ]}
-          maxHeight={100}
-          labelField="label"
-          valueField="value"
-          placeholder="Select Status"
-          value={passDropDownData}
-          onFocus={() => setIsFocus(true)}
-          onBlur={() => setIsFocus(false)}
-          onChange={(item) => {
-            setDropDownData(item.value);
-            setIsFocus(false);
-          }}
-          placeholderStyle={{
-            color: themes.placeholderTextColor,
-            paddingStart: 10,
-            fontSize: hp(1.6)
-          }}
-          itemContainerStyle={{ borderRadius: 10 }}
-          accessibilityLabel="pass Status"
-          aria-label="pass Status"
-        />
-      </View> */}
+        <View style={styles.filterInputs}>
+          <TextInput style={styles.input} placeholder="Search Destination" onChangeText={(text) => setSearchQuery(text)} value={searchQuery} />
+          <Dropdown
+            style={[styles.dropdown]}
+            data={[
+              { label: "None", value: "" },
+              { label: "Accept ", value: "2" },
+              { label: "Reject ", value: "3" },
+            ]}
+            maxHeight={100}
+            labelField="label"
+            valueField="value"
+            placeholder="Select Status"
+            value={statusQuery}
+            onFocus={() => setIsFocus(true)}
+            onBlur={() => setIsFocus(false)}
+            onChange={(item) => {
+              setStatusQuery(item.value);
+              setIsFocus(false);
+            }}
+            placeholderStyle={{
+              color: themes.placeholderTextColor,
+              paddingStart: 10,
+              fontSize: hp(1.6)
+            }}
+            itemContainerStyle={{ borderRadius: 10 }}
+            accessibilityLabel="pass Status"
+            aria-label="pass Status"
+          />
+        </View>
         <FlatList
-          data={data}
+          data={filteredData}
           style={{ marginBottom: hp(4) }}
           renderItem={renderItem}
           keyExtractor={(item) => item._id}
@@ -182,7 +187,7 @@ const PrevPass = () => {
                 <InfoGrid label="Reg.No" value={infoData?.RegisterNumber || ""} />
                 <InfoGrid label="Year & Dept" value={infoData?.Department || ""} />
                 <InfoGrid label="Room No" value={infoData?.RoomNo || ""} />
-                <InfoGrid label="Destination" value={infoData?.Distination || ""} />
+                <InfoGrid label="Destination" value={infoData?.Destination || ""} />
                 <InfoGrid label="Purpose" value={infoData?.Purpose || ""} />
                 <InfoGrid label="Phone No" value={infoData?.PhoneNumber || ""} />
                 <InfoGrid label="Parent No" value={infoData?.ParentNumber || ""} />
@@ -237,7 +242,7 @@ const styles = StyleSheet.create({
   nameStyle: {
     textAlign: "center",
     fontSize: hp(1.7),
-    
+
   },
   rightCon: {
     width: "40%",

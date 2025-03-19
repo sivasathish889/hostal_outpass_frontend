@@ -272,6 +272,7 @@ const NewPassModel = (props) => {
                 <DateTimePicker
                   onCancel={() => setOutDatePickerVisible(false)}
                   mode="datetime"
+                  display="spinner"
                   onConfirm={(e) => {
                     handleOutDateTimePicker(e);
                     setOutDateError(null);
@@ -302,6 +303,7 @@ const NewPassModel = (props) => {
                   ""
                 )}
                 <DateTimePicker
+                display="spinner"
                   mode="datetime"
                   onCancel={() => setInDatePickerVisible(false)}
                   onConfirm={(e) => {

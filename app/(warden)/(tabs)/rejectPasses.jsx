@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Modal,
   ImageBackground,
+  TextInput
 } from "react-native";
 import { useEffect, useState } from "react";
 
@@ -23,12 +24,13 @@ import backgroundIcon from "@/assets/backgroundPic.png"
 const RejectPasses = () => {
   let now = new Date();
 
-  const [fetchPassData, setFetchPassData] = useState({});
+  const [fetchPassData, setFetchPassData] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
   const [spinnerVisible, setSpinnerVisible] = useState(false);
   const [modalVisible, setmodalVisible] = useState(false)
   const [infoData, setInfoData] = useState({})
 
+  const [searchQuery, setSearchQuery] = useState("")
 
   useEffect(() => {
     setSpinnerVisible(true);
@@ -46,6 +48,9 @@ const RejectPasses = () => {
     setmodalVisible(true)
     setInfoData(item)
   }
+  const filteredData = fetchPassData.filter((item) => {
+    return (item.RegisterNumber.toString().toLocaleLowerCase().includes(searchQuery.toLocaleLowerCase().toString()))
+  })
   return (
     <View style={{ flex: 1 }}>
       <ImageBackground source={backgroundIcon} resizeMode="contain" style={{ flex: 1 }}>
@@ -56,9 +61,13 @@ const RejectPasses = () => {
           textStyle={{ color: "#FFF" }}
           cancelable={true}
         />
+        <View style={styles.filterInputs}>
+          <TextInput style={styles.input} placeholder="Search Register Number" keyboardType="numeric" onChangeText={(text) => setSearchQuery(text)} value={searchQuery} />
+        </View>
+
         {fetchPassData.length > 0 ? (
           <FlatList
-            data={fetchPassData}
+            data={filteredData}
             style={{ marginBottom: hp(4) }}
             renderItem={({ item }) => {
               return (
@@ -84,9 +93,9 @@ const RejectPasses = () => {
                       </View>
                     </View>
 
-                    <View style={{display:"flex", flexDirection: "column", justifyContent:"center", alignItems:"center", width: wp(30) }} >
+                    <View style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", width: wp(30) }} >
                       <View>
-                        <Text style={[styles.placeStyle, item.Distination.length > 15 ? { fontSize: hp(1.3) } : { fontSize: hp(2) }]}>{item.Distination}</Text>
+                        <Text style={[styles.placeStyle, item.Destination.length > 15 ? { fontSize: hp(1.3) } : { fontSize: hp(2) }]}>{item.Destination}</Text>
                       </View>
                       <View style={styles.times}>
                         <Text style={styles.outDateTimeStyle}>
@@ -149,7 +158,7 @@ const RejectPasses = () => {
                 <InfoGrid label="Reg.No" value={infoData?.RegisterNumber || ""} />
                 <InfoGrid label="Year & Dept" value={infoData?.Department || ""} />
                 <InfoGrid label="Room No" value={infoData?.RoomNo || ""} />
-                <InfoGrid label="Destination" value={infoData?.Distination || ""} />
+                <InfoGrid label="Destination" value={infoData?.Destination || ""} />
                 <InfoGrid label="Purpose" value={infoData?.Purpose || ""} />
                 <InfoGrid label="Phone No" value={infoData?.PhoneNumber || ""} />
                 <InfoGrid label="Parent No" value={infoData?.ParentNumber || ""} />
@@ -291,5 +300,20 @@ const styles = StyleSheet.create({
   },
   infoGrid: {
     width: "100%",
+  },
+  input: {
+    backgroundColor: "#D9D9D9",
+    paddingStart: 10,
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: "rgb(115,115,115)",
+    height: hp(4.5),
+    flex: 1
+  },
+  filterInputs: {
+    flexDirection: "row",
+    gap: "10",
+    marginHorizontal: hp(2),
+    marginTop: hp(1),
   },
 });
