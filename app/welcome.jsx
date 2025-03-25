@@ -4,14 +4,8 @@ let logo = require("@/assets/splashscreen_logo.png");
 import themes from "@/constants/themes"
 import { useRouter } from "expo-router";
 import { hp } from "@/helpers/dimensions";
-import * as notify from "expo-notifications"
-import { useEffect } from "react";
-import notificationAPI from "@/utils/notificationAPI";
 
 const Welcome = () => {
-//  useEffect(()=>{
-//   notify.addNotificationResponseReceivedListener(res=>console.log(res.notification.request.content.title))
-//  },)
 
   const router = useRouter()
   return (
