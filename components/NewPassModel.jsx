@@ -21,7 +21,7 @@ import { collageLocationRadius } from "@/helpers/calculateUserRadius";
 import Spinner from "react-native-loading-spinner-overlay"
 import * as Location from "expo-location"
 import { hp } from "@/helpers/dimensions";
-
+import notificationAPI from "@/utils/notificationAPI";
 
 const NewPassModel = (props) => {
   const {
@@ -84,7 +84,7 @@ const NewPassModel = (props) => {
       if (status == 'granted') {
         // get user Loction
         let locationData = await Location.getCurrentPositionAsync({});
-        const distance = collageLocationRadius(locationData?.coords?.longitude, locationData?.coords?.latitude);
+        const distance = await collageLocationRadius(locationData?.coords?.longitude, locationData?.coords?.latitude);
         if (!distance >= 600) {
           toast.show("You are mot inside the campus", {
             type: "danger",
@@ -95,12 +95,14 @@ const NewPassModel = (props) => {
             dangerIcon: <FontAwesome name="warning" size={20} color="white" />,
             style: { marginTop: hp(5), width: "100%", display: "flex", justifyContent: "center", alignItems: "center" },
           });
-          return
+          return;
         }
         await axios
           .post(`${urls.CLIENT_URL}${urls.studentNewRequest}`, payload)
           .then((data) => {
             if (data.data.success) {
+              // 
+              notificationAPI("wardenToken","Outpass Created", roomNo)
               toast.show(data.data.message, {
                 type: "success",
                 placement: "top",
@@ -272,7 +274,6 @@ const NewPassModel = (props) => {
                 <DateTimePicker
                   onCancel={() => setOutDatePickerVisible(false)}
                   mode="datetime"
-                  display="spinner"
                   onConfirm={(e) => {
                     handleOutDateTimePicker(e);
                     setOutDateError(null);
@@ -303,7 +304,6 @@ const NewPassModel = (props) => {
                   ""
                 )}
                 <DateTimePicker
-                display="spinner"
                   mode="datetime"
                   onCancel={() => setInDatePickerVisible(false)}
                   onConfirm={(e) => {

@@ -22,6 +22,7 @@ import { Entypo } from "@expo/vector-icons";
 import InfoGrid from "@/components/InfoGrid";
 import icon from "@/assets/backgroundPic.png"
 import DateTimePicker from "react-native-modal-datetime-picker";
+import notificationAPI from "@/utils/notificationAPI";
 
 const home = () => {
   let toast = useToast();
@@ -56,7 +57,7 @@ const home = () => {
     });
   };
 
-  const AlertingAction = (action, id) => {
+  const AlertingAction = (action, id, destination, studentId) => {
     Alert.alert(`${action} Outpass`, `Are you ${action} this Outpass`, [
       {
         text: "Cancel",
@@ -64,18 +65,19 @@ const home = () => {
       },
       {
         text: "Sure",
-        onPress: () => actionHandle(action, id),
+        onPress: () => actionHandle(action, id, destination, studentId),
         style: "default",
       },
     ]);
   };
 
-  const actionHandle = (action, id) => {
+  const actionHandle = (action, id, destination, studentId) => {
     if (action === "Out Time Updated") {
       axios
         .put(`${env.CLIENT_URL}${env.securityUpdateOutTime}`, { id, userId })
         .then((data) => {
           if (data.data.success) {
+            notificationAPI(studentId, "Outpass Out Time Registered", destination)
             toast.show(data.data.message, {
               type: "success",
               placement: "bottom",
@@ -108,6 +110,7 @@ const home = () => {
         .put(`${env.CLIENT_URL}${env.securityUpdateInTime}`, { id, userId })
         .then((data) => {
           if (data.data.success) {
+            notificationAPI(studentId, "Outpass In Time Registered", destination)
             toast.show(data.data.message, {
               type: "success",
               placement: "bottom",
@@ -201,14 +204,14 @@ const home = () => {
 
                 <View style={styles.btnGroup}>
                   <TouchableOpacity
-                    onPress={() => AlertingAction("Out Time Updated", item._id)}
+                    onPress={() => AlertingAction("Out Time Updated", item._id, item.Destination, item.User)}
                     style={{ backgroundColor: "green", padding: 5 }}
                     disabled={item.studentOutTime ? true : false}
                   >
                     <Text style={[{ fontSize: hp(1.2) }, item.studentOutTime ? { textDecorationLine: "line-through" } : ""]} >Out Time</Text>
                   </TouchableOpacity>
                   <TouchableOpacity
-                    onPress={() => AlertingAction("In Time Updated", item._id)}
+                    onPress={() => AlertingAction("In Time Updated", item._id, item.Destination, item.User)}
                     style={{ backgroundColor: "gray", padding: 5 }}
                   >
                     <Text style={{ fontSize: hp(1.2) }}>In Time</Text>

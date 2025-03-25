@@ -9,7 +9,6 @@ import {
   KeyboardAvoidingView,
 } from "react-native";
 import { useRef, useState } from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
 import annaUniversity from "@/assets/annaUniversity.png";
 import { FontAwesome, MaterialCommunityIcons } from "@expo/vector-icons";
 import url from "@/constants/urls";

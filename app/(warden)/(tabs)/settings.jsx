@@ -7,6 +7,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import Spinner from 'react-native-loading-spinner-overlay';
 import { hp } from "@/helpers/dimensions"
 import { useRouter } from "expo-router";
+import { unregisterIndieDevice } from "native-notify";
 
 
 const SettingScreen = () => {
@@ -52,8 +53,10 @@ const SettingScreen = () => {
   };
   const handleLogout = async () => {
     try {
-      await AsyncStorage.removeItem("warden").then(() =>
+      await AsyncStorage.removeItem("warden").then(() => {
+        unregisterIndieDevice('wardenToken', 28686, 'xFRNId2udwaz6hmL48krYd');
         router.dismissTo("welcome")
+      }
       );
     } catch (error) {
       console.log(error);
@@ -96,7 +99,7 @@ const styles = StyleSheet.create({
   },
   btnContainer: {
     width: "80%",
-    height : "20%"
+    height: "20%"
   },
   btnOutline: {
     backgroundColor: "red",

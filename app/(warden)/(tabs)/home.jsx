@@ -22,6 +22,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Entypo, FontAwesome, MaterialCommunityIcons } from "@expo/vector-icons";
 import InfoGrid from "@/components/InfoGrid";
 import backgroundIcon from "@/assets/backgroundPic.png"
+import notificationAPI from "@/utils/notificationAPI";
 
 const Home = () => {
   let toast = useToast();
@@ -51,7 +52,7 @@ const Home = () => {
     });
   };
 
-  const AlertingAction = (action, id) => {
+  const AlertingAction = (action, id, destination, studentId) => {
     Alert.alert(`${action} Outpass`, `Are you ${action} this Outpass`, [
       {
         text: "Cancel",
@@ -59,17 +60,20 @@ const Home = () => {
       },
       {
         text: "Sure",
-        onPress: () => actionHandle(action, id),
+        onPress: () => actionHandle(action, id, destination, studentId),
         style: "default",
       },
     ]);
   };
 
-  const actionHandle = async (action, id) => {
+  const actionHandle = async (action, id, destination, studentId) => {
     if (action === "Accept") {
       await axios
         .put(`${env.CLIENT_URL}${env.wardenPassAccept}`, { id, userId })
         .then((data) => {
+
+          // notiication
+          notificationAPI(studentId, "Outpass Accpeted", destination)
           if (data.data.success) {
             toast.show(data.data.message, {
               type: "success",
@@ -99,6 +103,7 @@ const Home = () => {
         .put(`${env.CLIENT_URL}${env.wardenPassReject}`, { id, userId })
         .then((data) => {
           if (data.data.success) {
+            notificationAPI(studentId, "Outpass Rejected", destination)
             toast.show(data.data.message, {
               type: "success",
               placement: "top",
@@ -178,12 +183,12 @@ const Home = () => {
 
                 <View style={styles.btnGroup}>
                   <TouchableOpacity
-                    onPress={() => AlertingAction("Accept", item._id)}
+                    onPress={() => AlertingAction("Accept", item._id, item.Destination, item.User)}
                   >
                     <AntDesign name="checkcircle" size={30} color="green" />
                   </TouchableOpacity>
                   <TouchableOpacity
-                    onPress={() => AlertingAction("Reject", item._id)}
+                    onPress={() => AlertingAction("Reject", item._id, item.Destination, item.User)}
                   >
                     <AntDesign name="closecircle" size={30} color="red" />
                   </TouchableOpacity>

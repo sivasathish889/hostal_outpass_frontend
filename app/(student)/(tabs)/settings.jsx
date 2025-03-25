@@ -7,6 +7,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import Spinner from 'react-native-loading-spinner-overlay';
 import { hp } from "@/helpers/dimensions";
 import { useRouter } from "expo-router";
+import { unregisterIndieDevice } from 'native-notify';
 
 const Settings = () => {
   const router = useRouter()
@@ -59,9 +60,13 @@ const Settings = () => {
 
   const handleLogout = async () => {
     try {
-      await AsyncStorage.removeItem("student").then(() =>
-        router.dismissTo("welcome")
-      );
+      await AsyncStorage.getItem('student').then(async (stuId) => {        
+        await AsyncStorage.removeItem("student").then(() => {
+          unregisterIndieDevice(stuId, 28686, 'xFRNId2udwaz6hmL48krYd')
+          router.dismissTo("welcome")
+        }
+        );
+      })
     } catch (error) {
       console.log(error);
     }
@@ -105,7 +110,7 @@ const styles = StyleSheet.create({
   },
   btnContainer: {
     width: "80%",
-    height : "20%"
+    height: "20%"
   },
   btnOutline: {
     backgroundColor: "red",

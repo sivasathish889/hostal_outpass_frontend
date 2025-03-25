@@ -22,7 +22,7 @@ import axios from "axios";
 import themes from "@/constants/themes";
 import Spinner from "react-native-loading-spinner-overlay";
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-
+import { registerIndieID } from 'native-notify';
 
 const studentLogin = () => {
   let navigation = useRouter();
@@ -62,6 +62,8 @@ const studentLogin = () => {
           successIcon: <MaterialCommunityIcons name="check-circle" size={24} color="white" />,
           style: { marginTop: hp(8), width: "100%", display: "flex", justifyContent: "center", alignItems: "center" },
         });
+        // register notify
+        registerIndieID(data.user, 28686, 'xFRNId2udwaz6hmL48krYd');        
         AsyncStorage.setItem("student", data.user);
         setRegisterNumber(null);
         setPassword(null);

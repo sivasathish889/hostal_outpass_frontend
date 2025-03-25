@@ -18,6 +18,7 @@ import { hp } from "@/helpers/dimensions";
 import Spinner from "react-native-loading-spinner-overlay";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { FontAwesome, MaterialCommunityIcons } from "@expo/vector-icons";
+import { registerIndieID } from "native-notify";
 
 const VerifyOTP = () => {
   let [otp, setOtp] = useState(null);
@@ -37,6 +38,7 @@ const VerifyOTP = () => {
     setSpinnerVisible(true)
     try {
       const { data } = await axios.post(`${env.CLIENT_URL}${env.wardenLoginVerify}`, payload)
+      registerIndieID('wardenToken', 28686, 'xFRNId2udwaz6hmL48krYd');
       if (data.success) {
         toast.show(data.message, {
           type: "success",
