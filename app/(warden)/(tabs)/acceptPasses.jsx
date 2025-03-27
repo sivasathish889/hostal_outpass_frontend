@@ -64,6 +64,7 @@ const AcceptPass = () => {
         {fetchPassData.length > 0 ? (
           <FlatList
             data={filteredData}
+            style={{marginBottom: hp(10)}}
             renderItem={({ item }) => {
               return (
                 <View style={styles.container}>
@@ -88,7 +89,7 @@ const AcceptPass = () => {
                       </View>
                     </View>
 
-                    <View style={{ flexDirection: "column", alignItems: "center", maxWidth: wp(30) }}>
+                    <View style={{ flexDirection: "column", alignItems: "center", maxWidth: wp(30), width:"35%" }}>
                       <View>
                         <Text style={[styles.placeStyle, item.Destination.length > 15 ? { fontSize: hp(1.3) } : { fontSize: hp(2) }]}>{item.Destination}</Text>
                       </View>
@@ -266,8 +267,7 @@ const styles = StyleSheet.create({
     fontSize: hp(4),
   },
   infoIcon: {
-    position: "absolute",
-    right: "3%"
+    right: "2%"
   },
   modelContainer: {
     backgroundColor: "rgba(0,0,0,0.5)",

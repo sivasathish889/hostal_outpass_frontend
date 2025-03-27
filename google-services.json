@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "354673136923",
-    "project_id": "pushnotifi-99ce8",
-    "storage_bucket": "pushnotifi-99ce8.firebasestorage.app"
+    "project_number": "670064290793",
+    "project_id": "hosteloutpassnotify",
+    "storage_bucket": "hosteloutpassnotify.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:354673136923:android:dc40525631d487a319afbe",
+        "mobilesdk_app_id": "1:670064290793:android:9c729f5dd79997e7817978",
         "android_client_info": {
           "package_name": "com.shiva889.nativeApp"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBckB_l4zWg8U7vim7GNiJcGYj_9bYJDWQ"
+          "current_key": "AIzaSyAV7qBiKvvtraJMMyxxkzHzlEZ2OXHBbZA"
         }
       ],
       "services": {

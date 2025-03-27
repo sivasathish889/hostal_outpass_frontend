@@ -23,7 +23,8 @@
       },
       "package": "com.shiva889.nativeApp",
       "permissions": ["ACCESS_BACKGROUND_LOCATION"],
-      "softwareKeyboardLayoutMode": "pan"
+      "softwareKeyboardLayoutMode": "pan",
+      "googleServicesFile": "./google-services.json"
     },
     "web": {
       "bundler": "metro",

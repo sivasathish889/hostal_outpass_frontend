@@ -130,7 +130,7 @@ const PrevPass = () => {
           <Dropdown
             style={[styles.dropdown]}
             data={[
-              { label: "None", value: "" },
+              { label: "All", value: "" },
               { label: "Accept ", value: "2" },
               { label: "Reject ", value: "3" },
             ]}
@@ -157,7 +157,7 @@ const PrevPass = () => {
         </View>
         <FlatList
           data={filteredData}
-          style={{ marginBottom: hp(4) }}
+          style={{ marginBottom: hp(10) }}
           renderItem={renderItem}
           keyExtractor={(item) => item._id}
           refreshControl={
@@ -290,8 +290,8 @@ const styles = StyleSheet.create({
     borderColor: "rgb(115,115,115)",
     color: "black",
     fontSize: hp(1.6),
-    height: 42,
-    borderRadius: 10,
+    height: hp(4.5),
+    borderRadius: 5,
     paddingStart: 10,
     flex: 1
   },

@@ -153,6 +153,7 @@ const Home = () => {
         </View>
         <FlatList
           data={filteredData}
+          style={{marginBottom: hp(10)}}
           renderItem={({ item }) => {
             return (
               <View style={styles.container}>

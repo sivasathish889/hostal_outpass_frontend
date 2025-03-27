@@ -185,6 +185,7 @@ const HomeScreen = () => {
         />
         <FlatList
           data={fetchPassData.pass}
+          style={{marginBottom:hp(10)}}
           renderItem={({ item }) => {
             return (
               <View style={styles.container}>
@@ -322,7 +323,7 @@ const styles = StyleSheet.create({
     textAlign: "center"
   },
   rightCon: {
-    width: "40%",
+    width: "35%",
   },
   placeStyle: {
     textAlign: "center"

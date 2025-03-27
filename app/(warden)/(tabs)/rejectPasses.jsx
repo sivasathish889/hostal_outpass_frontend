@@ -68,7 +68,7 @@ const RejectPasses = () => {
         {fetchPassData.length > 0 ? (
           <FlatList
             data={filteredData}
-            style={{ marginBottom: hp(4) }}
+            style={{ marginBottom: hp(10) }}
             renderItem={({ item }) => {
               return (
                 <View style={styles.container}>

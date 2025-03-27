@@ -102,7 +102,7 @@ const NewPassModel = (props) => {
           .then((data) => {
             if (data.data.success) {
               // 
-              notificationAPI("wardenToken","Outpass Created", roomNo)
+              notificationAPI("wardenToken","New Outpass", roomNo)
               toast.show(data.data.message, {
                 type: "success",
                 placement: "top",
