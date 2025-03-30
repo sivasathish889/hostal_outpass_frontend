@@ -13,7 +13,6 @@ import { hp, wp } from "@/helpers/dimensions";
 
 
 const TabRoute = () => {
-  const [action, setAction] = useState("Home");
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -43,11 +42,11 @@ const TabRoute = () => {
           name="home"
           options={{
             headerShown: false,
-            tabBarIcon: () => {
+            tabBarIcon: ({focused}) => {
               return (
                 <View
                   style={
-                    action == "Home"
+                    focused
                       ? {
                         backgroundColor: "white",
                         marginTop: hp(4),
@@ -66,7 +65,7 @@ const TabRoute = () => {
                   <Image
                     source={homeIcon}
                     style={
-                      action == "Home"
+                      focused
                         ? { tintColor: themes.mainColor, alignSelf: "center" }
                         : { tintColor: "white", alignSelf: "center" }
                     }
@@ -74,7 +73,7 @@ const TabRoute = () => {
 
                   <Text
                     style={
-                      action == "Home"
+                      focused
                         ? {
                           color: themes.mainColor,
                           fontSize: hp(1.2),
@@ -98,17 +97,16 @@ const TabRoute = () => {
               return null;
             },
           }}
-          listeners={{ tabPress: () => setAction("Home") }}
         />
         <Tabs.Screen
           name="acceptPasses"
           options={{
             headerShown: false,
-            tabBarIcon: () => {
+            tabBarIcon: ({focused}) => {
               return (
                 <View
                   style={
-                    action == "accept"
+                    focused
                       ? {
                         backgroundColor: "white",
                         marginTop: hp(4),
@@ -127,14 +125,14 @@ const TabRoute = () => {
                   <Image
                     source={acceptPass}
                     style={
-                      action == "accept"
+                      focused
                         ? { tintColor: themes.mainColor, alignSelf: "center" }
                         : { tintColor: "white", alignSelf: "center" }
                     }
                   />
                   <Text
                     style={
-                      action == "accept"
+                      focused
                         ? {
                           color: themes.mainColor,
                           fontSize: hp(1.2),
@@ -158,18 +156,17 @@ const TabRoute = () => {
               return null;
             },
           }}
-          listeners={{ tabPress: () => setAction("accept") }}
         />
 
         <Tabs.Screen
           name="rejectPasses"
           options={{
             headerShown: false,
-            tabBarIcon: () => {
+            tabBarIcon: ({focused}) => {
               return (
                 <View
                   style={
-                    action == "reject"
+                    focused
                       ? {
                         backgroundColor: "white",
                         marginTop: hp(4),
@@ -188,14 +185,14 @@ const TabRoute = () => {
                   <Image
                     source={closeIcon}
                     style={
-                      action == "reject"
+                      focused
                         ? { tintColor: themes.mainColor, alignSelf: "center" }
                         : { tintColor: "white", alignSelf: "center" }
                     }
                   />
                   <Text
                     style={
-                      action == "reject"
+                      focused
                         ? {
                           color: themes.mainColor,
                           fontSize: hp(1.2),
@@ -219,18 +216,17 @@ const TabRoute = () => {
               return null;
             },
           }}
-          listeners={{ tabPress: () => setAction("reject") }}
         />
 
         <Tabs.Screen
           name="settings"
           options={{
             headerShown: false,
-            tabBarIcon: () => {
+            tabBarIcon: ({focused}) => {
               return (
                 <View
                   style={
-                    action == "settings"
+                    focused
                       ? {
                         backgroundColor: "white",
                         marginTop: hp(4),
@@ -249,14 +245,14 @@ const TabRoute = () => {
                   <Image
                     source={Settings}
                     style={
-                      action == "settings"
+                      focused
                         ? { tintColor: themes.mainColor, alignSelf: "center" }
                         : { tintColor: "white", alignSelf: "center" }
                     }
                   />
                   <Text
                     style={
-                      action == "settings"
+                      focused
                         ? {
                           color: themes.mainColor,
                           fontSize: hp(1.2),
@@ -280,7 +276,6 @@ const TabRoute = () => {
               return null;
             },
           }}
-          listeners={{ tabPress: () => setAction("settings") }}
         />
       </Tabs>
     </SafeAreaView>

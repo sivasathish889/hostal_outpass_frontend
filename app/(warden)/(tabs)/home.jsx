@@ -45,10 +45,12 @@ const Home = () => {
 
 
   const fetchData = async () => {
-    axios.get(`${env.CLIENT_URL}${env.wardenPendingPass}`).then((data) => {
-      setFetchPassData(data.data.pass);
-      setSpinnerVisible(false)
-      setRefreshing(false);
+    await AsyncStorage.getItem("warden").then(async (wardenId) => {
+      await axios.get(`${env.CLIENT_URL}${env.wardenPendingPass}/${wardenId}`).then((data) => {
+        setFetchPassData(data.data.pass);
+        setSpinnerVisible(false)
+        setRefreshing(false);
+      })
     });
   };
 
@@ -135,7 +137,7 @@ const Home = () => {
     setInfoData(item)
   }
 
-  const filteredData = fetchPassData.filter((item) => {
+  const filteredData = fetchPassData?.filter((item) => {
     return (item.RegisterNumber.toString().toLocaleLowerCase().includes(searchQuery.toLocaleLowerCase().toString()))
   })
 
@@ -153,7 +155,7 @@ const Home = () => {
         </View>
         <FlatList
           data={filteredData}
-          style={{marginBottom: hp(10)}}
+          style={{ marginBottom: hp(10) }}
           renderItem={({ item }) => {
             return (
               <View style={styles.container}>

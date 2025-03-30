@@ -30,6 +30,7 @@ const StudentRegister = () => {
   let [name, setName] = useState(null);
   let [registerNumber, setRegisterNumber] = useState(null);
   let [department, setDepartment] = useState(null);
+  let [gender, setGender] = useState(null);
   let [year, setYear] = useState(null);
   let [phoneNumber, setPhoneNumber] = useState(null);
   let [parentNumber, setParentNumber] = useState(null);
@@ -40,6 +41,7 @@ const StudentRegister = () => {
 
   let [nameError, setNameError] = useState(null);
   let [registerNumberError, setRegisterNumberError] = useState(null);
+  let [genderError, setGenderError] = useState(null);
   let [departmentError, setDepartmentError] = useState(null);
   let [yearError, setYearError] = useState(null);
   let [phoneNumberError, setPhoneNumberError] = useState(null);
@@ -73,6 +75,8 @@ const StudentRegister = () => {
       return setDepartmentError("Department is Required");
     } else if (year === null || year.length == 0) {
       return setYearError("Year is Required");
+    } else if (gender === null || gender.length == 0) {
+      return setGenderError("Year is Required");
     } else if (phoneNumber === null || phoneNumber.length == 0) {
       return setPhoneNumberError("Phone Number is Required");
     } else if (parentNumber === null || parentNumber.length == 0) {
@@ -94,6 +98,7 @@ const StudentRegister = () => {
       year,
       phoneNumber,
       parentNumber,
+      gender,
       eMail,
       district,
       password,
@@ -191,6 +196,41 @@ const StudentRegister = () => {
             />
             {registerNumberError != null ? (
               <Text style={styles.errorText}>{registerNumberError}</Text>
+            ) : (
+              ""
+            )}
+          </View>
+          <View style={styles.inputGroups}>
+            <Text style={styles.label}>Gender :</Text>
+            <Dropdown
+              style={[styles.dropdown]}
+              data={[
+                { label: "Male ", value: "Male" },
+                { label: "Female ", value: "Female" }
+              ]}
+              placeholder="Select Gender"
+              mode="modal"
+              maxHeight={100}
+              labelField="label"
+              valueField="value"
+              value={gender}
+              onFocus={() => setIsFocus(true)}
+              onBlur={() => setIsFocus(false)}
+              onChange={(item) => {
+                setGender(item.value);
+                setIsFocus(false);
+                setGenderError(null);
+              }}
+              autoComplete="gender"
+              placeholderStyle={{
+                color: themes.placeholderTextColor,
+                paddingStart: 10,
+                fontSize: hp(1.6)
+              }}
+              itemContainerStyle={{ borderRadius: 10 }}
+            />
+            {genderError != null ? (
+              <Text style={styles.errorText}>{genderError}</Text>
             ) : (
               ""
             )}
@@ -521,7 +561,7 @@ const styles = StyleSheet.create({
     borderColor: "rgb(115,115,115)",
     width: "100%",
     color: "black",
-    fontSize: hp(1.6),
+    fontSize: hp(1.4),
     height: 42,
     borderRadius: 10,
     paddingStart: 10,

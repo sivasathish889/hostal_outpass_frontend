@@ -26,19 +26,17 @@ const VerifyOTP = () => {
 
   let toast = useToast()
   let backendOtp = useLocalSearchParams().otp;
-
+  
   let router = useRouter();
-
+  
   let payload = {
     backendOtp,
     otp
   }
-
   const handleSubmit = async () => {
     setSpinnerVisible(true)
     try {
       const { data } = await axios.post(`${env.CLIENT_URL}${env.wardenLoginVerify}`, payload)
-      registerIndieID('wardenToken', 28686, 'xFRNId2udwaz6hmL48krYd');
       if (data.success) {
         toast.show(data.message, {
           type: "success",
@@ -47,9 +45,10 @@ const VerifyOTP = () => {
           offset: 30,
           animationType: "slide-in",
           successIcon: <MaterialCommunityIcons name="check-circle" size={24} color="white" />,
-          style: { marginTop: hp(5), width: "100%",display :"flex", justifyContent:"center", alignItems:"center" },
+          style: { marginTop: hp(5), width: "100%", display: "flex", justifyContent: "center", alignItems: "center" },
         });
-
+        console.log(data.wardenRole)
+        registerIndieID(`warden${data.wardenRole}`, 28686, 'xFRNId2udwaz6hmL48krYd');
         AsyncStorage.setItem("warden", data.user);
         router.dismissTo("../(tabs)");
 
@@ -61,7 +60,7 @@ const VerifyOTP = () => {
           offset: 50,
           animationType: "zoom-in",
           dangerIcon: <FontAwesome name="warning" size={20} color="white" />,
-          style: { marginTop: hp(5), width: "100%",display :"flex", justifyContent:"center", alignItems:"center" },
+          style: { marginTop: hp(5), width: "100%", display: "flex", justifyContent: "center", alignItems: "center" },
         });
       }
     } catch (error) {
@@ -143,7 +142,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "rgb(115,115,115)",
     width: "80%",
-    height:hp(4.5),
+    height: hp(4.5),
     alignSelf: "center",
   },
   lable: {

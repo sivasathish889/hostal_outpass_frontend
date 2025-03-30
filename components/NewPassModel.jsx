@@ -84,7 +84,7 @@ const NewPassModel = (props) => {
       if (status == 'granted') {
         // get user Loction
         let locationData = await Location.getCurrentPositionAsync({});
-        const distance = await collageLocationRadius(locationData?.coords?.longitude, locationData?.coords?.latitude);
+        const distance = collageLocationRadius(locationData?.coords?.longitude, locationData?.coords?.latitude);
         if (!distance >= 600) {
           toast.show("You are mot inside the campus", {
             type: "danger",
@@ -101,8 +101,8 @@ const NewPassModel = (props) => {
           .post(`${urls.CLIENT_URL}${urls.studentNewRequest}`, payload)
           .then((data) => {
             if (data.data.success) {
-              // 
-              notificationAPI("wardenToken","New Outpass", roomNo)
+              // notification function
+              notificationAPI(`warden${data.data.gender}`,"New Outpass", roomNo)
               toast.show(data.data.message, {
                 type: "success",
                 placement: "top",

@@ -10,6 +10,7 @@ import themes from "@/constants/themes";
 import { Entypo } from "@expo/vector-icons";
 import InfoGrid from "@/components/InfoGrid";
 import backgroundIcon from "@/assets/backgroundPic.png"
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const AcceptPass = () => {
   let now = new Date();
@@ -29,12 +30,14 @@ const AcceptPass = () => {
 
   const fetchData = async () => {
     try {
-      axios.get(`${env.CLIENT_URL}${env.wardenAllAcceptPass}`)
-        .then((data) => {
-          setFetchPassData(data.data.pass)
-          setSpinnerVisible(false);
-          setRefreshing(false);
-        })
+      await AsyncStorage.getItem('warden').then(async (id) => {
+        await axios.get(`${env.CLIENT_URL}${env.wardenAllAcceptPass}/${id}`)
+          .then((data) => {
+            setFetchPassData(data.data.pass)
+            setSpinnerVisible(false);
+            setRefreshing(false);
+          })
+      })
     } catch (error) {
       console.log(error);
     }
@@ -45,7 +48,7 @@ const AcceptPass = () => {
     setInfoData(item)
   }
 
-  const filteredData = fetchPassData.filter((item) => {
+  const filteredData = fetchPassData?.filter((item) => {
     return (item.RegisterNumber.toString().toLocaleLowerCase().includes(searchQuery.toLocaleLowerCase().toString()))
   })
 
@@ -64,7 +67,7 @@ const AcceptPass = () => {
         {fetchPassData.length > 0 ? (
           <FlatList
             data={filteredData}
-            style={{marginBottom: hp(10)}}
+            style={{ marginBottom: hp(10) }}
             renderItem={({ item }) => {
               return (
                 <View style={styles.container}>
@@ -89,7 +92,7 @@ const AcceptPass = () => {
                       </View>
                     </View>
 
-                    <View style={{ flexDirection: "column", alignItems: "center", maxWidth: wp(30), width:"35%" }}>
+                    <View style={{ flexDirection: "column", alignItems: "center", maxWidth: wp(30), width: "35%" }}>
                       <View>
                         <Text style={[styles.placeStyle, item.Destination.length > 15 ? { fontSize: hp(1.3) } : { fontSize: hp(2) }]}>{item.Destination}</Text>
                       </View>

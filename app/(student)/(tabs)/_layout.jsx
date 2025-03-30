@@ -17,9 +17,7 @@ import Settings from "@/assets/TabBar/Settings.png";
 import themes from "@/constants/themes";
 import { hp, wp } from "@/helpers/dimensions";
 
-
 const Layout = () => {
-  const [action, setAction] = useState("home");
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -51,11 +49,11 @@ const Layout = () => {
           name="home"
           options={{
             headerShown: false,
-            tabBarIcon: () => {
+            tabBarIcon: ({ focused }) => {
               return (
                 <View
                   style={
-                    action == "home"
+                    focused
                       ? {
                         backgroundColor: "white",
                         marginTop: hp(4),
@@ -65,23 +63,26 @@ const Layout = () => {
                         paddingTop: hp(0.7),
                       }
                       : {
+                        backgroundColor: themes.mainColor,
                         marginTop: hp(4),
                         height: hp(5.5),
                         paddingTop: hp(0.7),
+                        borderRadius: 60,
+                        paddingHorizontal: hp(1.6),
                       }
                   }
                 >
                   <Image
                     source={homeIcon}
                     style={
-                      action == "home"
+                      focused
                         ? { tintColor: themes.mainColor, alignSelf: "center" }
                         : { tintColor: "white", alignSelf: "center" }
                     }
                   />
                   <Text
                     style={
-                      action == "home"
+                     focused
                         ? { color: themes.mainColor, fontSize: hp(1.1), width: wp(12), textAlign: "center" }
                         : { color: "white", fontSize: hp(1.1), width: wp(12), textAlign: "center" }
                     }
@@ -95,17 +96,16 @@ const Layout = () => {
               return null;
             },
           }}
-          listeners={{ tabPress: () => setAction("home") }}
         />
         <Tabs.Screen
           name="prevPass"
           options={{
             headerShown: false,
-            tabBarIcon: () => {
+            tabBarIcon: ({ focused }) => {
               return (
                 <View
                   style={
-                    action == "previous"
+                    focused
                       ? {
                         backgroundColor: "white",
                         marginTop: hp(4),
@@ -124,14 +124,14 @@ const Layout = () => {
                   <Image
                     source={Previous}
                     style={
-                      action == "previous"
+                      focused
                         ? { tintColor: themes.mainColor, alignSelf: "center" }
                         : { tintColor: "white", alignSelf: "center" }
                     }
                   />
                   <Text
                     style={
-                      action == "previous"
+                      focused
                         ? { color: themes.mainColor, fontSize: hp(1.1), width: wp(15), textAlign: "center" }
                         : { color: "white", fontSize: hp(1.1), width: wp(15), textAlign: "center" }
                     }
@@ -145,17 +145,16 @@ const Layout = () => {
               return null;
             },
           }}
-          listeners={{ tabPress: () => setAction("previous") }}
         />
         <Tabs.Screen
           name="settings"
           options={{
             headerShown: false,
-            tabBarIcon: () => {
+            tabBarIcon: ({ focused }) => {
               return (
                 <View
                   style={
-                    action == "settings"
+                    focused
                       ? {
                         backgroundColor: "white",
                         marginTop: hp(4),
@@ -174,14 +173,14 @@ const Layout = () => {
                   <Image
                     source={Settings}
                     style={
-                      action == "settings"
+                      focused
                         ? { tintColor: themes.mainColor, alignSelf: "center" }
                         : { tintColor: "white", alignSelf: "center" }
                     }
                   />
                   <Text
                     style={
-                      action == "settings"
+                      focused
                         ? {
                           color: themes.mainColor,
                           fontSize: hp(1.1),
@@ -205,7 +204,6 @@ const Layout = () => {
               return null;
             },
           }}
-          listeners={{ tabPress: () => setAction("settings") }}
         />
       </Tabs>
     </SafeAreaView>

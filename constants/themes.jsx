@@ -1,5 +1,5 @@
 export default themes = {
-    mainColor: "rgb(11,117,131)",
+    mainColor: "#0b7583",
     secondaryColor : "#F5BC00",
     placeholderTextColor: "#AFAFAF",
      acceptColor : "#6697a3",

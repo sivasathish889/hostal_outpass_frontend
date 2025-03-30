@@ -20,6 +20,7 @@ import themes from "@/constants/themes";
 import { Entypo } from "@expo/vector-icons";
 import InfoGrid from "@/components/InfoGrid";
 import backgroundIcon from "@/assets/backgroundPic.png"
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const RejectPasses = () => {
   let now = new Date();
@@ -35,20 +36,29 @@ const RejectPasses = () => {
   useEffect(() => {
     setSpinnerVisible(true);
     fetchData();
+    setRefreshing(false);
   }, [refreshing]);
 
   const fetchData = async () => {
-    axios.get(`${env.CLIENT_URL}${env.wardenAllRejectPass}`).then((data) => {
-      setFetchPassData(data.data.pass);
-      setSpinnerVisible(false);
-      setRefreshing(false);
-    });
+    try {
+      await AsyncStorage.getItem("warden").then(async (wardenId) => {
+        await axios.get(`${env.CLIENT_URL}${env.wardenAllRejectPass}/${wardenId}`).then((data) => {
+          setFetchPassData(data.data.pass);
+          setSpinnerVisible(false);
+        })
+          .catch((error) => {
+            console.log(error)
+          })
+      })
+    } catch (error) {
+      console.log(error)
+    }
   };
   const openSheet = (item) => {
     setmodalVisible(true)
     setInfoData(item)
   }
-  const filteredData = fetchPassData.filter((item) => {
+  const filteredData = fetchPassData?.filter((item) => {
     return (item.RegisterNumber.toString().toLocaleLowerCase().includes(searchQuery.toLocaleLowerCase().toString()))
   })
   return (
@@ -65,7 +75,7 @@ const RejectPasses = () => {
           <TextInput style={styles.input} placeholder="Search Register Number" keyboardType="numeric" onChangeText={(text) => setSearchQuery(text)} value={searchQuery} />
         </View>
 
-        {fetchPassData.length > 0 ? (
+        {fetchPassData?.length > 0 ? (
           <FlatList
             data={filteredData}
             style={{ marginBottom: hp(10) }}
