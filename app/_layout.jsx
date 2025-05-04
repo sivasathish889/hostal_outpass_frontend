@@ -6,7 +6,7 @@ import registerNNPushToken from 'native-notify';
 
 export default function RootLayout() {
 
-  registerNNPushToken(28686, 'xFRNId2udwaz6hmL48krYd');
+  registerNNPushToken(28852, '7RQVd14mDsFBmBxErGjgqX');
 
   return (
     <ToastProvider>

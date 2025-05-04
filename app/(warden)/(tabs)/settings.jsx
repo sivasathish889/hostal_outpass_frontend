@@ -54,7 +54,6 @@ const SettingScreen = () => {
   const handleLogout = async () => {
     try {
       await AsyncStorage.removeItem("warden").then(() => {
-        unregisterIndieDevice('wardenToken', 28686, 'xFRNId2udwaz6hmL48krYd');
         router.dismissTo("welcome")
       }
       );

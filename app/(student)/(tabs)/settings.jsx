@@ -62,7 +62,6 @@ const Settings = () => {
     try {
       await AsyncStorage.getItem('student').then(async (stuId) => {        
         await AsyncStorage.removeItem("student").then(() => {
-          unregisterIndieDevice(stuId, 28686, 'xFRNId2udwaz6hmL48krYd')
           router.dismissTo("welcome")
         }
         );

@@ -48,7 +48,6 @@ const VerifyOTP = () => {
           style: { marginTop: hp(5), width: "100%", display: "flex", justifyContent: "center", alignItems: "center" },
         });
         console.log(data.wardenRole)
-        registerIndieID(`warden${data.wardenRole}`, 28686, 'xFRNId2udwaz6hmL48krYd');
         AsyncStorage.setItem("warden", data.user);
         router.dismissTo("../(tabs)");
 

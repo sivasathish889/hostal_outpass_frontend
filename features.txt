@@ -1,7 +1,3 @@
-filter la starting date to ending date
-push notification
-admin panel
-
 eas build -p android --profile preview
 
 eas build -p ios --profile preview

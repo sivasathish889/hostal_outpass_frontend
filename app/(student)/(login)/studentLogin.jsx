@@ -62,8 +62,6 @@ const studentLogin = () => {
           successIcon: <MaterialCommunityIcons name="check-circle" size={24} color="white" />,
           style: { marginTop: hp(8), width: "100%", display: "flex", justifyContent: "center", alignItems: "center" },
         });
-        // register notify
-        registerIndieID(data.user, 28686, 'xFRNId2udwaz6hmL48krYd');        
         AsyncStorage.setItem("student", data.user);
         setRegisterNumber(null);
         setPassword(null);
