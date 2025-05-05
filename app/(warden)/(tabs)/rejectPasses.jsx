@@ -35,7 +35,7 @@ const RejectPasses = () => {
 
   useEffect(() => {
     setSpinnerVisible(true);
-    fetchData();
+    fetchData()
     setRefreshing(false);
   }, [refreshing]);
 

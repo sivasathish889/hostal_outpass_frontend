@@ -2,11 +2,9 @@ import { Stack, Slot } from "expo-router";
 import themes from "@/constants/themes"
 import { ToastProvider } from "react-native-toast-notifications";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import registerNNPushToken from 'native-notify';
+
 
 export default function RootLayout() {
-
-  registerNNPushToken(28852, '7RQVd14mDsFBmBxErGjgqX');
 
   return (
     <ToastProvider>

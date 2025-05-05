@@ -22,7 +22,6 @@ import { Entypo } from "@expo/vector-icons";
 import InfoGrid from "@/components/InfoGrid";
 import icon from "@/assets/backgroundPic.png"
 import DateTimePicker from "react-native-modal-datetime-picker";
-import notificationAPI from "@/utils/notificationAPI";
 
 const home = () => {
   let toast = useToast();
@@ -77,7 +76,6 @@ const home = () => {
         .put(`${env.CLIENT_URL}${env.securityUpdateOutTime}`, { id, userId })
         .then((data) => {
           if (data.data.success) {
-            notificationAPI(studentId, "Outpass Out Time Registered", destination)
             toast.show(data.data.message, {
               type: "success",
               placement: "bottom",
@@ -110,7 +108,6 @@ const home = () => {
         .put(`${env.CLIENT_URL}${env.securityUpdateInTime}`, { id, userId })
         .then((data) => {
           if (data.data.success) {
-            notificationAPI(studentId, "Outpass In Time Registered", destination)
             toast.show(data.data.message, {
               type: "success",
               placement: "bottom",

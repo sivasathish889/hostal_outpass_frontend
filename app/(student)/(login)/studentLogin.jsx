@@ -7,10 +7,8 @@ import {
   TouchableOpacity,
   Platform,
   KeyboardAvoidingView,
-  Keyboard
 } from "react-native";
-import { useRef, useState } from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { useEffect, useRef, useState } from "react";
 import annaUniversity from "@/assets/annaUniversity.png";
 import { hp, } from "@/helpers/dimensions"
 import { useRouter } from "expo-router";
@@ -22,11 +20,14 @@ import axios from "axios";
 import themes from "@/constants/themes";
 import Spinner from "react-native-loading-spinner-overlay";
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { registerIndieID } from 'native-notify';
+import { getMessaging, getToken, onMessage, onBackgroundMessage, setBackgroundMessageHandler } from '@react-native-firebase/messaging';
+import { getApp } from '@react-native-firebase/app';
 
 const studentLogin = () => {
   let navigation = useRouter();
   let toast = useToast();
+  const [fcmToken, setFcmToken] = useState(null)
+
   const [spinnerVisible, setSpinnerVisible] = useState(false)
   const [showPassword, setShowPassword] = useState(false);
   const [registerNumber, setRegisterNumber] = useState(null);
@@ -38,6 +39,53 @@ const studentLogin = () => {
   const nextInputRef = useRef();
 
   const toggleShowPassword = () => setShowPassword(!showPassword);
+  
+  useEffect(() => {
+    const sendToken = async () => {
+      const app = getApp();
+      const messaging = getMessaging(app);
+
+      // Get FCM Token
+      const token = await getToken(messaging);
+      console.log("FCM Token:", token);
+      setFcmToken(token);
+
+      // Handle initial notification
+      const initialNotification = await messaging.getInitialNotification();
+      if (initialNotification && initialNotification.notification) {
+        console.log(
+          "Notification caused app to open from quit state:",
+          initialNotification.notification
+        );
+      }
+
+      // Handle notification when app is opened from background
+      messaging.onNotificationOpenedApp((remoteMessage) => {
+        if (remoteMessage && remoteMessage.notification) {
+          console.log(
+            "Notification caused app to open from background state:",
+            remoteMessage.notification
+          );
+        }
+      });
+
+      // Handle background notifications
+      setBackgroundMessageHandler(messaging, async (remoteMessage) => {
+        console.log("Message handled in the background!", remoteMessage);
+      });
+
+      // Handle foreground notifications
+      const unsubscribe = onMessage(messaging, async (remoteMessage) => {
+        Alert.alert(
+          "A new FCM message arrived!",
+          JSON.stringify(remoteMessage)
+        );
+      });
+
+      return unsubscribe; // Ensure cleanup
+    }
+    sendToken()
+  }, [])
 
   const handleSubmit = async () => {
     if (registerNumber === null || registerNumber.length == 0) {
@@ -48,6 +96,7 @@ const studentLogin = () => {
     let payload = {
       registerNumber,
       password,
+      fcmToken
     };
     setSpinnerVisible(true)
     try {

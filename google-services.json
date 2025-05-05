@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "670064290793",
-    "project_id": "hosteloutpassnotify",
-    "storage_bucket": "hosteloutpassnotify.firebasestorage.app"
+    "project_number": "625296658874",
+    "project_id": "hostel-outpass-7ddc9",
+    "storage_bucket": "hostel-outpass-7ddc9.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:670064290793:android:9c729f5dd79997e7817978",
+        "mobilesdk_app_id": "1:625296658874:android:3de1ea4229687cee98cd83",
         "android_client_info": {
-          "package_name": "com.shiva889.nativeApp"
+          "package_name": "com.shiva889.hosteloutpass"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAV7qBiKvvtraJMMyxxkzHzlEZ2OXHBbZA"
+          "current_key": "AIzaSyDa7jnoLJ_Frs6DXAUQN4DBAsXqpxlPdjk"
         }
       ],
       "services": {

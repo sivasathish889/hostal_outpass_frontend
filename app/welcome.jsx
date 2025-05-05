@@ -1,13 +1,46 @@
-import { Image, StatusBar, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Image, PermissionsAndroid, StatusBar, StyleSheet, Text, TouchableOpacity, View, Platform, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 let logo = require("@/assets/images/adaptive-icon.png");
-import themes from "@/constants/themes"
+import themes from "@/constants/themes";
 import { useRouter } from "expo-router";
 import { hp } from "@/helpers/dimensions";
+import { useEffect, useState } from "react";
+
 
 const Welcome = () => {
+  const router = useRouter();
 
-  const router = useRouter()
+  useEffect(() => {
+    const requestNotificationPermission = async () => {
+      try {
+        if (Platform.OS === "android") {
+          const granted = await PermissionsAndroid.request(
+            PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS
+          );
+          if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+            console.log("Notification permission granted");
+
+         
+          } else {
+            console.log("Notification permission denied");
+          }
+        } else {
+          console.log("Notification permissions are not required on this platform");
+        }
+      } catch (err) {
+        console.warn("Error requesting notification permission:", err);
+      }
+    };
+
+    const unsubscribe = requestNotificationPermission();
+
+    return () => {
+      if (unsubscribe) {
+        unsubscribe; 
+      }
+    };
+  }, []);
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar backgroundColor={themes.mainColor} />
@@ -30,9 +63,9 @@ const Welcome = () => {
         </TouchableOpacity>
       </View>
     </SafeAreaView>
-  )
-}
-export default Welcome
+  );
+};
+export default Welcome;
 
 const styles = StyleSheet.create({
   container: {
@@ -56,7 +89,7 @@ const styles = StyleSheet.create({
   },
   buttonOutline: {
     backgroundColor: "white",
-    borderRadius: 5
+    borderRadius: 5,
   },
   buttonsText: {
     fontSize: 20,
@@ -65,6 +98,6 @@ const styles = StyleSheet.create({
   },
   Image: {
     width: hp(20),
-    height: hp(20)
-  }
+    height: hp(20),
+  },
 });

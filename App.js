@@ -5,7 +5,6 @@ import { SplashScreen } from "expo-router";
 
 SplashScreen.preventAutoHideAsync();
 
-
 const App = () => {
   return (
     <ToastProvider>

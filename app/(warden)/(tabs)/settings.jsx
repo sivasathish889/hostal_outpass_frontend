@@ -7,7 +7,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import Spinner from 'react-native-loading-spinner-overlay';
 import { hp } from "@/helpers/dimensions"
 import { useRouter } from "expo-router";
-import { unregisterIndieDevice } from "native-notify";
 
 
 const SettingScreen = () => {

@@ -21,7 +21,6 @@ import { collageLocationRadius } from "@/helpers/calculateUserRadius";
 import Spinner from "react-native-loading-spinner-overlay"
 import * as Location from "expo-location"
 import { hp } from "@/helpers/dimensions";
-import notificationAPI from "@/utils/notificationAPI";
 
 const NewPassModel = (props) => {
   const {
@@ -102,7 +101,6 @@ const NewPassModel = (props) => {
           .then((data) => {
             if (data.data.success) {
               // notification function
-              notificationAPI(`warden${data.data.gender}`,"New Outpass", roomNo)
               toast.show(data.data.message, {
                 type: "success",
                 placement: "top",

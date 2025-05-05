@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Hostal Outpass",
-    "slug": "nativeApp",
+    "slug": "hostel-outpass",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/splash-icon.png",
@@ -10,21 +10,26 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.shiva889.nativeApp",
+      "bundleIdentifier": "com.shiva889.hosteloutpass",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false,
         "NSLocationAlwaysAndWhenInUseUsageDescription": "REASON_FOR_REQUEST",
         "UIBackgroundModes": ["location", "fetch"]
       }
     },
+    "extra": {
+      "eas": {
+        "projectId": "663b5e29-cf44-4f46-93ec-db5b19d9f8a3"
+      }
+    },
     "android": {
+      "googleServicesFile": "./google-services.json",
+      "package": "com.shiva889.hosteloutpass",
       "adaptiveIcon": {
         "backgroundColor": "#0B7583"
       },
-      "package": "com.shiva889.nativeApp",
       "permissions": ["ACCESS_BACKGROUND_LOCATION"],
-      "softwareKeyboardLayoutMode": "pan",
-      "googleServicesFile": "./google-services.json"
+      "softwareKeyboardLayoutMode": "pan"
     },
     "web": {
       "bundler": "metro",
@@ -43,14 +48,6 @@
     ],
     "experiments": {
       "typedRoutes": true
-    },
-    "extra": {
-      "router": {
-        "origin": false
-      },
-      "eas": {
-        "projectId": "da9686ec-a621-4810-8dfc-97792ef970e5"
-      }
     },
     "splash": {
       "image": "./assets/images/splash-icon.png",

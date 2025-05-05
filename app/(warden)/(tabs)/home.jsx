@@ -22,7 +22,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Entypo, FontAwesome, MaterialCommunityIcons } from "@expo/vector-icons";
 import InfoGrid from "@/components/InfoGrid";
 import backgroundIcon from "@/assets/backgroundPic.png"
-import notificationAPI from "@/utils/notificationAPI";
 
 const Home = () => {
   let toast = useToast();
@@ -75,7 +74,6 @@ const Home = () => {
         .then((data) => {
 
           // notiication
-          notificationAPI(studentId, "Outpass Accpeted", destination)
           if (data.data.success) {
             toast.show(data.data.message, {
               type: "success",
@@ -105,7 +103,6 @@ const Home = () => {
         .put(`${env.CLIENT_URL}${env.wardenPassReject}`, { id, userId })
         .then((data) => {
           if (data.data.success) {
-            notificationAPI(studentId, "Outpass Rejected", destination)
             toast.show(data.data.message, {
               type: "success",
               placement: "top",
