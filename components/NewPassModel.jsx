@@ -84,7 +84,7 @@ const NewPassModel = (props) => {
         // get user Loction
         let locationData = await Location.getCurrentPositionAsync({});
         const distance = collageLocationRadius(locationData?.coords?.longitude, locationData?.coords?.latitude);
-        if (!distance >= 600) {
+        if (distance > 600) {
           toast.show("You are mot inside the campus", {
             type: "danger",
             placement: "top",

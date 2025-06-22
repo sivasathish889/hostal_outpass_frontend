@@ -7,6 +7,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import Spinner from 'react-native-loading-spinner-overlay';
 import { hp } from "@/helpers/dimensions";
 import { useRouter } from "expo-router";
+import themes from "@/constants/themes";
 
 const Settings = () => {
   const router = useRouter()
@@ -59,7 +60,7 @@ const Settings = () => {
 
   const handleLogout = async () => {
     try {
-      await AsyncStorage.getItem('student').then(async (stuId) => {        
+      await AsyncStorage.getItem('student').then(async (stuId) => {
         await AsyncStorage.removeItem("student").then(() => {
           router.dismissTo("welcome")
         }
@@ -69,7 +70,9 @@ const Settings = () => {
       console.log(error);
     }
   };
-
+  const handlePasswordChange = ()=>{
+    router.push('(login)/forgetPassword')
+  }
 
   return (
     <View style={styles.container}>
@@ -83,6 +86,11 @@ const Settings = () => {
         <AntDesign name="user" size={120} color="black" />
         <Text>{fetchingData[0]?.name.toUpperCase()}</Text>
         <Text>{fetchingData[0]?.RegisterNumber}</Text>
+      </View>
+      <View style={styles.mainText}>
+        <TouchableOpacity style={styles.passChangeText} onPress={handlePasswordChange}>
+          <Text>Change Password</Text>
+        </TouchableOpacity>
       </View>
       <View style={styles.btnContainer}>
         <TouchableOpacity style={styles.btnOutline} onPress={logOutAlert}>
@@ -121,4 +129,14 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: hp(2.5),
   },
+  mainText: {
+    flex: 1,
+    width: "90%",
+    marginTop : hp(6)
+  },
+  passChangeText: {
+    backgroundColor: themes.placeholderTextColor,
+    padding : hp(1),
+    borderRadius : 5
+  }
 });

@@ -10,40 +10,39 @@ import { useEffect, useState } from "react";
 const Welcome = () => {
   const router = useRouter();
 
-  useEffect(() => {
-    const requestNotificationPermission = async () => {
-      try {
-        if (Platform.OS === "android") {
-          const granted = await PermissionsAndroid.request(
-            PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS
-          );
-          if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-            console.log("Notification permission granted");
+  // useEffect(() => {
+  //   const requestNotificationPermission = async () => {
+  //     try {
+  //       if (Platform.OS === "android") {
+  //         const granted = await PermissionsAndroid.request(
+  //           PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS
+  //         );
+  //         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+  //           console.log("Notification permission granted");
 
          
-          } else {
-            console.log("Notification permission denied");
-          }
-        } else {
-          console.log("Notification permissions are not required on this platform");
-        }
-      } catch (err) {
-        console.warn("Error requesting notification permission:", err);
-      }
-    };
+  //         } else {
+  //           console.log("Notification permission denied");
+  //         }
+  //       } else {
+  //         console.log("Notification permissions are not required on this platform");
+  //       }
+  //     } catch (err) {
+  //       console.warn("Error requesting notification permission:", err);
+  //     }
+  //   };
 
-    const unsubscribe = requestNotificationPermission();
+  //   const unsubscribe = requestNotificationPermission();
 
-    return () => {
-      if (unsubscribe) {
-        unsubscribe; 
-      }
-    };
-  }, []);
-
+  //   return () => {
+  //     if (unsubscribe) {
+  //       unsubscribe; 
+  //     }
+  //   };
+  // }, []);
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar backgroundColor={themes.mainColor} />
+      <StatusBar  backgroundColor={themes.mainColor}  />
       <View style={{ alignItems: "center" }}>
         <Text style={styles.mainText}>Welcome</Text>
         <Image source={logo} alt="AU Logo" style={styles.Image} />

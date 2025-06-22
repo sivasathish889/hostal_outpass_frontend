@@ -11,6 +11,15 @@ export default function RootLayout() {
       <SafeAreaProvider>
         <Stack>
           <Stack.Screen
+            name="index"
+            options={{
+              title: "welcome",
+              headerStyle: { backgroundColor: themes.mainColor },
+              headerTintColor: "white",
+              headerShown: false
+            }}
+          />
+          <Stack.Screen
             name="welcome"
             options={{
               title: "welcome",

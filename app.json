@@ -23,13 +23,18 @@
       }
     },
     "android": {
-      "googleServicesFile": "./google-services.json",
+      // "googleServicesFile": "./google-services.json",
       "package": "com.shiva889.hosteloutpass",
       "adaptiveIcon": {
         "backgroundColor": "#0B7583"
       },
       "permissions": ["ACCESS_BACKGROUND_LOCATION"],
-      "softwareKeyboardLayoutMode": "pan"
+      "softwareKeyboardLayoutMode": "pan",
+      "edgeToEdgeEnabled": true
+    },
+    "androidStatusBar": {
+      "backgroundColor": "#0B7583",
+      "barStyle": "dark-content"
     },
     "web": {
       "bundler": "metro",

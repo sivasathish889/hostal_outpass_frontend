@@ -20,8 +20,8 @@ import { hp, wp } from "@/helpers/dimensions";
 const Layout = () => {
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <StatusBar backgroundColor={themes.mainColor} />
+    <SafeAreaView style={{ flex: 1,backgroundColor: themes.mainColor }}>
+      {/* <StatusBar backgroundColor={themes.mainColor} /> */}
       <View style={styles.header}>
         <Text style={styles.headerText}>Welcome </Text>
         <TouchableOpacity>
