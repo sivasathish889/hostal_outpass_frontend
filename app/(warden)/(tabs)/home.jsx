@@ -148,7 +148,7 @@ const Home = () => {
           cancelable={true}
         />
         <View style={styles.filterInputs}>
-          <TextInput style={styles.input} placeholder="Search Register Number" keyboardType="numeric" onChangeText={(text) => setSearchQuery(text)} value={searchQuery} />
+          <TextInput style={styles.input} placeholder="Search Register Number" keyboardType="numeric" onChangeText={(text) => setSearchQuery(text)} value={searchQuery} placeholderTextColor={themes.placeholderTextColor}/>
         </View>
         <FlatList
           data={filteredData}

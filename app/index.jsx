@@ -18,6 +18,8 @@ const Main = () => {
 
   if (loading) return null;
 
+  
+
   return (
     isAuth.includes('security') ? <Redirect href='(security)/(tabs)/home' /> :
       isAuth.includes('student') ? <Redirect href='(student)/(tabs)/home' /> :

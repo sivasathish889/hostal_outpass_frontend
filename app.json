@@ -23,7 +23,7 @@
       }
     },
     "android": {
-      // "googleServicesFile": "./google-services.json",
+      "googleServicesFile": "./google-services.json",
       "package": "com.shiva889.hosteloutpass",
       "adaptiveIcon": {
         "backgroundColor": "#0B7583"
@@ -41,6 +41,7 @@
       "output": "static"
     },
     "plugins": [
+      "@react-native-firebase/app",
       "expo-router",
       [
         "expo-build-properties",
@@ -49,7 +50,7 @@
             "enablePngCrunchInReleaseBuilds": false
           }
         }
-      ]
+      ],
     ],
     "experiments": {
       "typedRoutes": true

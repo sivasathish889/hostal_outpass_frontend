@@ -16,10 +16,14 @@ import urls from "@/constants/urls";
 import axios from "axios";
 import { useNavigation } from "expo-router";
 import themes from "@/constants/themes";
-import { Entypo, FontAwesome, MaterialCommunityIcons } from "@expo/vector-icons";
+import {
+  Entypo,
+  FontAwesome,
+  MaterialCommunityIcons,
+} from "@expo/vector-icons";
 import { collageLocationRadius } from "@/helpers/calculateUserRadius";
-import Spinner from "react-native-loading-spinner-overlay"
-import * as Location from "expo-location"
+import Spinner from "react-native-loading-spinner-overlay";
+import * as Location from "expo-location";
 import { hp } from "@/helpers/dimensions";
 
 const NewPassModel = (props) => {
@@ -45,7 +49,6 @@ const NewPassModel = (props) => {
   const [purposeError, setPurposeError] = useState(null);
   const [inDateError, setInDateError] = useState(null);
   const [outDateError, setOutDateError] = useState(null);
-
 
   const destinationRef = useRef();
   const purposeRef = useRef();
@@ -77,13 +80,17 @@ const NewPassModel = (props) => {
         userId,
       };
 
-      setSpinnerVisible(true)
+      setSpinnerVisible(true);
       // get user Permission
       let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status == 'granted') {
+      if (status == "granted") {
         // get user Loction
         let locationData = await Location.getCurrentPositionAsync({});
-        const distance = collageLocationRadius(locationData?.coords?.longitude, locationData?.coords?.latitude);
+        const distance = collageLocationRadius(
+          locationData?.coords?.longitude,
+          locationData?.coords?.latitude
+        );
+        console.log("distance", distance);
         if (distance > 600) {
           toast.show("You are mot inside the campus", {
             type: "danger",
@@ -92,8 +99,15 @@ const NewPassModel = (props) => {
             offset: 30,
             animationType: "slide-in",
             dangerIcon: <FontAwesome name="warning" size={20} color="white" />,
-            style: { marginTop: hp(5), width: "100%", display: "flex", justifyContent: "center", alignItems: "center" },
+            style: {
+              marginTop: hp(5),
+              width: "100%",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            },
           });
+          setSpinnerVisible(false);
           return;
         }
         await axios
@@ -107,8 +121,20 @@ const NewPassModel = (props) => {
                 duration: 4000,
                 offset: 30,
                 animationType: "slide-in",
-                successIcon: <MaterialCommunityIcons name="check-circle" size={24} color="white" />,
-                style: { marginTop: hp(5), width: "100%", display: "flex", justifyContent: "center", alignItems: "center" },
+                successIcon: (
+                  <MaterialCommunityIcons
+                    name="check-circle"
+                    size={24}
+                    color="white"
+                  />
+                ),
+                style: {
+                  marginTop: hp(5),
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                },
               });
               navigation.navigate("(tabs)");
               setDestination(null);
@@ -118,7 +144,7 @@ const NewPassModel = (props) => {
               setRoomNo("");
               setPassModelVisible(false);
               setDataRefresh(!dataRefresh);
-              setSpinnerVisible(false)
+              setSpinnerVisible(false);
             } else {
               toast.show(data.data.message, {
                 type: "danger",
@@ -127,34 +153,31 @@ const NewPassModel = (props) => {
                 offset: 30,
                 animationType: "slide-in",
               });
-              setSpinnerVisible(false)
+              setSpinnerVisible(false);
             }
           })
-          .catch((error) => console.log(error))
-      }
-      else {
-        toast.show('Permission to access location was denied', {
+          .catch((error) => console.log(error));
+      } else {
+        toast.show("Permission to access location was denied", {
           type: "warning",
           placement: "bottom",
           duration: 4000,
           offset: 30,
           animationType: "slide-in",
         });
-        setSpinnerVisible(false)
-        return
+        setSpinnerVisible(false);
+        return;
       }
-
     } catch (error) {
-      toast.show('Please Turn On the Location', {
+      toast.show("Please Turn On the Location", {
         type: "warning",
         placement: "bottom",
         duration: 4000,
         offset: 30,
         animationType: "slide-in",
       });
-      setSpinnerVisible(false)
+      setSpinnerVisible(false);
     }
-
   };
   const handleInDateTimePicker = (e) => {
     setinDateTime(e.toLocaleString());
@@ -165,7 +188,6 @@ const NewPassModel = (props) => {
     setoutDateTime(e.toLocaleString());
     setOutDatePickerVisible(false);
   };
-
 
   return (
     <View style={styles.modelContainer}>
@@ -180,8 +202,10 @@ const NewPassModel = (props) => {
         transparent={true}
         visible={passModelVisible}
       >
-        <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : "padding"} style={styles.container}>
-
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "padding"}
+          style={styles.container}
+        >
           <View style={styles.modelContainer}>
             <StatusBar backgroundColor={"rgba(0,0,0,0.5)"} />
             <View style={styles.ModelContent}>
@@ -281,7 +305,9 @@ const NewPassModel = (props) => {
                 />
                 <TouchableOpacity
                   style={styles.calendarIconStyle}
-                  onPress={() => setOutDatePickerVisible(!isInDatePickerVisible)}
+                  onPress={() =>
+                    setOutDatePickerVisible(!isInDatePickerVisible)
+                  }
                 >
                   <Entypo name="calendar" size={24} color="black" />
                 </TouchableOpacity>
@@ -341,7 +367,7 @@ export default NewPassModel;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
   },
   modelContainer: {
     backgroundColor: "rgba(0,0,0,0.5)",
@@ -396,6 +422,6 @@ const styles = StyleSheet.create({
     alignSelf: "flex-end",
     backgroundColor: "red",
     borderRadius: 6,
-    padding: 2
+    padding: 2,
   },
 });

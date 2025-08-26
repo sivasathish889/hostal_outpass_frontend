@@ -62,7 +62,7 @@ const AcceptPass = () => {
           cancelable={true}
         />
         <View style={styles.filterInputs}>
-          <TextInput style={styles.input} placeholder="Search Register Number" keyboardType="numeric" onChangeText={(text) => setSearchQuery(text)} value={searchQuery} />
+          <TextInput style={styles.input} placeholder="Search Register Number" keyboardType="numeric" onChangeText={(text) => setSearchQuery(text)} value={searchQuery} placeholderTextColor={themes.placeholderTextColor}/>
         </View>
         {fetchPassData.length > 0 ? (
           <FlatList
@@ -305,7 +305,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "rgb(115,115,115)",
     height: hp(4.5),
-    flex: 1
+    flex: 1,
+    color: "black"
   },
   filterInputs: {
     flexDirection: "row",

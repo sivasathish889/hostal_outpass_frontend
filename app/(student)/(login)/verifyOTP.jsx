@@ -141,6 +141,8 @@ const styles = StyleSheet.create({
     width: "80%",
     height:hp(4.5),
     alignSelf: "center",
+    color: "black",
+    fontSize: hp(1.4),
   },
   lable: {
     textAlign: "center",

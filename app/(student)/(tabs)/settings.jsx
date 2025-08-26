@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
     marginTop : hp(6)
   },
   passChangeText: {
-    backgroundColor: themes.placeholderTextColor,
+    backgroundColor: "lightgrey",
     padding : hp(1),
     borderRadius : 5
   }

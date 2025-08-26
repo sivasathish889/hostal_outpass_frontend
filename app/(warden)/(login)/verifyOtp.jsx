@@ -12,81 +12,51 @@ import annaUniversity from "@/assets/annaUniversity.png";
 import { useToast } from "react-native-toast-notifications";
 import env from "@/constants/urls";
 import axios from "axios";
-import { useLocalSearchParams, useRouter, } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import themes from "@/constants/themes";
 import { hp } from "@/helpers/dimensions";
 import Spinner from "react-native-loading-spinner-overlay";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { FontAwesome, MaterialCommunityIcons } from "@expo/vector-icons";
+import { getApp } from "@react-native-firebase/app";
+import { getMessaging } from "@react-native-firebase/messaging";
 // import { getMessaging, getToken, onMessage, setBackgroundMessageHandler } from '@react-native-firebase/messaging';
 // import { getApp } from '@react-native-firebase/app';
 
 const VerifyOTP = () => {
   let [otp, setOtp] = useState(null);
-  const [spinnerVisible, setSpinnerVisible] = useState(false)
-  const [fcmToken, setFcmToken] = useState(null)
+  const [spinnerVisible, setSpinnerVisible] = useState(false);
+  const [fcmToken, setFcmToken] = useState(null);
 
-  let toast = useToast()
+  let toast = useToast();
   let backendOtp = useLocalSearchParams().otp;
 
   let router = useRouter();
+  const sendToken = async () => {
+    // Get FCM Token
+    const app = getApp();
+    const messaging = getMessaging(app);
+    const token = await messaging.getToken();
+    console.log("FCM Token from student login:", token);
+    setFcmToken(token);
+  };
+  useEffect(() => {
+    sendToken();
+  }, []);
 
-  // useEffect(() => {
-  //   const sendToken = async () => {
-  //     const app = getApp();
-  //     const messaging = getMessaging(app);
-
-  //     // Get FCM Token
-  //     const token = await getToken(messaging);
-  //     console.log("FCM Token:", token);
-  //     setFcmToken(token);
-
-  //     // Handle initial notification
-  //     const initialNotification = await messaging.getInitialNotification();
-  //     if (initialNotification && initialNotification.notification) {
-  //       console.log(
-  //         "Notification caused app to open from quit state:",
-  //         initialNotification.notification
-  //       );
-  //     }
-
-  //     // Handle notification when app is opened from background
-  //     messaging.onNotificationOpenedApp((remoteMessage) => {
-  //       if (remoteMessage && remoteMessage.notification) {
-  //         console.log(
-  //           "Notification caused app to open from background state:",
-  //           remoteMessage.notification
-  //         );
-  //       }
-  //     });
-
-  //     // Handle background notifications
-  //     setBackgroundMessageHandler(messaging, async (remoteMessage) => {
-  //       console.log("Message handled in the background!", remoteMessage);
-  //     });
-
-  //     // Handle foreground notifications
-  //     const unsubscribe = onMessage(messaging, async (remoteMessage) => {
-  //       Alert.alert(
-  //         "A new FCM message arrived!",
-  //         JSON.stringify(remoteMessage)
-  //       );
-  //     });
-
-  //     return unsubscribe; // Ensure cleanup
-  //   }
-  //   sendToken()
-  // }, [])
   let payload = {
     backendOtp,
     otp,
     fcmToken,
-    warden: true
-  }
+    warden: true,
+  };
   const handleSubmit = async () => {
-    setSpinnerVisible(true)
+    setSpinnerVisible(true);
     try {
-      const { data } = await axios.post(`${env.CLIENT_URL}${env.wardenLoginVerify}`, payload)
+      const { data } = await axios.post(
+        `${env.CLIENT_URL}${env.wardenLoginVerify}`,
+        payload
+      );
       if (data.success) {
         toast.show(data.message, {
           type: "success",
@@ -94,13 +64,24 @@ const VerifyOTP = () => {
           duration: 4000,
           offset: 30,
           animationType: "slide-in",
-          successIcon: <MaterialCommunityIcons name="check-circle" size={24} color="white" />,
-          style: { marginTop: hp(5), width: "100%", display: "flex", justifyContent: "center", alignItems: "center" },
+          successIcon: (
+            <MaterialCommunityIcons
+              name="check-circle"
+              size={24}
+              color="white"
+            />
+          ),
+          style: {
+            marginTop: hp(5),
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          },
         });
-        console.log(data.wardenRole)
+        console.log(data.wardenRole);
         AsyncStorage.setItem("warden", data.user);
         router.dismissTo("../(tabs)");
-
       } else {
         toast.show(data.message, {
           type: "danger",
@@ -109,13 +90,19 @@ const VerifyOTP = () => {
           offset: 50,
           animationType: "zoom-in",
           dangerIcon: <FontAwesome name="warning" size={20} color="white" />,
-          style: { marginTop: hp(5), width: "100%", display: "flex", justifyContent: "center", alignItems: "center" },
+          style: {
+            marginTop: hp(5),
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          },
         });
       }
     } catch (error) {
       console.log(error.message);
     } finally {
-      setSpinnerVisible(false)
+      setSpinnerVisible(false);
     }
   };
 
@@ -193,6 +180,7 @@ const styles = StyleSheet.create({
     width: "80%",
     height: hp(4.5),
     alignSelf: "center",
+    color: "black",
   },
   lable: {
     textAlign: "center",

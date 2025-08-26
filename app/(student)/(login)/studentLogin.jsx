@@ -7,11 +7,11 @@ import {
   TouchableOpacity,
   Platform,
   KeyboardAvoidingView,
-  Alert
+  Alert,
 } from "react-native";
 import { useEffect, useRef, useState } from "react";
 import annaUniversity from "@/assets/annaUniversity.png";
-import { hp, } from "@/helpers/dimensions"
+import { hp } from "@/helpers/dimensions";
 import { useRouter } from "expo-router";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import urls from "@/constants/urls";
@@ -20,16 +20,16 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import themes from "@/constants/themes";
 import Spinner from "react-native-loading-spinner-overlay";
-import FontAwesome from '@expo/vector-icons/FontAwesome';
-// import { getMessaging, getToken, onMessage, onBackgroundMessage, setBackgroundMessageHandler } from '@react-native-firebase/messaging';
-// import { getApp } from '@react-native-firebase/app';
+import FontAwesome from "@expo/vector-icons/FontAwesome";
+import { getMessaging, getToken } from "@react-native-firebase/messaging";
+import { getApp } from "@react-native-firebase/app";
 
 const studentLogin = () => {
   let navigation = useRouter();
   let toast = useToast();
-  const [fcmToken, setFcmToken] = useState(null)
+  const [fcmToken, setFcmToken] = useState(null);
 
-  const [spinnerVisible, setSpinnerVisible] = useState(false)
+  const [spinnerVisible, setSpinnerVisible] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [registerNumber, setRegisterNumber] = useState(null);
   const [password, setPassword] = useState(null);
@@ -40,58 +40,17 @@ const studentLogin = () => {
   const nextInputRef = useRef();
 
   const toggleShowPassword = () => setShowPassword(!showPassword);
-  
-  // useEffect(() => {
-  //   const sendToken = async () => {
-  //     const app = getApp();
-  //     const messaging = getMessaging(app);
-
-  //     // Get FCM Token
-  //     const token = await getToken(messaging);
-  //     console.log("FCM Token from student login:", token);
-  //     setFcmToken(token);
-
-  //     // Handle initial notification
-  //     const initialNotification = await messaging.getInitialNotification();
-  //     if (initialNotification && initialNotification.notification) {
-  //       console.log(
-  //         "Notification caused app to open from quit state:",
-  //         initialNotification.notification
-  //       );
-  //     }
-
-  //     // Handle notification when app is opened from background
-  //     messaging.onNotificationOpenedApp((remoteMessage) => {
-  //       if (remoteMessage && remoteMessage.notification) {
-  //         console.log(
-  //           "Notification caused app to open from background state:",
-  //           remoteMessage.notification
-  //         );
-  //       }
-  //     });
-
-  //     // Handle background notifications
-  //     setBackgroundMessageHandler(messaging, async (remoteMessage) => {
-  //       console.log("Message handled in the background!", remoteMessage);
-  //     });
-
-  //     onBackgroundMessage(messaging, async(remoteMessage)=>{
-  //       console.log("Message handled in the onbackground!", remoteMessage);
-
-  //     })
-
-  //     // Handle foreground notifications
-  //     const unsubscribe = onMessage(messaging, async (remoteMessage) => {
-  //       Alert.alert(
-  //         "A new FCM message arrived!",
-  //         JSON.stringify(remoteMessage)
-  //       );
-  //     });
-
-  //     return unsubscribe; // Ensure cleanup
-  //   }
-  //   sendToken()
-  // }, [])
+  const sendToken = async () => {
+    // Get FCM Token
+    const app = getApp();
+    const messaging = getMessaging(app);
+    const token = await messaging.getToken();
+    console.log("FCM Token from student login:", token);
+    setFcmToken(token);
+  };
+  useEffect(() => {
+    sendToken();
+  }, []);
 
   const handleSubmit = async () => {
     if (registerNumber === null || registerNumber.length == 0) {
@@ -102,11 +61,14 @@ const studentLogin = () => {
     let payload = {
       registerNumber,
       password,
-      fcmToken
+      fcmToken,
     };
-    setSpinnerVisible(true)
+    setSpinnerVisible(true);
     try {
-      const { data } = await axios.post(`${urls.CLIENT_URL}${urls.studentLogin}`, payload)
+      const { data } = await axios.post(
+        `${urls.CLIENT_URL}${urls.studentLogin}`,
+        payload
+      );
       if (data.success) {
         toast.show(data.message, {
           type: "success",
@@ -114,8 +76,20 @@ const studentLogin = () => {
           duration: 4000,
           offset: 30,
           animationType: "slide-in",
-          successIcon: <MaterialCommunityIcons name="check-circle" size={24} color="white" />,
-          style: { marginTop: hp(8), width: "100%", display: "flex", justifyContent: "center", alignItems: "center" },
+          successIcon: (
+            <MaterialCommunityIcons
+              name="check-circle"
+              size={24}
+              color="white"
+            />
+          ),
+          style: {
+            marginTop: hp(8),
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          },
         });
         AsyncStorage.setItem("student", data.user);
         setRegisterNumber(null);
@@ -129,9 +103,14 @@ const studentLogin = () => {
           offset: 50,
           animationType: "zoom-in",
           dangerIcon: <FontAwesome name="warning" size={20} color="white" />,
-          style: { marginTop: hp(5), width: "100%", display: "flex", justifyContent: "center", alignItems: "center" },
+          style: {
+            marginTop: hp(5),
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          },
         });
-
       }
     } catch (error) {
       toast.show(data.message, {
@@ -141,10 +120,16 @@ const studentLogin = () => {
         offset: 50,
         animationType: "zoom-in",
         dangerIcon: <FontAwesome name="warning" size={20} color="white" />,
-        style: { marginTop: hp(5), width: "100%", display: "flex", justifyContent: "center", alignItems: "center" },
+        style: {
+          marginTop: hp(5),
+          width: "100%",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        },
       });
     } finally {
-      setSpinnerVisible(false)
+      setSpinnerVisible(false);
     }
   };
   return (
@@ -155,7 +140,10 @@ const studentLogin = () => {
         textStyle={{ color: "#FFF" }}
         cancelable={true}
       />
-      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : "height"} style={styles.container}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={styles.container}
+      >
         <View style={styles.form}>
           <Text style={styles.heading}>Student</Text>
           <Text style={styles.subHead}>Login</Text>
@@ -163,7 +151,12 @@ const studentLogin = () => {
           <View style={styles.inputgroup}>
             <Text style={styles.lable}>Register Number :</Text>
             <View>
-              <FontAwesome name="user" size={18} color="rgba(0,0,0,.6)" style={styles.inputIcon} />
+              <FontAwesome
+                name="user"
+                size={18}
+                color="rgba(0,0,0,.6)"
+                style={styles.inputIcon}
+              />
               <TextInput
                 placeholder="Enter Your Regsiter Number"
                 style={styles.input}
@@ -187,7 +180,12 @@ const studentLogin = () => {
             <View>
               <Text style={styles.lable}>Password :</Text>
               <View>
-                <FontAwesome name="lock" size={18} color="rgba(0,0,0,.6)" style={styles.inputIcon} />
+                <FontAwesome
+                  name="lock"
+                  size={18}
+                  color="rgba(0,0,0,.6)"
+                  style={styles.inputIcon}
+                />
                 <TextInput
                   placeholder="Enter Your Password"
                   style={styles.input}
@@ -247,10 +245,10 @@ const studentLogin = () => {
         </View>
       </KeyboardAvoidingView>
     </ImageBackground>
-  )
-}
+  );
+};
 
-export default studentLogin
+export default studentLogin;
 
 const styles = StyleSheet.create({
   container: {
@@ -297,7 +295,7 @@ const styles = StyleSheet.create({
   lable: {
     fontWeight: "400",
     marginTop: 10,
-    marginBottom: 5
+    marginBottom: 5,
   },
   input: {
     backgroundColor: "#D9D9D9",
@@ -306,7 +304,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "rgb(115,115,115)",
     height: hp(4.5),
-    paddingStart: "12%"
+    paddingStart: "12%",
+    color: "black",
   },
   forgetPass: {
     textAlign: "right",
@@ -320,12 +319,12 @@ const styles = StyleSheet.create({
   },
   errorMsg: {
     color: "red",
-    fontSize: hp(1.3)
+    fontSize: hp(1.3),
   },
   inputIcon: {
     position: "absolute",
     top: "28%",
     left: "4%",
-    zIndex: 99
-  }
+    zIndex: 99,
+  },
 });
