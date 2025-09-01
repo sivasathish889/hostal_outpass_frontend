@@ -56,7 +56,7 @@ const home = () => {
     });
   };
 
-  const AlertingAction = (action, id, destination, studentId) => {
+  const AlertingAction = (action, id, passId) => {
     Alert.alert(`${action} Outpass`, `Are you ${action} this Outpass`, [
       {
         text: "Cancel",
@@ -64,16 +64,16 @@ const home = () => {
       },
       {
         text: "Sure",
-        onPress: () => actionHandle(action, id, destination, studentId),
+        onPress: () => actionHandle(action, id, passId),
         style: "default",
       },
     ]);
   };
 
-  const actionHandle = (action, id, destination, studentId) => {
+  const actionHandle = (action, id, passId) => {
     if (action === "Out Time Updated") {
       axios
-        .put(`${env.CLIENT_URL}${env.securityUpdateOutTime}`, { id, userId })
+        .put(`${env.CLIENT_URL}${env.securityUpdateOutTime}`, { id, userId, passId })
         .then((data) => {
           if (data.data.success) {
             toast.show(data.data.message, {
@@ -105,7 +105,7 @@ const home = () => {
         });
     } else if (action === "In Time Updated") {
       axios
-        .put(`${env.CLIENT_URL}${env.securityUpdateInTime}`, { id, userId })
+        .put(`${env.CLIENT_URL}${env.securityUpdateInTime}`, { id, userId, passId })
         .then((data) => {
           if (data.data.success) {
             toast.show(data.data.message, {
@@ -201,14 +201,14 @@ const home = () => {
 
                 <View style={styles.btnGroup}>
                   <TouchableOpacity
-                    onPress={() => AlertingAction("Out Time Updated", item._id, item.Destination, item.User)}
+                    onPress={() => AlertingAction("Out Time Updated", item.User, item._id)}
                     style={{ backgroundColor: "green", padding: 5 }}
                     disabled={item.studentOutTime ? true : false}
                   >
                     <Text style={[{ fontSize: hp(1.2) }, item.studentOutTime ? { textDecorationLine: "line-through" } : ""]} >Out Time</Text>
                   </TouchableOpacity>
                   <TouchableOpacity
-                    onPress={() => AlertingAction("In Time Updated", item._id, item.Destination, item.User)}
+                    onPress={() => AlertingAction("In Time Updated", item.User, item._id)}
                     style={{ backgroundColor: "gray", padding: 5 }}
                   >
                     <Text style={{ fontSize: hp(1.2) }}>In Time</Text>

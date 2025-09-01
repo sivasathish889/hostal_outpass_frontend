@@ -166,7 +166,7 @@ const PrevPass = () => {
               { label: "Accept ", value: "2" },
               { label: "Reject ", value: "3" },
             ]}
-            maxHeight={100}
+            maxHeight={200}
             labelField="label"
             valueField="value"
             placeholder="Select Status"

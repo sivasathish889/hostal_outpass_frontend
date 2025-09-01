@@ -53,7 +53,7 @@ const Home = () => {
     });
   };
 
-  const AlertingAction = (action, id, destination, studentId) => {
+  const AlertingAction = (action, id, passId) => {
     Alert.alert(`${action} Outpass`, `Are you ${action} this Outpass`, [
       {
         text: "Cancel",
@@ -61,16 +61,16 @@ const Home = () => {
       },
       {
         text: "Sure",
-        onPress: () => actionHandle(action, id, destination, studentId),
+        onPress: () => actionHandle(action, id, passId),
         style: "default",
       },
     ]);
   };
 
-  const actionHandle = async (action, id, destination, studentId) => {
+  const actionHandle = async (action, id, passId) => {
     if (action === "Accept") {
       await axios
-        .put(`${env.CLIENT_URL}${env.wardenPassAccept}`, { id, userId })
+        .put(`${env.CLIENT_URL}${env.wardenPassAccept}`, { id, userId, passId })
         .then((data) => {
 
           // notiication
@@ -100,7 +100,7 @@ const Home = () => {
         .catch((error) => console.log(error));
     } else if (action === "Reject") {
       await axios
-        .put(`${env.CLIENT_URL}${env.wardenPassReject}`, { id, userId })
+        .put(`${env.CLIENT_URL}${env.wardenPassReject}`, { id, userId, passId })
         .then((data) => {
           if (data.data.success) {
             toast.show(data.data.message, {
@@ -183,12 +183,12 @@ const Home = () => {
 
                 <View style={styles.btnGroup}>
                   <TouchableOpacity
-                    onPress={() => AlertingAction("Accept", item._id, item.Destination, item.User)}
+                    onPress={() => AlertingAction("Accept", item.User, item._id)}
                   >
                     <AntDesign name="checkcircle" size={30} color="green" />
                   </TouchableOpacity>
                   <TouchableOpacity
-                    onPress={() => AlertingAction("Reject", item._id, item.Destination, item.User)}
+                    onPress={() => AlertingAction("Reject", item.User, item._id)}
                   >
                     <AntDesign name="closecircle" size={30} color="red" />
                   </TouchableOpacity>

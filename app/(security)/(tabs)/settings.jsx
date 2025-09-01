@@ -1,4 +1,4 @@
-import { ImageBackground, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Alert, ImageBackground, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import axios from "axios";
@@ -36,6 +36,19 @@ const SettingScreen = () => {
     fetchDate();
   }, []);
 
+   const logOutAlert = () => {
+      Alert.alert("Log Out", "Are you sure you want logout?", [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "Sure",
+          onPress: () => handleLogout(),
+          style: "default",
+        },
+      ]);
+    };
 
   const handleLogout = async () => {
     try {
@@ -59,7 +72,7 @@ const SettingScreen = () => {
         <Text style={styles.nameStyle}>{fetchingData[0]?.userName}</Text>
       </View>
       <View style={styles.btnContainer}>
-        <TouchableOpacity style={styles.btnOutline} onPress={handleLogout}>
+        <TouchableOpacity style={styles.btnOutline} onPress={logOutAlert}>
           <Text style={styles.logoutBtn}>Logout</Text>
         </TouchableOpacity>
       </View>

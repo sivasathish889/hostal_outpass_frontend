@@ -22,8 +22,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { FontAwesome, MaterialCommunityIcons } from "@expo/vector-icons";
 import { getApp } from "@react-native-firebase/app";
 import { getMessaging } from "@react-native-firebase/messaging";
-// import { getMessaging, getToken, onMessage, onBackgroundMessage, setBackgroundMessageHandler } from '@react-native-firebase/messaging';
-// import { getApp } from '@react-native-firebase/app';
+
 
 const VerifyOTP = () => {
   let [otp, setOtp] = useState(null);
@@ -40,7 +39,7 @@ const VerifyOTP = () => {
     const app = getApp();
     const messaging = getMessaging(app);
     const token = await messaging.getToken();
-    console.log("FCM Token from student login:", token);
+    console.log("FCM Token from Security login:", token);
     setFcmToken(token);
   };
   useEffect(() => {

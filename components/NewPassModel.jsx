@@ -91,25 +91,25 @@ const NewPassModel = (props) => {
           locationData?.coords?.latitude
         );
         console.log("distance", distance);
-        if (distance > 600) {
-          toast.show("You are mot inside the campus", {
-            type: "danger",
-            placement: "top",
-            duration: 4000,
-            offset: 30,
-            animationType: "slide-in",
-            dangerIcon: <FontAwesome name="warning" size={20} color="white" />,
-            style: {
-              marginTop: hp(5),
-              width: "100%",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            },
-          });
-          setSpinnerVisible(false);
-          return;
-        }
+        // if (distance > 600) {
+        //   toast.show("You are mot inside the campus", {
+        //     type: "danger",
+        //     placement: "top",
+        //     duration: 4000,
+        //     offset: 30,
+        //     animationType: "slide-in",
+        //     dangerIcon: <FontAwesome name="warning" size={20} color="white" />,
+        //     style: {
+        //       marginTop: hp(5),
+        //       width: "100%",
+        //       display: "flex",
+        //       justifyContent: "center",
+        //       alignItems: "center",
+        //     },
+        //   });
+        //   setSpinnerVisible(false);
+        //   return;
+        // }
         await axios
           .post(`${urls.CLIENT_URL}${urls.studentNewRequest}`, payload)
           .then((data) => {

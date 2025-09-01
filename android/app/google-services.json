@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "996880213454",
+    "project_id": "outpass-notify",
+    "storage_bucket": "outpass-notify.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:996880213454:android:8cde6f4f98791d26bcf79f",
+        "android_client_info": {
+          "package_name": "com.shiva889.hosteloutpass"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDkAzvwNEgey4EJWxYbadUYmjV05D-4FeU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
