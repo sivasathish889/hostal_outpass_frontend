@@ -1,5 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Redirect } from "expo-router";
+import { Redirect, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 
 
@@ -18,16 +18,15 @@ const Main = () => {
 
   if (loading) return null;
 
-  
-
-  return (
-    isAuth.includes('security') ? <Redirect href='(security)/(tabs)/home' /> :
-      isAuth.includes('student') ? <Redirect href='(student)/(tabs)/home' /> :
-        isAuth.includes('warden') ? <Redirect href='(warden)/(tabs)/home' /> :
-          <Redirect href="welcome" />
+  return isAuth.includes("security") ? (
+    <Redirect href="(security)/(tabs)/home" />
+  ) : isAuth.includes("student") ? (
+    <Redirect href="(student)/(tabs)/home" />
+  ) : isAuth.includes("warden") ? (
+    <Redirect href="(warden)/(tabs)/home" />
+  ) : (
+    <Redirect href="welcome" />
   );
 };
 
 export default Main;
-
-

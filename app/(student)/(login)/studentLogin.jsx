@@ -45,7 +45,6 @@ const studentLogin = () => {
     const app = getApp();
     const messaging = getMessaging(app);
     const token = await messaging.getToken();
-    console.log("FCM Token from student login:", token);
     setFcmToken(token);
   };
   useEffect(() => {

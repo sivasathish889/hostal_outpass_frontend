@@ -14,16 +14,10 @@ let logo = require("@/assets/images/adaptive-icon.png");
 import themes from "@/constants/themes";
 import { useRouter } from "expo-router";
 import { hp } from "@/helpers/dimensions";
-import { useEffect, useState } from "react";
-import {
-  getMessaging,
-  getToken,
-  onMessage,
-  onBackgroundMessage,
-  setBackgroundMessageHandler,
-} from "@react-native-firebase/messaging";
+import { useEffect } from "react";
+import { getMessaging } from "@react-native-firebase/messaging";
 import { getApp } from "@react-native-firebase/app";
-import * as Notifications from "expo-notifications";
+import notificationUtils from "@/helpers/notificationUtils";
 const Welcome = () => {
   const router = useRouter();
   const app = getApp();
@@ -54,80 +48,12 @@ const Welcome = () => {
         console.warn("Error requesting notification permission:", err);
       }
     };
-
     requestNotificationPermission();
-
-    const handleNotificationClick = async (response) => {
-      const screen = response?.notification?.request?.content?.data?.screen;
-      console.log(
-        "click",
-        response?.notification?.request?.content?.data?.screen
-      );
-      if (screen !== null) {
-        router.navigate(screen);
-      }
-    };
-
-    // Listen for user clicking on a notification
-    const notificationClickSubscription =
-      Notifications.addNotificationResponseReceivedListener(
-        handleNotificationClick
-      );
-    // Init
-    const initialNotification = messaging.getInitialNotification();
-    if (initialNotification && initialNotification.notification) {
-      console.log(
-        "Notification caused app to open from quit state:",
-        initialNotification.notification
-      );
-    }
-
-    // Handle notification when app is opened from background
-    messaging.onNotificationOpenedApp((remoteMessage) => {
-      if (remoteMessage && remoteMessage.notification) {
-        console.log(
-          "Notification caused app to open from background state:",
-          remoteMessage.notification
-        );
-      }
-    });
-
-    // Handle background notifications
-    setBackgroundMessageHandler(messaging, async (remoteMessage) => {
-      console.log("Message handled in the background!", remoteMessage);
-    });
-
-    // Handle foreground notifications
-    const unsubscribe = messaging.onMessage(async (remoteMessage) => {
-      console.log("A new FCM message arrived!", remoteMessage);
-      Notifications.scheduleNotificationAsync({
-        content: {
-          title: remoteMessage.data.title,
-          body: remoteMessage.data.body,
-          data: remoteMessage.data,
-        },
-        trigger: { seconds: 4 },
-      });
-    });
-    // Configure push notification behavior when app is in foreground
     return () => {
-      unsubscribe();
       requestNotificationPermission();
-      notificationClickSubscription.remove();
     };
   }, []);
-  Notifications.setNotificationHandler({
-    handleNotification: async () => ({
-      shouldPlaySound: true,
-      shouldSetBadge: false,
-      shouldShowList: true,
-    }),
-  });
-
-  useEffect(() => {
-    const initMsg = async () => {};
-    initMsg();
-  }, []);
+  notificationUtils();
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar backgroundColor={themes.mainColor} />

@@ -25,7 +25,7 @@ import EditPassModals from "@/components/EditPassModals";
 import { hp, wp } from "@/helpers/dimensions";
 import backgroundIcon from "@/assets/backgroundPic.png";
 import { FontAwesome, MaterialCommunityIcons } from "@expo/vector-icons";
-import fcmInit from "@/helpers/FCMInit";
+import notificationUtils from "@/helpers/notificationUtils";
 
 const HomeScreen = () => {
   const [passModelVisible, setPassModelVisible] = useState(false);
@@ -48,9 +48,7 @@ const HomeScreen = () => {
   let toast = useToast();
   let now = new Date();
 
-  useEffect(() => {
-    fcmInit();
-  },[]);
+  notificationUtils();
 
   const handleInDateTimePicker = (e) => {
     setinDateTime(e.toLocaleString());

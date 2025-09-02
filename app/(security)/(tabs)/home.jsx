@@ -22,7 +22,7 @@ import { Entypo } from "@expo/vector-icons";
 import InfoGrid from "@/components/InfoGrid";
 import icon from "@/assets/backgroundPic.png";
 import DateTimePicker from "react-native-modal-datetime-picker";
-import fcmInit from "@/helpers/FCMInit";
+import notificationUtils from "@/helpers/notificationUtils";
 
 const home = () => {
   let toast = useToast();
@@ -40,9 +40,7 @@ const home = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [dateVisible, setDateVisble] = useState(false);
 
-  useEffect(() => {
-    fcmInit();
-  },[]);
+  notificationUtils();
   useEffect(() => {
     AsyncStorage.getItem("security").then((data) => setUserId(data));
     setSpinnerVisible(true);

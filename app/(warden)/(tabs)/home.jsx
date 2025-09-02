@@ -26,7 +26,7 @@ import {
 } from "@expo/vector-icons";
 import InfoGrid from "@/components/InfoGrid";
 import backgroundIcon from "@/assets/backgroundPic.png";
-import fcmInit from "@/helpers/FCMInit";
+import notificationUtils from "@/helpers/notificationUtils";
 
 const Home = () => {
   let toast = useToast();
@@ -41,10 +41,7 @@ const Home = () => {
 
   const [searchQuery, setSearchQuery] = useState("");
 
-  useEffect(() => {
-    fcmInit();
-  }, []);
-
+  notificationUtils();
   useEffect(() => {
     AsyncStorage.getItem("warden").then((data) => setUserId(data));
     setSpinnerVisible(true);
