@@ -12,20 +12,20 @@ import {
 import { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useToast } from "react-native-toast-notifications";
-import Spinner from "react-native-loading-spinner-overlay"
+import Spinner from "react-native-loading-spinner-overlay";
 import { useNavigation } from "expo-router";
 import axios from "axios";
 
 import themes from "@/constants/themes";
-import Entypo from '@expo/vector-icons/Entypo';
+import Entypo from "@expo/vector-icons/Entypo";
 import env from "@/constants/urls";
 
 import NewPassModel from "@/components/NewPassModel";
 import EditPassModals from "@/components/EditPassModals";
 import { hp, wp } from "@/helpers/dimensions";
-import backgroundIcon from "@/assets/backgroundPic.png"
+import backgroundIcon from "@/assets/backgroundPic.png";
 import { FontAwesome, MaterialCommunityIcons } from "@expo/vector-icons";
-
+import fcmInit from "@/helpers/FCMInit";
 
 const HomeScreen = () => {
   const [passModelVisible, setPassModelVisible] = useState(false);
@@ -47,6 +47,10 @@ const HomeScreen = () => {
   let navigation = useNavigation();
   let toast = useToast();
   let now = new Date();
+
+  useEffect(() => {
+    fcmInit();
+  },[]);
 
   const handleInDateTimePicker = (e) => {
     setinDateTime(e.toLocaleString());
@@ -73,7 +77,7 @@ const HomeScreen = () => {
   };
 
   useEffect(() => {
-    setSpinnerVisible(true)
+    setSpinnerVisible(true);
     fetchData();
   }, [dataRefresh, refreshing]);
 
@@ -85,8 +89,7 @@ const HomeScreen = () => {
         .then((data) => {
           setFetchPassData(data.data);
           setRefreshing(false);
-          setSpinnerVisible(false)
-
+          setSpinnerVisible(false);
         });
     });
   };
@@ -100,28 +103,36 @@ const HomeScreen = () => {
       outDateTime,
       passId,
     };
-    setSpinnerVisible(true)
+    setSpinnerVisible(true);
     await axios
-      .put(
-        `${env.CLIENT_URL}${env.studentEditingPass}`,
-        (payload)
-      )
+      .put(`${env.CLIENT_URL}${env.studentEditingPass}`, payload)
       .then((data) => {
         if (data.data.success) {
-          toast.show(data.data.message  , {
+          toast.show(data.data.message, {
             type: "success",
             placement: "top",
             duration: 4000,
             offset: 30,
             animationType: "slide-in",
-            successIcon: <MaterialCommunityIcons name="check-circle" size={24} color="white" />,
-            style: { marginTop: hp(8), width: "100%", display: "flex", justifyContent: "center", alignItems: "center" },
+            successIcon: (
+              <MaterialCommunityIcons
+                name="check-circle"
+                size={24}
+                color="white"
+              />
+            ),
+            style: {
+              marginTop: hp(8),
+              width: "100%",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            },
           });
           navigation.navigate("(tabs)");
           setEditModelVisible(false);
           setDataRefresh(!dataRefresh);
-          setSpinnerVisible(false)
-
+          setSpinnerVisible(false);
         } else {
           toast.show(data.data.message, {
             type: "danger",
@@ -130,19 +141,26 @@ const HomeScreen = () => {
             offset: 50,
             animationType: "zoom-in",
             dangerIcon: <FontAwesome name="warning" size={20} color="white" />,
-            style: { marginTop: hp(5), width: "100%", display: "flex", justifyContent: "center", alignItems: "center" },
+            style: {
+              marginTop: hp(5),
+              width: "100%",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            },
           });
-          setSpinnerVisible(false)
-
+          setSpinnerVisible(false);
         }
       })
       .catch((error) => console.log(error));
   };
-  
+
   const handlePassDelete = async (deletePassId) => {
-    setSpinnerVisible(true)
+    setSpinnerVisible(true);
     try {
-      const { data } = await axios.post(`${env.CLIENT_URL}${env.studentDeletePass}/${deletePassId}`)
+      const { data } = await axios.post(
+        `${env.CLIENT_URL}${env.studentDeletePass}/${deletePassId}`
+      );
       if (data.success) {
         toast.show(data.message, {
           type: "success",
@@ -150,8 +168,20 @@ const HomeScreen = () => {
           duration: 4000,
           offset: 30,
           animationType: "slide-in",
-          successIcon: <MaterialCommunityIcons name="check-circle" size={24} color="white" />,
-          style: { marginTop: hp(5), width: "100%", display: "flex", justifyContent: "center", alignItems: "center" },
+          successIcon: (
+            <MaterialCommunityIcons
+              name="check-circle"
+              size={24}
+              color="white"
+            />
+          ),
+          style: {
+            marginTop: hp(5),
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          },
         });
         navigation.navigate("(tabs)");
         setEditModelVisible(false);
@@ -163,20 +193,30 @@ const HomeScreen = () => {
           offset: 50,
           animationType: "zoom-in",
           dangerIcon: <FontAwesome name="warning" size={20} color="white" />,
-          style: { marginTop: hp(5), width: "100%", display: "flex", justifyContent: "center", alignItems: "center" },
+          style: {
+            marginTop: hp(5),
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          },
         });
       }
     } catch (error) {
       console.log(error.message);
     } finally {
       setDataRefresh(!dataRefresh);
-      setSpinnerVisible(false)
+      setSpinnerVisible(false);
     }
   };
 
   return (
     <View style={{ flex: 1 }}>
-      <ImageBackground source={backgroundIcon} resizeMode="contain" style={{ flex: 1 }}>
+      <ImageBackground
+        source={backgroundIcon}
+        resizeMode="contain"
+        style={{ flex: 1 }}
+      >
         <Spinner
           visible={spinnerVisible}
           textContent={"Loading..."}
@@ -185,11 +225,10 @@ const HomeScreen = () => {
         />
         <FlatList
           data={fetchPassData.pass}
-          style={{marginBottom:hp(10)}}
+          style={{ marginBottom: hp(10) }}
           renderItem={({ item }) => {
             return (
               <View style={styles.container}>
-
                 <View style={styles.titleContainer}>
                   <Text style={styles.roomNoStyle}>
                     {item.RoomNo.toUpperCase()}.
@@ -197,7 +236,16 @@ const HomeScreen = () => {
                 </View>
                 <View style={styles.leftCont}>
                   <View>
-                    <Text style={[styles.nameStyle, item.Purpose.length > 10 ? { fontSize: hp(1.5) } : { fontSize: hp(2) }]}>{item.Purpose}</Text>
+                    <Text
+                      style={[
+                        styles.nameStyle,
+                        item.Purpose.length > 10
+                          ? { fontSize: hp(1.5) }
+                          : { fontSize: hp(2) },
+                      ]}
+                    >
+                      {item.Purpose}
+                    </Text>
                   </View>
 
                   <View style={styles.timeContainer}>
@@ -208,9 +256,17 @@ const HomeScreen = () => {
                 </View>
 
                 <View style={styles.rightCon}>
-                  <Text style={[styles.placeStyle, item.Destination.length > 10 ? { fontSize: hp(1.5) } : { fontSize: hp(2) }]}>{item.Destination}</Text>
+                  <Text
+                    style={[
+                      styles.placeStyle,
+                      item.Destination.length > 10
+                        ? { fontSize: hp(1.5) }
+                        : { fontSize: hp(2) },
+                    ]}
+                  >
+                    {item.Destination}
+                  </Text>
                 </View>
-
 
                 <View style={styles.btnGroup}>
                   <TouchableOpacity
@@ -240,12 +296,11 @@ const HomeScreen = () => {
                     ? "Today"
                     : new Date(item.createdAt).getDate() + 1 ==
                       String(now.getDate())
-                      ? "YesterDay"
-                      : new Date(item.createdAt)
+                    ? "YesterDay"
+                    : new Date(item.createdAt)
                         .toLocaleString(undefined, "Asia/Kolkata")
                         .split(",")[0]}
                 </Text>
-
               </View>
             );
           }}
@@ -320,22 +375,21 @@ const styles = StyleSheet.create({
     width: "40%",
   },
   nameStyle: {
-    textAlign: "center"
+    textAlign: "center",
   },
   rightCon: {
     width: "35%",
   },
   placeStyle: {
-    textAlign: "center"
+    textAlign: "center",
   },
   timeContainer: {
-    flexDirection: "row"
+    flexDirection: "row",
   },
   time: {
     width: "50%",
     fontSize: hp(1.3),
-    textAlign: "center"
-
+    textAlign: "center",
   },
   createdStyle: {
     position: "absolute",
@@ -378,5 +432,4 @@ const styles = StyleSheet.create({
     padding: 12,
     borderRadius: 25,
   },
-
 });

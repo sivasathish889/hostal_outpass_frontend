@@ -20,8 +20,9 @@ import themes from "@/constants/themes";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Entypo } from "@expo/vector-icons";
 import InfoGrid from "@/components/InfoGrid";
-import icon from "@/assets/backgroundPic.png"
+import icon from "@/assets/backgroundPic.png";
 import DateTimePicker from "react-native-modal-datetime-picker";
+import fcmInit from "@/helpers/FCMInit";
 
 const home = () => {
   let toast = useToast();
@@ -31,29 +32,33 @@ const home = () => {
   const [dataRefresh, setDataRefresh] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [spinnerVisible, setSpinnerVisible] = useState(false);
-  const [userId, setUserId] = useState(null)
-  const [modalVisible, setmodalVisible] = useState(false)
-  const [infoData, setInfoData] = useState({})
+  const [userId, setUserId] = useState(null);
+  const [modalVisible, setmodalVisible] = useState(false);
+  const [infoData, setInfoData] = useState({});
 
-  const [dateQuery, setDateQuery] = useState("")
-  const [searchQuery, setSearchQuery] = useState("")
+  const [dateQuery, setDateQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
   const [dateVisible, setDateVisble] = useState(false);
 
-
   useEffect(() => {
-    AsyncStorage.getItem('security').then((data) => setUserId(data))
+    fcmInit();
+  },[]);
+  useEffect(() => {
+    AsyncStorage.getItem("security").then((data) => setUserId(data));
     setSpinnerVisible(true);
     fetchData();
   }, [dataRefresh, refreshing]);
 
   const fetchData = async () => {
-    await axios.get(`${env.CLIENT_URL}${env.securityAcceptPass}`).then((data) => {
-      setFetchPassData(data.data.pass);
-      setSpinnerVisible(false)
-      setRefreshing(false);
-      setDateQuery("")
-      setSearchQuery("")
-    });
+    await axios
+      .get(`${env.CLIENT_URL}${env.securityAcceptPass}`)
+      .then((data) => {
+        setFetchPassData(data.data.pass);
+        setSpinnerVisible(false);
+        setRefreshing(false);
+        setDateQuery("");
+        setSearchQuery("");
+      });
   };
 
   const AlertingAction = (action, id, passId) => {
@@ -73,7 +78,11 @@ const home = () => {
   const actionHandle = (action, id, passId) => {
     if (action === "Out Time Updated") {
       axios
-        .put(`${env.CLIENT_URL}${env.securityUpdateOutTime}`, { id, userId, passId })
+        .put(`${env.CLIENT_URL}${env.securityUpdateOutTime}`, {
+          id,
+          userId,
+          passId,
+        })
         .then((data) => {
           if (data.data.success) {
             toast.show(data.data.message, {
@@ -105,7 +114,11 @@ const home = () => {
         });
     } else if (action === "In Time Updated") {
       axios
-        .put(`${env.CLIENT_URL}${env.securityUpdateInTime}`, { id, userId, passId })
+        .put(`${env.CLIENT_URL}${env.securityUpdateInTime}`, {
+          id,
+          userId,
+          passId,
+        })
         .then((data) => {
           if (data.data.success) {
             toast.show(data.data.message, {
@@ -131,9 +144,9 @@ const home = () => {
   };
 
   const openSheet = (item) => {
-    setmodalVisible(true)
-    setInfoData(item)
-  }
+    setmodalVisible(true);
+    setInfoData(item);
+  };
 
   const handleDateSubmit = (e) => {
     setDateQuery(e.toLocaleString());
@@ -141,12 +154,23 @@ const home = () => {
   };
 
   const filteredData = fetchPassData.filter((item) => {
-    return (item.RegisterNumber.toString().toLocaleLowerCase().includes(searchQuery.toLocaleLowerCase().toString())) && (item.OutDateTime.toString().split(",")[0].includes(dateQuery.toString().split(",")[0]))
-  })
+    return (
+      item.RegisterNumber.toString()
+        .toLocaleLowerCase()
+        .includes(searchQuery.toLocaleLowerCase().toString()) &&
+      item.OutDateTime.toString()
+        .split(",")[0]
+        .includes(dateQuery.toString().split(",")[0])
+    );
+  });
 
   return (
     <View style={{ flex: 1 }}>
-      <ImageBackground source={icon} style={styles.backgoundImage} resizeMode="contain" >
+      <ImageBackground
+        source={icon}
+        style={styles.backgoundImage}
+        resizeMode="contain"
+      >
         <Spinner
           visible={spinnerVisible}
           textContent={"Loading..."}
@@ -154,8 +178,20 @@ const home = () => {
           cancelable={true}
         />
         <View style={styles.filterInputs}>
-          <TextInput style={styles.input} placeholder="Search Register Number" onChangeText={(text) => setSearchQuery(text)} value={searchQuery} keyboardType="numeric" />
-          <TextInput style={styles.input} placeholder="Select Date" onChangeText={(text) => setDateQuery(text)} value={dateQuery.split(",")[0]} onPress={() => setDateVisble(true)} />
+          <TextInput
+            style={styles.input}
+            placeholder="Search Register Number"
+            onChangeText={(text) => setSearchQuery(text)}
+            value={searchQuery}
+            keyboardType="numeric"
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Select Date"
+            onChangeText={(text) => setDateQuery(text)}
+            value={dateQuery.split(",")[0]}
+            onPress={() => setDateVisble(true)}
+          />
           <DateTimePicker
             onCancel={() => setDateVisble(false)}
             mode="date"
@@ -170,7 +206,7 @@ const home = () => {
         </View>
         <FlatList
           data={filteredData}
-          style={{ marginBottom: hp(10), marginTop: hp(2), }}
+          style={{ marginBottom: hp(10), marginTop: hp(2) }}
           renderItem={({ item }) => {
             return (
               <View style={styles.container}>
@@ -181,8 +217,19 @@ const home = () => {
                 </View>
 
                 <View style={styles.leftCon}>
-                  <Text style={[styles.nameStyle, item.name.length > 10 ? { fontSize: hp(1.3) } : { fontSize: hp(1.7) }]}>{item.name.toUpperCase()}</Text>
-                  <View style={{ flexDirection: "row", justifyContent: "center" }}>
+                  <Text
+                    style={[
+                      styles.nameStyle,
+                      item.name.length > 10
+                        ? { fontSize: hp(1.3) }
+                        : { fontSize: hp(1.7) },
+                    ]}
+                  >
+                    {item.name.toUpperCase()}
+                  </Text>
+                  <View
+                    style={{ flexDirection: "row", justifyContent: "center" }}
+                  >
                     <Text style={styles.department}>{item.year} year - </Text>
                     <Text style={styles.department}>{item.Department} </Text>
                   </View>
@@ -190,7 +237,16 @@ const home = () => {
 
                 <View style={styles.rightCon}>
                   <View>
-                    <Text style={[styles.placeStyle, item.Destination.length > 10 ? { fontSize: hp(1.3) } : { fontSize: hp(1.7) }]}>{item.Destination}</Text>
+                    <Text
+                      style={[
+                        styles.placeStyle,
+                        item.Destination.length > 10
+                          ? { fontSize: hp(1.3) }
+                          : { fontSize: hp(1.7) },
+                      ]}
+                    >
+                      {item.Destination}
+                    </Text>
                   </View>
                   <View style={styles.timeContainer}>
                     <Text style={styles.time}>{item.InDateTime}</Text>
@@ -201,31 +257,46 @@ const home = () => {
 
                 <View style={styles.btnGroup}>
                   <TouchableOpacity
-                    onPress={() => AlertingAction("Out Time Updated", item.User, item._id)}
+                    onPress={() =>
+                      AlertingAction("Out Time Updated", item.User, item._id)
+                    }
                     style={{ backgroundColor: "green", padding: 5 }}
                     disabled={item.studentOutTime ? true : false}
                   >
-                    <Text style={[{ fontSize: hp(1.2) }, item.studentOutTime ? { textDecorationLine: "line-through" } : ""]} >Out Time</Text>
+                    <Text
+                      style={[
+                        { fontSize: hp(1.2) },
+                        item.studentOutTime
+                          ? { textDecorationLine: "line-through" }
+                          : "",
+                      ]}
+                    >
+                      Out Time
+                    </Text>
                   </TouchableOpacity>
                   <TouchableOpacity
-                    onPress={() => AlertingAction("In Time Updated", item.User, item._id)}
+                    onPress={() =>
+                      AlertingAction("In Time Updated", item.User, item._id)
+                    }
                     style={{ backgroundColor: "gray", padding: 5 }}
                   >
                     <Text style={{ fontSize: hp(1.2) }}>In Time</Text>
                   </TouchableOpacity>
-
                 </View>
                 <Text style={styles.createdStyle}>
                   {new Date(item.createdAt).getDate() == String(now.getDate())
                     ? "Today"
                     : new Date(item.createdAt).getDate() + 1 ==
                       String(now.getDate())
-                      ? "YesterDay"
-                      : new Date(item.createdAt)
+                    ? "YesterDay"
+                    : new Date(item.createdAt)
                         .toLocaleString(undefined, "Asia/Kolkata")
                         .split(",")[0]}
                 </Text>
-                <TouchableOpacity onPress={() => openSheet(item)} style={styles.infoIcon}>
+                <TouchableOpacity
+                  onPress={() => openSheet(item)}
+                  style={styles.infoIcon}
+                >
                   <Entypo size={15} name="info-with-circle" color={"black"} />
                 </TouchableOpacity>
               </View>
@@ -250,31 +321,57 @@ const home = () => {
           >
             <View style={styles.ModelContent}>
               <Text style={styles.heading}> Pass Info </Text>
-              <TouchableOpacity onPress={() => setmodalVisible(false)} style={styles.cancelIcon} >
+              <TouchableOpacity
+                onPress={() => setmodalVisible(false)}
+                style={styles.cancelIcon}
+              >
                 <Entypo name="circle-with-cross" size={35} color="red" />
               </TouchableOpacity>
               <View style={styles.infoGrid}>
                 <InfoGrid label="Name" value={infoData?.name} />
-                <InfoGrid label="Reg.No" value={infoData?.RegisterNumber || ""} />
-                <InfoGrid label="Year & Dept" value={infoData?.Department || ""} />
+                <InfoGrid
+                  label="Reg.No"
+                  value={infoData?.RegisterNumber || ""}
+                />
+                <InfoGrid
+                  label="Year & Dept"
+                  value={infoData?.Department || ""}
+                />
                 <InfoGrid label="Room No" value={infoData?.RoomNo || ""} />
-                <InfoGrid label="Destination" value={infoData?.Destination || ""} />
+                <InfoGrid
+                  label="Destination"
+                  value={infoData?.Destination || ""}
+                />
                 <InfoGrid label="Purpose" value={infoData?.Purpose || ""} />
-                <InfoGrid label="Phone No" value={infoData?.PhoneNumber || ""} />
-                <InfoGrid label="Parent No" value={infoData?.ParentNumber || ""} />
-                <InfoGrid label="Out Time" value={infoData?.OutDateTime || ""} />
+                <InfoGrid
+                  label="Phone No"
+                  value={infoData?.PhoneNumber || ""}
+                />
+                <InfoGrid
+                  label="Parent No"
+                  value={infoData?.ParentNumber || ""}
+                />
+                <InfoGrid
+                  label="Out Time"
+                  value={infoData?.OutDateTime || ""}
+                />
                 <InfoGrid label="In Time" value={infoData?.InDateTime || ""} />
-                <InfoGrid label={infoData?.status == "2" ? "Approved By" : "Rejected By"} value={infoData?.warden || ""} />
+                <InfoGrid
+                  label={
+                    infoData?.status == "2" ? "Approved By" : "Rejected By"
+                  }
+                  value={infoData?.warden || ""}
+                />
               </View>
             </View>
           </Modal>
         </View>
       </ImageBackground>
     </View>
-  )
-}
+  );
+};
 
-export default home
+export default home;
 
 const styles = StyleSheet.create({
   container: {
@@ -307,26 +404,25 @@ const styles = StyleSheet.create({
     paddingTop: 25,
   },
   leftCon: {
-    width: "32%"
+    width: "32%",
   },
   rightCon: {
-    width: "35%"
+    width: "35%",
   },
   department: {
     fontSize: hp(1.6),
-    textAlign: "center"
+    textAlign: "center",
   },
   nameStyle: {
-    textAlign: "center"
+    textAlign: "center",
   },
   timeContainer: {
-    flexDirection: "row"
+    flexDirection: "row",
   },
   time: {
     width: "50%",
     fontSize: hp(1.2),
-    textAlign: "center"
-
+    textAlign: "center",
   },
   placeStyle: {
     textAlign: "center",
@@ -363,7 +459,7 @@ const styles = StyleSheet.create({
   infoIcon: {
     position: "absolute",
     right: 0,
-    bottom: 0
+    bottom: 0,
   },
   modelContainer: {
     backgroundColor: "rgba(0,0,0,0.5)",
@@ -379,14 +475,13 @@ const styles = StyleSheet.create({
     position: "absolute",
     right: 10,
     top: 10,
-
   },
   heading: {
     textAlign: "center",
     fontSize: hp(3),
     color: "black",
     paddingBottom: 20,
-    textDecorationLine: "underline"
+    textDecorationLine: "underline",
   },
   infoGrid: {
     width: "100%",
@@ -401,7 +496,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "rgb(115,115,115)",
     height: hp(4.5),
-    flex: 1
+    flex: 1,
   },
   dropdown: {
     backgroundColor: "#D9D9D9",
@@ -413,7 +508,7 @@ const styles = StyleSheet.create({
     height: 42,
     borderRadius: 10,
     paddingStart: 10,
-    flex: 1
+    flex: 1,
   },
   filterInputs: {
     flexDirection: "row",

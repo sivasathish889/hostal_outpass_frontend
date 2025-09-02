@@ -1,0 +1,37 @@
+# Native directories (if you're using a bare workflow)
+android/
+ios/
+
+# Documentation and design assets
+docs/
+designs/
+*.sketch
+*.psd
+
+# Test and coverage reports
+__tests__/
+coverage/
+*.spec.js
+*.test.js
+
+# Local development tools and configs
+.env
+*.log
+*.local.js
+*.config.js
+
+# Node modules and build artifacts
+node_modules/
+dist/
+build/
+.tmp/
+.cache/
+
+# OS and IDE-specific files
+.DS_Store
+.vscode/
+.idea/
+
+# Expo-specific
+.expo/
+.expo-shared/

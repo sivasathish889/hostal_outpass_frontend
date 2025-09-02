@@ -8,7 +8,7 @@ import {
   Alert,
   Modal,
   ImageBackground,
-  TextInput
+  TextInput,
 } from "react-native";
 import { useEffect, useState } from "react";
 import env from "@/constants/urls";
@@ -19,37 +19,47 @@ import { hp, wp } from "@/helpers/dimensions";
 import Spinner from "react-native-loading-spinner-overlay";
 import themes from "@/constants/themes";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Entypo, FontAwesome, MaterialCommunityIcons } from "@expo/vector-icons";
+import {
+  Entypo,
+  FontAwesome,
+  MaterialCommunityIcons,
+} from "@expo/vector-icons";
 import InfoGrid from "@/components/InfoGrid";
-import backgroundIcon from "@/assets/backgroundPic.png"
+import backgroundIcon from "@/assets/backgroundPic.png";
+import fcmInit from "@/helpers/FCMInit";
 
 const Home = () => {
   let toast = useToast();
   let now = new Date();
-  const [userId, setUserId] = useState(null)
+  const [userId, setUserId] = useState(null);
   const [fetchPassData, setFetchPassData] = useState([]);
   const [dataRefresh, setDataRefresh] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [spinnerVisible, setSpinnerVisible] = useState(false);
-  const [modalVisible, setmodalVisible] = useState(false)
-  const [infoData, setInfoData] = useState({})
+  const [modalVisible, setmodalVisible] = useState(false);
+  const [infoData, setInfoData] = useState({});
 
-  const [searchQuery, setSearchQuery] = useState("")
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
-    AsyncStorage.getItem("warden").then((data) => setUserId(data))
+    fcmInit();
+  }, []);
+
+  useEffect(() => {
+    AsyncStorage.getItem("warden").then((data) => setUserId(data));
     setSpinnerVisible(true);
     fetchData();
   }, [dataRefresh, refreshing]);
 
-
   const fetchData = async () => {
     await AsyncStorage.getItem("warden").then(async (wardenId) => {
-      await axios.get(`${env.CLIENT_URL}${env.wardenPendingPass}/${wardenId}`).then((data) => {
-        setFetchPassData(data.data.pass);
-        setSpinnerVisible(false)
-        setRefreshing(false);
-      })
+      await axios
+        .get(`${env.CLIENT_URL}${env.wardenPendingPass}/${wardenId}`)
+        .then((data) => {
+          setFetchPassData(data.data.pass);
+          setSpinnerVisible(false);
+          setRefreshing(false);
+        });
     });
   };
 
@@ -72,7 +82,6 @@ const Home = () => {
       await axios
         .put(`${env.CLIENT_URL}${env.wardenPassAccept}`, { id, userId, passId })
         .then((data) => {
-
           // notiication
           if (data.data.success) {
             toast.show(data.data.message, {
@@ -81,8 +90,20 @@ const Home = () => {
               duration: 4000,
               offset: 30,
               animationType: "slide-in",
-              successIcon: <MaterialCommunityIcons name="check-circle" size={24} color="white" />,
-              style: { marginTop: hp(5), width: "100%", display: "flex", justifyContent: "center", alignItems: "center" },
+              successIcon: (
+                <MaterialCommunityIcons
+                  name="check-circle"
+                  size={24}
+                  color="white"
+                />
+              ),
+              style: {
+                marginTop: hp(5),
+                width: "100%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              },
             });
             setDataRefresh(!dataRefresh);
           } else {
@@ -92,8 +113,16 @@ const Home = () => {
               duration: 3000,
               offset: 50,
               animationType: "zoom-in",
-              dangerIcon: <FontAwesome name="warning" size={20} color="white" />,
-              style: { marginTop: hp(5), width: "100%", display: "flex", justifyContent: "center", alignItems: "center" },
+              dangerIcon: (
+                <FontAwesome name="warning" size={20} color="white" />
+              ),
+              style: {
+                marginTop: hp(5),
+                width: "100%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              },
             });
           }
         })
@@ -109,8 +138,20 @@ const Home = () => {
               duration: 4000,
               offset: 30,
               animationType: "slide-in",
-              successIcon: <MaterialCommunityIcons name="check-circle" size={24} color="white" />,
-              style: { marginTop: hp(5), width: "100%", display: "flex", justifyContent: "center", alignItems: "center" },
+              successIcon: (
+                <MaterialCommunityIcons
+                  name="check-circle"
+                  size={24}
+                  color="white"
+                />
+              ),
+              style: {
+                marginTop: hp(5),
+                width: "100%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              },
             });
             setDataRefresh(!dataRefresh);
           } else {
@@ -120,8 +161,16 @@ const Home = () => {
               duration: 3000,
               offset: 50,
               animationType: "zoom-in",
-              dangerIcon: <FontAwesome name="warning" size={20} color="white" />,
-              style: { marginTop: hp(5), width: "100%", display: "flex", justifyContent: "center", alignItems: "center" },
+              dangerIcon: (
+                <FontAwesome name="warning" size={20} color="white" />
+              ),
+              style: {
+                marginTop: hp(5),
+                width: "100%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              },
             });
           }
         })
@@ -130,17 +179,23 @@ const Home = () => {
   };
 
   const openSheet = (item) => {
-    setmodalVisible(true)
-    setInfoData(item)
-  }
+    setmodalVisible(true);
+    setInfoData(item);
+  };
 
   const filteredData = fetchPassData?.filter((item) => {
-    return (item.RegisterNumber.toString().toLocaleLowerCase().includes(searchQuery.toLocaleLowerCase().toString()))
-  })
+    return item.RegisterNumber.toString()
+      .toLocaleLowerCase()
+      .includes(searchQuery.toLocaleLowerCase().toString());
+  });
 
   return (
     <View style={{ flex: 1 }}>
-      <ImageBackground source={backgroundIcon} resizeMode="contain" style={{ flex: 1 }}>
+      <ImageBackground
+        source={backgroundIcon}
+        resizeMode="contain"
+        style={{ flex: 1 }}
+      >
         <Spinner
           visible={spinnerVisible}
           textContent={"Loading..."}
@@ -148,7 +203,14 @@ const Home = () => {
           cancelable={true}
         />
         <View style={styles.filterInputs}>
-          <TextInput style={styles.input} placeholder="Search Register Number" keyboardType="numeric" onChangeText={(text) => setSearchQuery(text)} value={searchQuery} placeholderTextColor={themes.placeholderTextColor}/>
+          <TextInput
+            style={styles.input}
+            placeholder="Search Register Number"
+            keyboardType="numeric"
+            onChangeText={(text) => setSearchQuery(text)}
+            value={searchQuery}
+            placeholderTextColor={themes.placeholderTextColor}
+          />
         </View>
         <FlatList
           data={filteredData}
@@ -163,8 +225,19 @@ const Home = () => {
                 </View>
 
                 <View style={styles.leftCon}>
-                  <Text style={[styles.nameStyle, item.name.length > 10 ? { fontSize: hp(1.3) } : { fontSize: hp(2) }]}>{item.name.toUpperCase()}</Text>
-                  <View style={{ flexDirection: "row", justifyContent: "center" }}>
+                  <Text
+                    style={[
+                      styles.nameStyle,
+                      item.name.length > 10
+                        ? { fontSize: hp(1.3) }
+                        : { fontSize: hp(2) },
+                    ]}
+                  >
+                    {item.name.toUpperCase()}
+                  </Text>
+                  <View
+                    style={{ flexDirection: "row", justifyContent: "center" }}
+                  >
                     <Text style={styles.department}>{item.year} year - </Text>
                     <Text style={styles.department}>{item.Department} </Text>
                   </View>
@@ -172,7 +245,16 @@ const Home = () => {
 
                 <View style={styles.rightCon}>
                   <View>
-                    <Text style={[styles.placeStyle, item.Destination.length > 10 ? { fontSize: hp(1.3) } : { fontSize: hp(2) }]}>{item.Destination}</Text>
+                    <Text
+                      style={[
+                        styles.placeStyle,
+                        item.Destination.length > 10
+                          ? { fontSize: hp(1.3) }
+                          : { fontSize: hp(2) },
+                      ]}
+                    >
+                      {item.Destination}
+                    </Text>
                   </View>
                   <View style={styles.timeContainer}>
                     <Text style={styles.time}>{item.InDateTime}</Text>
@@ -183,28 +265,34 @@ const Home = () => {
 
                 <View style={styles.btnGroup}>
                   <TouchableOpacity
-                    onPress={() => AlertingAction("Accept", item.User, item._id)}
+                    onPress={() =>
+                      AlertingAction("Accept", item.User, item._id)
+                    }
                   >
                     <AntDesign name="checkcircle" size={30} color="green" />
                   </TouchableOpacity>
                   <TouchableOpacity
-                    onPress={() => AlertingAction("Reject", item.User, item._id)}
+                    onPress={() =>
+                      AlertingAction("Reject", item.User, item._id)
+                    }
                   >
                     <AntDesign name="closecircle" size={30} color="red" />
                   </TouchableOpacity>
-
                 </View>
                 <Text style={styles.createdStyle}>
                   {new Date(item.createdAt).getDate() == String(now.getDate())
                     ? "Today"
                     : new Date(item.createdAt).getDate() + 1 ==
                       String(now.getDate())
-                      ? "YesterDay"
-                      : new Date(item.createdAt)
+                    ? "YesterDay"
+                    : new Date(item.createdAt)
                         .toLocaleString(undefined, "Asia/Kolkata")
                         .split(",")[0]}
                 </Text>
-                <TouchableOpacity onPress={() => openSheet(item)} style={styles.infoIcon}>
+                <TouchableOpacity
+                  onPress={() => openSheet(item)}
+                  style={styles.infoIcon}
+                >
                   <Entypo size={15} name="info-with-circle" color={"black"} />
                 </TouchableOpacity>
               </View>
@@ -229,19 +317,40 @@ const Home = () => {
           >
             <View style={styles.ModelContent}>
               <Text style={styles.heading}> Pass Info </Text>
-              <TouchableOpacity onPress={() => setmodalVisible(false)} style={styles.cancelIcon} >
+              <TouchableOpacity
+                onPress={() => setmodalVisible(false)}
+                style={styles.cancelIcon}
+              >
                 <Entypo name="circle-with-cross" size={35} color="red" />
               </TouchableOpacity>
               <View style={styles.infoGrid}>
                 <InfoGrid label="Name" value={infoData?.name} />
-                <InfoGrid label="Reg.No" value={infoData?.RegisterNumber || ""} />
-                <InfoGrid label="Year & Dept" value={infoData?.Department || ""} />
+                <InfoGrid
+                  label="Reg.No"
+                  value={infoData?.RegisterNumber || ""}
+                />
+                <InfoGrid
+                  label="Year & Dept"
+                  value={infoData?.Department || ""}
+                />
                 <InfoGrid label="Room No" value={infoData?.RoomNo || ""} />
-                <InfoGrid label="Destination" value={infoData?.Destination || ""} />
+                <InfoGrid
+                  label="Destination"
+                  value={infoData?.Destination || ""}
+                />
                 <InfoGrid label="Purpose" value={infoData?.Purpose || ""} />
-                <InfoGrid label="Phone No" value={infoData?.PhoneNumber || ""} />
-                <InfoGrid label="Parent No" value={infoData?.ParentNumber || ""} />
-                <InfoGrid label="Out Time" value={infoData?.OutDateTime || ""} />
+                <InfoGrid
+                  label="Phone No"
+                  value={infoData?.PhoneNumber || ""}
+                />
+                <InfoGrid
+                  label="Parent No"
+                  value={infoData?.ParentNumber || ""}
+                />
+                <InfoGrid
+                  label="Out Time"
+                  value={infoData?.OutDateTime || ""}
+                />
                 <InfoGrid label="In Time" value={infoData?.InDateTime || ""} />
               </View>
             </View>
@@ -285,26 +394,25 @@ const styles = StyleSheet.create({
     paddingTop: 25,
   },
   leftCon: {
-    width: "30%"
+    width: "30%",
   },
   rightCon: {
-    width: "35%"
+    width: "35%",
   },
   department: {
     fontSize: hp(1.6),
-    textAlign: "center"
+    textAlign: "center",
   },
   nameStyle: {
-    textAlign: "center"
+    textAlign: "center",
   },
   timeContainer: {
-    flexDirection: "row"
+    flexDirection: "row",
   },
   time: {
     width: "50%",
     fontSize: hp(1.2),
-    textAlign: "center"
-
+    textAlign: "center",
   },
   placeStyle: {
     textAlign: "center",
@@ -320,12 +428,12 @@ const styles = StyleSheet.create({
     columnGap: 8,
     flexDirection: "row",
     position: "absolute",
-    right: 3
+    right: 3,
   },
   infoIcon: {
     position: "absolute",
     right: 0,
-    bottom: 0
+    bottom: 0,
   },
   modelContainer: {
     backgroundColor: "rgba(0,0,0,0.5)",
@@ -341,14 +449,13 @@ const styles = StyleSheet.create({
     position: "absolute",
     right: 10,
     top: 10,
-
   },
   heading: {
     textAlign: "center",
     fontSize: hp(3),
     color: "black",
     paddingBottom: 20,
-    textDecorationLine: "underline"
+    textDecorationLine: "underline",
   },
   infoGrid: {
     width: "100%",
@@ -360,7 +467,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "rgb(115,115,115)",
     height: hp(4.5),
-    flex: 1
+    flex: 1,
   },
   filterInputs: {
     flexDirection: "row",
