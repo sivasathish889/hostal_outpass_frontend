@@ -1,16 +1,25 @@
-import { Alert, ImageBackground, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  Alert,
+  ImageBackground,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import axios from "axios";
 import urls from "@/constants/urls";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import Spinner from 'react-native-loading-spinner-overlay';
-import { hp } from "@/helpers/dimensions"
+import Spinner from "react-native-loading-spinner-overlay";
+import { hp } from "@/helpers/dimensions";
 import { useRouter } from "expo-router";
-import backgroundIcon from "@/assets/backgroundPic.png"
+import backgroundIcon from "@/assets/backgroundPic.png";
+import Notifications from "@react-native-firebase/messaging";
+
 const SettingScreen = () => {
   const router = useRouter();
-  const [spinnerVisible, setSpinnerVisible] = useState(false)
+  const [spinnerVisible, setSpinnerVisible] = useState(false);
   const [fetchingData, setFetchingData] = useState([
     {
       name: "",
@@ -24,7 +33,7 @@ const SettingScreen = () => {
         .get(`${urls.CLIENT_URL}${urls.securityData}/${id}`)
         .then((data) => {
           setFetchingData(data?.data?.data);
-          setSpinnerVisible(false)
+          setSpinnerVisible(false);
         });
     } else {
       router.dismissTo("welcome");
@@ -32,39 +41,44 @@ const SettingScreen = () => {
   };
 
   useEffect(() => {
-    setSpinnerVisible(true)
+    setSpinnerVisible(true);
     fetchDate();
   }, []);
 
-   const logOutAlert = () => {
-      Alert.alert("Log Out", "Are you sure you want logout?", [
-        {
-          text: "Cancel",
-          style: "cancel",
-        },
-        {
-          text: "Sure",
-          onPress: () => handleLogout(),
-          style: "default",
-        },
-      ]);
-    };
+  const logOutAlert = () => {
+    Alert.alert("Log Out", "Are you sure you want logout?", [
+      {
+        text: "Cancel",
+        style: "cancel",
+      },
+      {
+        text: "Sure",
+        onPress: () => handleLogout(),
+        style: "default",
+      },
+    ]);
+  };
 
   const handleLogout = async () => {
     try {
-      await AsyncStorage.removeItem("security").then(() =>
-        router.dismissTo("welcome")
-      );
+      await AsyncStorage.removeItem("security").then(() => {
+        Notifications().deleteToken();
+        router.dismissTo("welcome");
+      });
     } catch (error) {
       console.log(error);
     }
   };
   return (
-    <ImageBackground source={backgroundIcon} resizeMode="contain" style={styles.container}>
+    <ImageBackground
+      source={backgroundIcon}
+      resizeMode="contain"
+      style={styles.container}
+    >
       <Spinner
         visible={spinnerVisible}
         textContent={"Loading..."}
-        textStyle={{ color: '#FFF' }}
+        textStyle={{ color: "#FFF" }}
         cancelable={true}
       />
       <View style={styles.profile}>
@@ -82,7 +96,6 @@ const SettingScreen = () => {
 
 export default SettingScreen;
 
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -96,7 +109,7 @@ const styles = StyleSheet.create({
   },
   btnContainer: {
     width: "80%",
-    height: "20%"
+    height: "20%",
   },
   btnOutline: {
     backgroundColor: "red",
@@ -110,6 +123,6 @@ const styles = StyleSheet.create({
     fontSize: hp(2),
   },
   nameStyle: {
-    fontSize: hp(2)
-  }
-})
+    fontSize: hp(2),
+  },
+});

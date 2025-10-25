@@ -4,14 +4,15 @@ import AntDesign from "@expo/vector-icons/AntDesign";
 import axios from "axios";
 import urls from "@/constants/urls";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import Spinner from 'react-native-loading-spinner-overlay';
+import Spinner from "react-native-loading-spinner-overlay";
 import { hp } from "@/helpers/dimensions";
 import { useRouter } from "expo-router";
 import themes from "@/constants/themes";
+import Notifications from "@react-native-firebase/messaging";
 
 const Settings = () => {
-  const router = useRouter()
-  const [spinnerVisible, setSpinnerVisible] = useState(false)
+  const router = useRouter();
+  const [spinnerVisible, setSpinnerVisible] = useState(false);
   const [fetchingData, setFetchingData] = useState([
     {
       Department: "",
@@ -26,21 +27,22 @@ const Settings = () => {
     try {
       let id = await AsyncStorage.getItem("student");
       if (id != null) {
-        const { data } = await axios.get(`${urls.CLIENT_URL}${urls.studentData}${id}`)
+        const { data } = await axios.get(
+          `${urls.CLIENT_URL}${urls.studentData}${id}`
+        );
         setFetchingData(data?.data);
       } else {
         router.dismissTo("welcome");
       }
     } catch (error) {
-      console.log(error.message)
+      console.log(error.message);
     } finally {
-      setSpinnerVisible(false)
+      setSpinnerVisible(false);
     }
-
   };
 
   useEffect(() => {
-    setSpinnerVisible(true)
+    setSpinnerVisible(true);
     fetchDate();
   }, []);
 
@@ -60,26 +62,26 @@ const Settings = () => {
 
   const handleLogout = async () => {
     try {
-      await AsyncStorage.getItem('student').then(async (stuId) => {
+      await AsyncStorage.getItem("student").then(async (stuId) => {
         await AsyncStorage.removeItem("student").then(() => {
-          router.dismissTo("welcome")
-        }
-        );
-      })
+          Notifications().deleteToken();
+          router.dismissTo("welcome");
+        });
+      });
     } catch (error) {
       console.log(error);
     }
   };
-  const handlePasswordChange = ()=>{
-    router.push('(login)/forgetPassword')
-  }
+  const handlePasswordChange = () => {
+    router.push("(login)/forgetPassword");
+  };
 
   return (
     <View style={styles.container}>
       <Spinner
         visible={spinnerVisible}
         textContent={"Loading..."}
-        textStyle={{ color: '#FFF' }}
+        textStyle={{ color: "#FFF" }}
         cancelable={true}
       />
       <View style={styles.profile}>
@@ -88,7 +90,10 @@ const Settings = () => {
         <Text>{fetchingData[0]?.RegisterNumber}</Text>
       </View>
       <View style={styles.mainText}>
-        <TouchableOpacity style={styles.passChangeText} onPress={handlePasswordChange}>
+        <TouchableOpacity
+          style={styles.passChangeText}
+          onPress={handlePasswordChange}
+        >
           <Text>Change Password</Text>
         </TouchableOpacity>
       </View>
@@ -116,7 +121,7 @@ const styles = StyleSheet.create({
   },
   btnContainer: {
     width: "80%",
-    height: "20%"
+    height: "20%",
   },
   btnOutline: {
     backgroundColor: "red",
@@ -132,11 +137,11 @@ const styles = StyleSheet.create({
   mainText: {
     flex: 1,
     width: "90%",
-    marginTop : hp(6)
+    marginTop: hp(6),
   },
   passChangeText: {
     backgroundColor: "lightgrey",
-    padding : hp(1),
-    borderRadius : 5
-  }
+    padding: hp(1),
+    borderRadius: 5,
+  },
 });

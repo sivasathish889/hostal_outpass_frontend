@@ -214,7 +214,10 @@ const Home = () => {
           style={{ marginBottom: hp(10) }}
           renderItem={({ item }) => {
             return (
-              <View style={styles.container}>
+              <TouchableOpacity
+                onPress={() => openSheet(item)}
+                style={styles.container}
+              >
                 <View style={styles.title}>
                   <Text style={styles.roomNoStyle}>
                     {item.RoomNo.toUpperCase()}.
@@ -286,13 +289,7 @@ const Home = () => {
                         .toLocaleString(undefined, "Asia/Kolkata")
                         .split(",")[0]}
                 </Text>
-                <TouchableOpacity
-                  onPress={() => openSheet(item)}
-                  style={styles.infoIcon}
-                >
-                  <Entypo size={15} name="info-with-circle" color={"black"} />
-                </TouchableOpacity>
-              </View>
+              </TouchableOpacity>
             );
           }}
           keyExtractor={(item) => item._id}
@@ -311,6 +308,7 @@ const Home = () => {
             visible={modalVisible}
             onRequestClose={() => setmodalVisible(false)}
             onDismiss={() => setmodalVisible(false)}
+            
           >
             <View style={styles.ModelContent}>
               <Text style={styles.heading}> Pass Info </Text>

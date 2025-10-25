@@ -70,7 +70,7 @@ const AcceptPass = () => {
             style={{ marginBottom: hp(10) }}
             renderItem={({ item }) => {
               return (
-                <View style={styles.container}>
+                <TouchableOpacity  onPress={() => openSheet(item)} style={styles.container}>
                   <View style={styles.title}>
                     <Text style={styles.roomNoStyle}>
                       {item.RoomNo.toUpperCase()}.
@@ -118,10 +118,8 @@ const AcceptPass = () => {
                             .split(",")[0]}
                     </Text>
                   </View>
-                  <TouchableOpacity onPress={() => openSheet(item)} style={styles.infoIcon}>
-                    <Entypo size={25} name="info-with-circle" color={"black"} />
-                  </TouchableOpacity>
-                </View>
+                  
+                </TouchableOpacity>
               );
             }}
             keyExtractor={(item) => item._id}

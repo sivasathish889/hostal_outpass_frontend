@@ -4,14 +4,14 @@ import AntDesign from "@expo/vector-icons/AntDesign";
 import axios from "axios";
 import urls from "@/constants/urls";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import Spinner from 'react-native-loading-spinner-overlay';
-import { hp } from "@/helpers/dimensions"
+import Spinner from "react-native-loading-spinner-overlay";
+import { hp } from "@/helpers/dimensions";
 import { useRouter } from "expo-router";
-
+import Notifications from "@react-native-firebase/messaging";
 
 const SettingScreen = () => {
   const router = useRouter();
-  const [spinnerVisible, setSpinnerVisible] = useState(false)
+  const [spinnerVisible, setSpinnerVisible] = useState(false);
   const [fetchingData, setFetchingData] = useState([
     {
       name: "",
@@ -25,7 +25,7 @@ const SettingScreen = () => {
         .get(`${urls.CLIENT_URL}${urls.wardenData}${id}`)
         .then((data) => {
           setFetchingData(data?.data?.data);
-          setSpinnerVisible(false)
+          setSpinnerVisible(false);
         });
     } else {
       router.dismissTo("welcome");
@@ -33,7 +33,7 @@ const SettingScreen = () => {
   };
 
   useEffect(() => {
-    setSpinnerVisible(true)
+    setSpinnerVisible(true);
     fetchDate();
   }, []);
 
@@ -53,9 +53,9 @@ const SettingScreen = () => {
   const handleLogout = async () => {
     try {
       await AsyncStorage.removeItem("warden").then(() => {
-        router.dismissTo("welcome")
-      }
-      );
+        Notifications().deleteToken();
+        router.dismissTo("welcome");
+      });
     } catch (error) {
       console.log(error);
     }
@@ -65,7 +65,7 @@ const SettingScreen = () => {
       <Spinner
         visible={spinnerVisible}
         textContent={"Loading..."}
-        textStyle={{ color: '#FFF' }}
+        textStyle={{ color: "#FFF" }}
         cancelable={true}
       />
       <View style={styles.profile}>
@@ -83,7 +83,6 @@ const SettingScreen = () => {
 
 export default SettingScreen;
 
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -97,7 +96,7 @@ const styles = StyleSheet.create({
   },
   btnContainer: {
     width: "80%",
-    height: "20%"
+    height: "20%",
   },
   btnOutline: {
     backgroundColor: "red",
@@ -111,6 +110,6 @@ const styles = StyleSheet.create({
     fontSize: hp(2),
   },
   nameStyle: {
-    fontSize: hp(2)
-  }
-})
+    fontSize: hp(2),
+  },
+});

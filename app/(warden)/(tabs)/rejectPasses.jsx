@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   Modal,
   ImageBackground,
-  TextInput
+  TextInput,
 } from "react-native";
 import { useEffect, useState } from "react";
 
@@ -19,7 +19,7 @@ import AntDesign from "@expo/vector-icons/AntDesign";
 import themes from "@/constants/themes";
 import { Entypo } from "@expo/vector-icons";
 import InfoGrid from "@/components/InfoGrid";
-import backgroundIcon from "@/assets/backgroundPic.png"
+import backgroundIcon from "@/assets/backgroundPic.png";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const RejectPasses = () => {
@@ -28,43 +28,50 @@ const RejectPasses = () => {
   const [fetchPassData, setFetchPassData] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
   const [spinnerVisible, setSpinnerVisible] = useState(false);
-  const [modalVisible, setmodalVisible] = useState(false)
-  const [infoData, setInfoData] = useState({})
+  const [modalVisible, setmodalVisible] = useState(false);
+  const [infoData, setInfoData] = useState({});
 
-  const [searchQuery, setSearchQuery] = useState("")
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     setSpinnerVisible(true);
-    fetchData()
+    fetchData();
     setRefreshing(false);
   }, [refreshing]);
 
   const fetchData = async () => {
     try {
       await AsyncStorage.getItem("warden").then(async (wardenId) => {
-        await axios.get(`${env.CLIENT_URL}${env.wardenAllRejectPass}/${wardenId}`).then((data) => {
-          setFetchPassData(data.data.pass);
-          setSpinnerVisible(false);
-        })
-          .catch((error) => {
-            console.log(error)
+        await axios
+          .get(`${env.CLIENT_URL}${env.wardenAllRejectPass}/${wardenId}`)
+          .then((data) => {
+            setFetchPassData(data.data.pass);
+            setSpinnerVisible(false);
           })
-      })
+          .catch((error) => {
+            console.log(error);
+          });
+      });
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   };
   const openSheet = (item) => {
-    setmodalVisible(true)
-    setInfoData(item)
-  }
+    setmodalVisible(true);
+    setInfoData(item);
+  };
   const filteredData = fetchPassData?.filter((item) => {
-    return (item.RegisterNumber.toString().toLocaleLowerCase().includes(searchQuery.toLocaleLowerCase().toString()))
-  })
+    return item.RegisterNumber.toString()
+      .toLocaleLowerCase()
+      .includes(searchQuery.toLocaleLowerCase().toString());
+  });
   return (
     <View style={{ flex: 1 }}>
-      <ImageBackground source={backgroundIcon} resizeMode="contain" style={{ flex: 1 }}>
-
+      <ImageBackground
+        source={backgroundIcon}
+        resizeMode="contain"
+        style={{ flex: 1 }}
+      >
         <Spinner
           visible={spinnerVisible}
           textContent={"Loading..."}
@@ -72,7 +79,14 @@ const RejectPasses = () => {
           cancelable={true}
         />
         <View style={styles.filterInputs}>
-          <TextInput style={styles.input} placeholder="Search Register Number" keyboardType="numeric" onChangeText={(text) => setSearchQuery(text)} value={searchQuery} placeholderTextColor={themes.placeholderTextColor}/>
+          <TextInput
+            style={styles.input}
+            placeholder="Search Register Number"
+            keyboardType="numeric"
+            onChangeText={(text) => setSearchQuery(text)}
+            value={searchQuery}
+            placeholderTextColor={themes.placeholderTextColor}
+          />
         </View>
 
         {fetchPassData?.length > 0 ? (
@@ -81,7 +95,10 @@ const RejectPasses = () => {
             style={{ marginBottom: hp(10) }}
             renderItem={({ item }) => {
               return (
-                <View style={styles.container}>
+                <TouchableOpacity
+                  onPress={() => openSheet(item)}
+                  style={styles.container}
+                >
                   <View style={styles.title}>
                     <Text style={styles.roomNoStyle}>
                       {item.RoomNo.toUpperCase()}.
@@ -91,8 +108,22 @@ const RejectPasses = () => {
                   <View style={styles.detailsContainer}>
                     <View style={{ display: "flex", paddingVertical: 15 }}>
                       <View style={styles.titleStyle}>
-                        <Text style={[styles.nameStyle, item.name.length > 10 ? { fontSize: hp(1.3) } : { fontSize: hp(2) }]}>{item.name.toUpperCase()}</Text>
-                        <View style={{ flexDirection: "row", justifyContent: "center" }}>
+                        <Text
+                          style={[
+                            styles.nameStyle,
+                            item.name.length > 10
+                              ? { fontSize: hp(1.3) }
+                              : { fontSize: hp(2) },
+                          ]}
+                        >
+                          {item.name.toUpperCase()}
+                        </Text>
+                        <View
+                          style={{
+                            flexDirection: "row",
+                            justifyContent: "center",
+                          }}
+                        >
                           <Text style={styles.department}>
                             {item.year} year -
                           </Text>
@@ -103,9 +134,26 @@ const RejectPasses = () => {
                       </View>
                     </View>
 
-                    <View style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", width: wp(30) }} >
+                    <View
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        width: wp(30),
+                      }}
+                    >
                       <View>
-                        <Text style={[styles.placeStyle, item.Destination.length > 15 ? { fontSize: hp(1.3) } : { fontSize: hp(2) }]}>{item.Destination}</Text>
+                        <Text
+                          style={[
+                            styles.placeStyle,
+                            item.Destination.length > 15
+                              ? { fontSize: hp(1.3) }
+                              : { fontSize: hp(2) },
+                          ]}
+                        >
+                          {item.Destination}
+                        </Text>
                       </View>
                       <View style={styles.times}>
                         <Text style={styles.outDateTimeStyle}>
@@ -119,20 +167,18 @@ const RejectPasses = () => {
                     </View>
 
                     <Text style={styles.createdStyle}>
-                      {new Date(item.createdAt).getDate() == String(now.getDate())
+                      {new Date(item.createdAt).getDate() ==
+                      String(now.getDate())
                         ? "Today"
                         : new Date(item.createdAt).getDate() + 1 ==
                           String(now.getDate())
-                          ? "YesterDay"
-                          : new Date(item.createdAt)
+                        ? "YesterDay"
+                        : new Date(item.createdAt)
                             .toLocaleString(undefined, "Asia/Kolkata")
                             .split(",")[0]}
                     </Text>
                   </View>
-                  <TouchableOpacity onPress={() => openSheet(item)} style={styles.infoIcon}>
-                    <Entypo size={25} name="info-with-circle" color={"black"} />
-                  </TouchableOpacity>
-                </View>
+                </TouchableOpacity>
               );
             }}
             keyExtractor={(item) => item._id}
@@ -160,21 +206,47 @@ const RejectPasses = () => {
           >
             <View style={styles.ModelContent}>
               <Text style={styles.heading}> Pass Info </Text>
-              <TouchableOpacity onPress={() => setmodalVisible(false)} style={styles.cancelIcon} >
+              <TouchableOpacity
+                onPress={() => setmodalVisible(false)}
+                style={styles.cancelIcon}
+              >
                 <Entypo name="circle-with-cross" size={35} color="red" />
               </TouchableOpacity>
               <View style={styles.infoGrid}>
                 <InfoGrid label="Name" value={infoData?.name} />
-                <InfoGrid label="Reg.No" value={infoData?.RegisterNumber || ""} />
-                <InfoGrid label="Year & Dept" value={infoData?.Department || ""} />
+                <InfoGrid
+                  label="Reg.No"
+                  value={infoData?.RegisterNumber || ""}
+                />
+                <InfoGrid
+                  label="Year & Dept"
+                  value={infoData?.Department || ""}
+                />
                 <InfoGrid label="Room No" value={infoData?.RoomNo || ""} />
-                <InfoGrid label="Destination" value={infoData?.Destination || ""} />
+                <InfoGrid
+                  label="Destination"
+                  value={infoData?.Destination || ""}
+                />
                 <InfoGrid label="Purpose" value={infoData?.Purpose || ""} />
-                <InfoGrid label="Phone No" value={infoData?.PhoneNumber || ""} />
-                <InfoGrid label="Parent No" value={infoData?.ParentNumber || ""} />
-                <InfoGrid label="Out Time" value={infoData?.OutDateTime || ""} />
+                <InfoGrid
+                  label="Phone No"
+                  value={infoData?.PhoneNumber || ""}
+                />
+                <InfoGrid
+                  label="Parent No"
+                  value={infoData?.ParentNumber || ""}
+                />
+                <InfoGrid
+                  label="Out Time"
+                  value={infoData?.OutDateTime || ""}
+                />
                 <InfoGrid label="In Time" value={infoData?.InDateTime || ""} />
-                <InfoGrid label={infoData?.status == "2" ? "Approved By" : "Rejected By"} value={infoData?.warden || ""} />
+                <InfoGrid
+                  label={
+                    infoData?.status == "2" ? "Approved By" : "Rejected By"
+                  }
+                  value={infoData?.warden || ""}
+                />
               </View>
             </View>
           </Modal>
@@ -218,14 +290,14 @@ const styles = StyleSheet.create({
   titleStyle: {
     marginStart: 10,
     marginTop: -5,
-    width: wp(30)
+    width: wp(30),
   },
   department: {
     fontSize: hp(1.7),
-    textAlign: "center"
+    textAlign: "center",
   },
   nameStyle: {
-    textAlign: "center"
+    textAlign: "center",
   },
   times: {
     flexDirection: "row",
@@ -283,7 +355,7 @@ const styles = StyleSheet.create({
   },
   infoIcon: {
     position: "absolute",
-    right: "3%"
+    right: "3%",
   },
   modelContainer: {
     backgroundColor: "rgba(0,0,0,0.5)",
@@ -299,14 +371,13 @@ const styles = StyleSheet.create({
     position: "absolute",
     right: 10,
     top: 10,
-
   },
   heading: {
     textAlign: "center",
     fontSize: hp(3),
     color: "black",
     paddingBottom: 20,
-    textDecorationLine: "underline"
+    textDecorationLine: "underline",
   },
   infoGrid: {
     width: "100%",
@@ -319,7 +390,7 @@ const styles = StyleSheet.create({
     borderColor: "rgb(115,115,115)",
     height: hp(4.5),
     flex: 1,
-    color: "black"
+    color: "black",
   },
   filterInputs: {
     flexDirection: "row",

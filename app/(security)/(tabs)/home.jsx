@@ -182,6 +182,7 @@ const home = () => {
             onChangeText={(text) => setSearchQuery(text)}
             value={searchQuery}
             keyboardType="numeric"
+            placeholderTextColor={"black"}
           />
           <TextInput
             style={styles.input}
@@ -189,6 +190,7 @@ const home = () => {
             onChangeText={(text) => setDateQuery(text)}
             value={dateQuery.split(",")[0]}
             onPress={() => setDateVisble(true)}
+            placeholderTextColor={"black"}
           />
           <DateTimePicker
             onCancel={() => setDateVisble(false)}
@@ -207,7 +209,10 @@ const home = () => {
           style={{ marginBottom: hp(10), marginTop: hp(2) }}
           renderItem={({ item }) => {
             return (
-              <View style={styles.container}>
+              <TouchableOpacity
+                onPress={() => openSheet(item)}
+                style={styles.container}
+              >
                 <View style={styles.title}>
                   <Text style={styles.roomNoStyle}>
                     {item.RoomNo.toUpperCase()}.
@@ -291,13 +296,7 @@ const home = () => {
                         .toLocaleString(undefined, "Asia/Kolkata")
                         .split(",")[0]}
                 </Text>
-                <TouchableOpacity
-                  onPress={() => openSheet(item)}
-                  style={styles.infoIcon}
-                >
-                  <Entypo size={15} name="info-with-circle" color={"black"} />
-                </TouchableOpacity>
-              </View>
+              </TouchableOpacity>
             );
           }}
           keyExtractor={(item) => item._id}
@@ -495,6 +494,7 @@ const styles = StyleSheet.create({
     borderColor: "rgb(115,115,115)",
     height: hp(4.5),
     flex: 1,
+    color: "black",
   },
   dropdown: {
     backgroundColor: "#D9D9D9",

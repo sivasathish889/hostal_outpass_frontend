@@ -231,7 +231,8 @@ const styles = StyleSheet.create({
     borderColor: "rgb(115,115,115)",
     height: hp(4.5),
     marginBottom: "3%",
-    paddingStart: "12%"
+    paddingStart: "12%",
+    color: "black",
   },
   forgetPass: {
     textAlign: "right",

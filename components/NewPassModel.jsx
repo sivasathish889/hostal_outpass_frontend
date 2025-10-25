@@ -230,6 +230,7 @@ const NewPassModel = (props) => {
                     setRoomError(null);
                   }}
                   value={roomNo.toUpperCase()}
+                  autoCapitalize="characters"
                 />
                 {roomError != null ? (
                   <Text style={{ color: "red" }}>{roomError}</Text>

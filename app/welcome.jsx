@@ -53,6 +53,7 @@ const Welcome = () => {
       requestNotificationPermission();
     };
   }, []);
+  // initalize notification
   notificationUtils();
   return (
     <SafeAreaView style={styles.container}>

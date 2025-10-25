@@ -44,12 +44,12 @@ const notificationUtils = async () => {
 
     // Handle background notifications
     setBackgroundMessageHandler(messaging, async (remoteMessage) => {
-      console.log("Message handled in the background!", remoteMessage);
+      // console.log("Message handled in the background!", remoteMessage);
     });
 
     // Handle foreground notifications
     const unsubscribe = messaging.onMessage(async (remoteMessage) => {
-      console.log("A new FCM message arrived!", remoteMessage);
+      // console.log("A new FCM message arrived!", remoteMessage);
       Notifications.scheduleNotificationAsync({
         content: {
           title: remoteMessage.data.title,

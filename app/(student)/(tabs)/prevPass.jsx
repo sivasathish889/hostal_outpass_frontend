@@ -60,7 +60,8 @@ const PrevPass = () => {
 
   const renderItem = (item) => {
     return (
-      <View
+      <TouchableOpacity
+        onPress={() => openSheet(item)}
         style={[
           styles.container,
           {
@@ -77,21 +78,28 @@ const PrevPass = () => {
         <View style={styles.titleContainer}>
           <Text style={styles.roomNoStyle}>{item.item.RoomNo}.</Text>
         </View>
+        <View
+          style={{
+            flexDirection: "row",
+            flex: 1,
+            justifyContent: "space-around",
+            alignItems: "center",}}
+        >
+          <View style={styles.leftCont}>
+            <View>
+              <Text style={[styles.nameStyle]}>{item.item.Purpose}</Text>
+            </View>
 
-        <View style={styles.leftCont}>
-          <View>
-            <Text style={[styles.nameStyle]}>{item.item.Purpose}</Text>
+            <View style={styles.timeContainer}>
+              <Text style={styles.time}>{item.item.InDateTime}</Text>
+              <Text> - </Text>
+              <Text style={styles.time}>{item.item.OutDateTime}</Text>
+            </View>
           </View>
 
-          <View style={styles.timeContainer}>
-            <Text style={styles.time}>{item.item.InDateTime}</Text>
-            <Text> - </Text>
-            <Text style={styles.time}>{item.item.OutDateTime}</Text>
+          <View style={styles.rightCon}>
+            <Text style={[styles.placeStyle]}>{item.item.Destination}</Text>
           </View>
-        </View>
-
-        <View style={styles.rightCon}>
-          <Text style={[styles.placeStyle]}>{item.item.Destination}</Text>
         </View>
         <Text style={styles.createdStyle}>
           {new Date(item.item.createdAt).getDate() == String(now.getDate())
@@ -103,19 +111,13 @@ const PrevPass = () => {
                 .toLocaleString(undefined, "Asia/Kolkata")
                 .split(",")[0]}
         </Text>
-        <TouchableOpacity
-          onPress={() => openSheet(item.item)}
-          style={styles.infoIcon}
-        >
-          <Entypo size={25} name="info-with-circle" />
-        </TouchableOpacity>
-      </View>
+      </TouchableOpacity>
     );
   };
 
   const openSheet = (item) => {
     setmodalVisible(true);
-    setInfoData(item);
+    setInfoData(item.item);
   };
   const filteredData = data.filter((item) => {
     return (
@@ -128,7 +130,6 @@ const PrevPass = () => {
         .includes(statusQuery.toString().toLocaleLowerCase())
     );
   });
-
   return (
     <View style={{ flex: 1 }}>
       <ImageBackground
