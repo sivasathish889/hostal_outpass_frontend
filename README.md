@@ -1,43 +1,179 @@
-# Welcome to your Expo app 👋
+# Hostel Outpass Mobile Application 🏠
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A React Native mobile application built with Expo for managing hostel outpass requests at Anna University. The app provides a digital solution for students to request outpasses and for wardens/security to manage and approve them.
 
-## Get started
+## 📱 Features
 
-1. Install dependencies
+### For Students
+- **Registration & Login** - Secure account creation and authentication
+- **Outpass Requests** - Create new outpass requests with date/time
+- **Request Management** - View, edit, and delete pending requests
+- **Pass History** - Track all previous outpass requests
+- **Real-time Notifications** - Get updates on pass status
 
+### For Wardens
+- **Pass Review** - View and manage pending outpass requests
+- **Approval System** - Accept or reject student requests
+- **Pass History** - View all approved/rejected passes
+- **Secure Login** - OTP-based authentication
+
+### For Security
+- **Pass Verification** - Check and validate active outpasses
+- **Time Tracking** - Update out-time and in-time for students
+- **Pass Management** - Mark passes as completed
+- **Real-time Updates** - Live pass status monitoring
+
+## 🚀 Quick Start
+
+### Prerequisites
+- Node.js (v16 or higher)
+- npm or yarn
+- Expo CLI
+- Android Studio (for Android development)
+- Xcode (for iOS development)
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd hostal_outpass_frontend
+   ```
+
+2. **Install dependencies**
    ```bash
    npm install
    ```
 
-2. Start the app
+3. **Configure Firebase**
+   - Add your `google-services.json` file to the project root
+   - Update Firebase configuration in the app
 
+4. **Start the development server**
    ```bash
-    npx expo start
+   npx expo start
    ```
 
-In the output, you'll find options to open the app in a
+5. **Run on device/emulator**
+   - Press `a` for Android emulator
+   - Press `i` for iOS simulator
+   - Scan QR code with Expo Go app
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## 🏗️ Project Structure
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+```
+hostal_outpass_frontend/
+├── app/                    # Main app screens (file-based routing)
+│   ├── (security)/        # Security guard screens
+│   ├── (student)/         # Student screens
+│   ├── (warden)/          # Warden screens
+│   ├── index.jsx          # App entry point
+│   └── welcome.jsx        # Role selection screen
+├── assets/                # Images and static assets
+├── components/            # Reusable UI components
+├── constants/             # App constants and themes
+├── helpers/               # Utility functions
+├── utils/                 # Firebase and notification utilities
+└── android/               # Android-specific files
+```
 
-## Get a fresh project
+## 🛠️ Tech Stack
 
-When you're ready, run:
+- **Framework**: React Native with Expo
+- **Navigation**: Expo Router (file-based routing)
+- **State Management**: React Hooks
+- **Backend Communication**: Axios
+- **Push Notifications**: Firebase Cloud Messaging
+- **Location Services**: Expo Location
+- **Authentication**: AsyncStorage + OTP verification
+- **UI Components**: React Native Elements
 
+## 📦 Key Dependencies
 
-To learn more about developing your project with Expo, look at the following resources:
+```json
+{
+  "expo": "53.0.22",
+  "react-native": "0.79.5",
+  "expo-router": "~5.1.5",
+  "@react-native-firebase/app": "^22.4.0",
+  "@react-native-firebase/messaging": "^22.4.0",
+  "axios": "^1.7.9",
+  "expo-location": "~18.1.6",
+  "expo-notifications": "~0.31.4"
+}
+```
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+## 🔧 Configuration
 
-## Join the community
+### Environment Setup
+Update the backend URL in `constants/urls.jsx`:
+```javascript
+export default env = {
+    CLIENT_URL: "YOUR_BACKEND_URL",
+    // ... other endpoints
+}
+```
 
-Join our community of developers creating universal apps.
+### Firebase Configuration
+1. Create a Firebase project
+2. Add Android/iOS apps to your project
+3. Download `google-services.json` and place in project root
+4. Enable Firebase Cloud Messaging
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## 📱 Build & Deploy
+
+### Development Build
+```bash
+eas build --profile development --platform android
+```
+
+### Preview Build
+```bash
+eas build --profile preview --platform android
+```
+
+### Production Build
+```bash
+eas build --profile production --platform all
+```
+
+## 🔐 Security Features
+
+- **Location-based Verification** - GPS tracking for pass validation
+- **OTP Authentication** - Secure login for all user types
+- **Role-based Access** - Separate interfaces for students, wardens, and security
+- **Real-time Monitoring** - Live tracking of outpass status
+
+## 📋 User Roles
+
+1. **Student** - Request and manage outpasses
+2. **Warden** - Approve/reject outpass requests
+3. **Security** - Verify and track active outpasses
+
+## 🔄 App Flow
+
+1. **Welcome Screen** - User selects their role
+2. **Authentication** - Login/register based on role
+3. **Dashboard** - Role-specific home screen
+4. **Pass Management** - Create, view, or manage passes
+5. **Notifications** - Real-time updates on pass status
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Test thoroughly
+5. Submit a pull request
+
+## 📄 License
+
+This project is licensed under the MIT License.
+
+## 📞 Support
+
+For support and queries, please contact the development team.
+
+---
+
+**Built with ❤️ for Anna University Hostel Management**
