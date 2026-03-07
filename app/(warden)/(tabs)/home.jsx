@@ -284,8 +284,8 @@ const Home = () => {
                     ? "Today"
                     : new Date(item.createdAt).getDate() + 1 ==
                       String(now.getDate())
-                    ? "YesterDay"
-                    : new Date(item.createdAt)
+                      ? "YesterDay"
+                      : new Date(item.createdAt)
                         .toLocaleString(undefined, "Asia/Kolkata")
                         .split(",")[0]}
                 </Text>
@@ -308,7 +308,6 @@ const Home = () => {
             visible={modalVisible}
             onRequestClose={() => setmodalVisible(false)}
             onDismiss={() => setmodalVisible(false)}
-            
           >
             <View style={styles.ModelContent}>
               <Text style={styles.heading}> Pass Info </Text>

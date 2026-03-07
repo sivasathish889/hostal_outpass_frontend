@@ -9,7 +9,7 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from "react-native";
-import { useRef, useState } from "react";
+import { useRef, useState, Fragment } from "react";
 import annaUniversity from "@/assets/annaUniversity.png";
 import url from "@/constants/urls";
 import { Dropdown } from "react-native-element-dropdown";
@@ -88,6 +88,14 @@ const StudentRegister = () => {
         return setPhoneNumberError("Phone Number is Required");
       } else if (parentNumber === null || parentNumber.length == 0) {
         return setParentNumberError("Parent Number is Required");
+      } else if (parentNumber.length < 10) {
+        return setParentNumberError("Parent Number must be 10 digits");
+      } else if (parentNumber.length > 10) {
+        return setParentNumberError("Parent Number must be 10 digits");
+      } else if (!Number(parentNumber)) {
+        return setParentNumberError("Parent Number must be a number");
+      } else if (!Number(phoneNumber)) {
+        return setPhoneNumberError("Phone Number must be a number");
       }
       setStep(prevStep => Math.min(prevStep + 1, totalSteps));
       return
@@ -173,10 +181,10 @@ const StudentRegister = () => {
           {/* prograss bar */}
           <View style={{ flexDirection: "row", justifyContent: "space-between", textAlign: "center", alignItems: "center" }}>
             {[...Array(totalSteps)].map((_, index) => (
-              <>
-                <Text key={index} style={[styles.step, (index + 1 <= step || step > totalSteps) && { backgroundColor: themes.mainColor, color: "white" }]}>{index + 1}</Text>
+              <Fragment key={index}>
+                <Text style={[styles.step, (index + 1 <= step || step > totalSteps) && { backgroundColor: themes.mainColor, color: "white" }]}>{index + 1}</Text>
                 {index + 2 <= totalSteps && <View style={[styles.line, index + 1 < step ? { borderColor: themes.mainColor, backgroundColor: themes.mainColor } : {}]}></View>}
-              </>
+              </Fragment>
             ))}
           </View>
           <Text style={styles.mainHead}>Student</Text>

@@ -52,9 +52,9 @@ const notificationUtils = async () => {
       // console.log("A new FCM message arrived!", remoteMessage);
       Notifications.scheduleNotificationAsync({
         content: {
-          title: remoteMessage.data.title,
-          body: remoteMessage.data.body,
-          data: remoteMessage.data,
+          title: remoteMessage?.notification?.title || remoteMessage?.data?.title || 'New Pass Request',
+          body: remoteMessage?.notification?.body || remoteMessage?.data?.body || 'A new request is waiting for your approval',
+          data: remoteMessage?.data,
         },
         trigger: { seconds: 4 },
       });

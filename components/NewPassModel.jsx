@@ -82,92 +82,92 @@ const NewPassModel = (props) => {
 
       setSpinnerVisible(true);
       // get user Permission
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status == "granted") {
-        // get user Loction
-        let locationData = await Location.getCurrentPositionAsync({});
-        const distance = collageLocationRadius(
-          locationData?.coords?.longitude,
-          locationData?.coords?.latitude
-        );
-        console.log("distance", distance);
-        // if (distance > 600) {
-        //   toast.show("You are mot inside the campus", {
-        //     type: "danger",
-        //     placement: "top",
-        //     duration: 4000,
-        //     offset: 30,
-        //     animationType: "slide-in",
-        //     dangerIcon: <FontAwesome name="warning" size={20} color="white" />,
-        //     style: {
-        //       marginTop: hp(5),
-        //       width: "100%",
-        //       display: "flex",
-        //       justifyContent: "center",
-        //       alignItems: "center",
-        //     },
-        //   });
-        //   setSpinnerVisible(false);
-        //   return;
-        // }
-        await axios
-          .post(`${urls.CLIENT_URL}${urls.studentNewRequest}`, payload)
-          .then((data) => {
-            if (data.data.success) {
-              // notification function
-              toast.show(data.data.message, {
-                type: "success",
-                placement: "top",
-                duration: 4000,
-                offset: 30,
-                animationType: "slide-in",
-                successIcon: (
-                  <MaterialCommunityIcons
-                    name="check-circle"
-                    size={24}
-                    color="white"
-                  />
-                ),
-                style: {
-                  marginTop: hp(5),
-                  width: "100%",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                },
-              });
-              navigation.navigate("(tabs)");
-              setDestination(null);
-              setinDateTime(null);
-              setoutDateTime(null);
-              setPurpose(null);
-              setRoomNo("");
-              setPassModelVisible(false);
-              setDataRefresh(!dataRefresh);
-              setSpinnerVisible(false);
-            } else {
-              toast.show(data.data.message, {
-                type: "danger",
-                placement: "bottom",
-                duration: 4000,
-                offset: 30,
-                animationType: "slide-in",
-              });
-              setSpinnerVisible(false);
-            }
-          })
-          .catch((error) => console.log(error));
-      } else {
-        toast.show("Permission to access location was denied", {
-          type: "warning",
-          placement: "bottom",
-          duration: 4000,
-          offset: 30,
-          animationType: "slide-in",
-        });
-        setSpinnerVisible(false);
-        return;
-      }
+      // let { status } = await Location.requestForegroundPermissionsAsync();
+      // if (status == "granted") {
+      // get user Loction
+      // let locationData = await Location.getCurrentPositionAsync({});
+      // const distance = collageLocationRadius(
+      //   locationData?.coords?.longitude,
+      //   locationData?.coords?.latitude
+      // );
+      // console.log("distance", distance);
+      // if (distance > 600) {
+      //   toast.show("You are mot inside the campus", {
+      //     type: "danger",
+      //     placement: "top",
+      //     duration: 4000,
+      //     offset: 30,
+      //     animationType: "slide-in",
+      //     dangerIcon: <FontAwesome name="warning" size={20} color="white" />,
+      //     style: {
+      //       marginTop: hp(5),
+      //       width: "100%",
+      //       display: "flex",
+      //       justifyContent: "center",
+      //       alignItems: "center",
+      //     },
+      //   });
+      //   setSpinnerVisible(false);
+      //   return;
+      // }
+      await axios
+        .post(`${urls.CLIENT_URL}${urls.studentNewRequest}`, payload)
+        .then((data) => {
+          if (data.data.success) {
+            // notification function
+            toast.show(data.data.message, {
+              type: "success",
+              placement: "top",
+              duration: 4000,
+              offset: 30,
+              animationType: "slide-in",
+              successIcon: (
+                <MaterialCommunityIcons
+                  name="check-circle"
+                  size={24}
+                  color="white"
+                />
+              ),
+              style: {
+                marginTop: hp(5),
+                width: "100%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              },
+            });
+            navigation.navigate("(tabs)");
+            setDestination(null);
+            setinDateTime(null);
+            setoutDateTime(null);
+            setPurpose(null);
+            setRoomNo("");
+            setPassModelVisible(false);
+            setDataRefresh(!dataRefresh);
+            setSpinnerVisible(false);
+          } else {
+            toast.show(data.data.message, {
+              type: "danger",
+              placement: "bottom",
+              duration: 4000,
+              offset: 30,
+              animationType: "slide-in",
+            });
+            setSpinnerVisible(false);
+          }
+        })
+        .catch((error) => console.log(error));
+      // } else {
+      //   toast.show("Permission to access location was denied", {
+      //     type: "warning",
+      //     placement: "bottom",
+      //     duration: 4000,
+      //     offset: 30,
+      //     animationType: "slide-in",
+      //   });
+      //   setSpinnerVisible(false);
+      //   return;
+      // }
     } catch (error) {
       toast.show("Please Turn On the Location", {
         type: "warning",
